@@ -1458,38 +1458,72 @@
 <ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for iCal Set task alarm here -->
 </ex4D:command-description>
+<a name="command:12"></a>
+<h2>Timezone</h2>
+<a name="command:12,49"></a>
+<h3>iCal Get system timezone</h3>
+<p>
+<code>TEXT:=iCal Get system timezone</code>
+</p>
+<p>
+<code>returnValue</code> (TEXT)<br>
+<ex4D:return-value label="" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for return value (TEXT) here-->
+</ex4D:return-value>
+</p>
+<p>
+<span class="title">Discussion</span>
+</p>
+<ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for iCal Get system timezone here -->
+</ex4D:command-description>
+<a name="command:12,48"></a>
+<h3>iCal Get timezone for offset</h3>
+<p>
+<code>TEXT:=iCal Get timezone for offset (LONGINT)</code>
+</p>
+<p>
+<code>returnValue</code> (TEXT)<br>
+<ex4D:return-value label="" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for return value (TEXT) here-->
+</ex4D:return-value>
+</p>
+<p>
+<span class="title">Discussion</span>
+</p>
+<ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for iCal Get timezone for offset here -->
+</ex4D:command-description>
+<a name="command:12,47"></a>
+<h3>iCal Get timezone info</h3>
+<p>
+<code>LONGINT:=iCal Get timezone info (DATE; TIME; TEXT; LONGINT; LONGINT; DATE; TIME)</code>
+</p>
+<p>
+<code>returnValue</code> (LONGINT)<br>
+<ex4D:return-value label="" type="L" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for return value (LONGINT) here-->
+</ex4D:return-value>
+</p>
+<p>
+<span class="title">Discussion</span>
+</p>
+<ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for iCal Get timezone info here -->
+</ex4D:command-description>
+<a name="command:12,46"></a>
+<h3>iCal TIMEZONE LIST</h3>
+<p>
+<code>iCal TIMEZONE LIST (ARRAY)</code>
+</p>
+<p>
+<span class="title">Discussion</span>
+</p>
+<ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for iCal TIMEZONE LIST here -->
+</ex4D:command-description>
 <a name="constant:1"></a>
 <h2>iCal Event Properties</h2>
-<p>
-<code><a name="constant:1,6"></a>Event attendees (attendees)</code>
-</p>
-<ex4D:constant constant-id="6" name="Event attendees" type="S" value="attendees" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event attendees (attendees) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,8"></a>Event calendar (calendar)</code>
-</p>
-<ex4D:constant constant-id="8" name="Event calendar" type="S" value="calendar" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event calendar (calendar) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,9"></a>Event dateStamp (dateStamp)</code>
-</p>
-<ex4D:constant constant-id="9" name="Event dateStamp" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event dateStamp (dateStamp) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,5"></a>Event endDate (endDate)</code>
-</p>
-<ex4D:constant constant-id="5" name="Event endDate" type="S" value="endDate" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event endDate (endDate) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,13"></a>Event hasAlarm (hasAlarm)</code>
-</p>
-<ex4D:constant constant-id="13" name="Event hasAlarm" type="S" value="hasAlarm" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event hasAlarm (hasAlarm) here-->
-</ex4D:constant>
 <p>
 <code><a name="constant:1,1"></a>Event isAllDay (isAllDay)</code>
 </p>
@@ -1497,28 +1531,10 @@
 <!-- write documentation for Event isAllDay (isAllDay) here-->
 </ex4D:constant>
 <p>
-<code><a name="constant:1,7"></a>Event isDetached (isDetached)</code>
-</p>
-<ex4D:constant constant-id="7" name="Event isDetached" type="S" value="isDetached" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event isDetached (isDetached) here-->
-</ex4D:constant>
-<p>
 <code><a name="constant:1,2"></a>Event location (location)</code>
 </p>
 <ex4D:constant constant-id="2" name="Event location" type="S" value="location" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Event location (location) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,14"></a>Event nextAlarmDate (nextAlarmDate)</code>
-</p>
-<ex4D:constant constant-id="14" name="Event nextAlarmDate" type="S" value="nextAlarmDate" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event nextAlarmDate (nextAlarmDate) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:1,10"></a>Event notes (notes)</code>
-</p>
-<ex4D:constant constant-id="10" name="Event notes" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event notes (notes) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:1,3"></a>Event occurrence (occurrence)</code>
@@ -1533,6 +1549,42 @@
 <!-- write documentation for Event startDate (startDate) here-->
 </ex4D:constant>
 <p>
+<code><a name="constant:1,5"></a>Event endDate (endDate)</code>
+</p>
+<ex4D:constant constant-id="5" name="Event endDate" type="S" value="endDate" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event endDate (endDate) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,6"></a>Event attendees (attendees)</code>
+</p>
+<ex4D:constant constant-id="6" name="Event attendees" type="S" value="attendees" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event attendees (attendees) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,7"></a>Event isDetached (isDetached)</code>
+</p>
+<ex4D:constant constant-id="7" name="Event isDetached" type="S" value="isDetached" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event isDetached (isDetached) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,8"></a>Event calendar (calendar)</code>
+</p>
+<ex4D:constant constant-id="8" name="Event calendar" type="S" value="calendar" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event calendar (calendar) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,9"></a>Event dateStamp (dateStamp)</code>
+</p>
+<ex4D:constant constant-id="9" name="Event dateStamp" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event dateStamp (dateStamp) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,10"></a>Event notes (notes)</code>
+</p>
+<ex4D:constant constant-id="10" name="Event notes" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event notes (notes) here-->
+</ex4D:constant>
+<p>
 <code><a name="constant:1,11"></a>Event title (title)</code>
 </p>
 <ex4D:constant constant-id="11" name="Event title" type="S" value="title" xmlns:ex4D="http://www.4d.com/plugin">
@@ -1543,6 +1595,18 @@
 </p>
 <ex4D:constant constant-id="12" name="Event url" type="S" value="url" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Event url (url) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,13"></a>Event hasAlarm (hasAlarm)</code>
+</p>
+<ex4D:constant constant-id="13" name="Event hasAlarm" type="S" value="hasAlarm" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event hasAlarm (hasAlarm) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:1,14"></a>Event nextAlarmDate (nextAlarmDate)</code>
+</p>
+<ex4D:constant constant-id="14" name="Event nextAlarmDate" type="S" value="nextAlarmDate" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event nextAlarmDate (nextAlarmDate) here-->
 </ex4D:constant>
 <a name="constant:2"></a>
 <h2>iCal Calendar Properties</h2>
@@ -1579,24 +1643,6 @@
 <a name="constant:3"></a>
 <h2>iCal Task Properties</h2>
 <p>
-<code><a name="constant:3,5"></a>Task calendar (calendar)</code>
-</p>
-<ex4D:constant constant-id="5" name="Task calendar" type="S" value="calendar" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Task calendar (calendar) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:3,4"></a>Task completedDate (completedDate)</code>
-</p>
-<ex4D:constant constant-id="4" name="Task completedDate" type="S" value="completedDate" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Task completedDate (completedDate) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:3,6"></a>Task dateStamp (dateStamp)</code>
-</p>
-<ex4D:constant constant-id="6" name="Task dateStamp" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Task dateStamp (dateStamp) here-->
-</ex4D:constant>
-<p>
 <code><a name="constant:3,1"></a>Task dueDate (dueDate)</code>
 </p>
 <ex4D:constant constant-id="1" name="Task dueDate" type="S" value="dueDate" xmlns:ex4D="http://www.4d.com/plugin">
@@ -1613,6 +1659,24 @@
 </p>
 <ex4D:constant constant-id="3" name="Task priority" type="S" value="priority" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Task priority (priority) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:3,4"></a>Task completedDate (completedDate)</code>
+</p>
+<ex4D:constant constant-id="4" name="Task completedDate" type="S" value="completedDate" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Task completedDate (completedDate) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:3,5"></a>Task calendar (calendar)</code>
+</p>
+<ex4D:constant constant-id="5" name="Task calendar" type="S" value="calendar" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Task calendar (calendar) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:3,6"></a>Task dateStamp (dateStamp)</code>
+</p>
+<ex4D:constant constant-id="6" name="Task dateStamp" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Task dateStamp (dateStamp) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:3,7"></a>Task title (title)</code>
@@ -1673,16 +1737,16 @@
 <!-- write documentation for Recurrence Daily (Daily) here-->
 </ex4D:constant>
 <p>
-<code><a name="constant:5,3"></a>Recurrence Monthly (Monthly)</code>
-</p>
-<ex4D:constant constant-id="3" name="Recurrence Monthly" type="S" value="Monthly" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Recurrence Monthly (Monthly) here-->
-</ex4D:constant>
-<p>
 <code><a name="constant:5,2"></a>Recurrence Weekly (Weekly)</code>
 </p>
 <ex4D:constant constant-id="2" name="Recurrence Weekly" type="S" value="Weekly" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Recurrence Weekly (Weekly) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:5,3"></a>Recurrence Monthly (Monthly)</code>
+</p>
+<ex4D:constant constant-id="3" name="Recurrence Monthly" type="S" value="Monthly" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Recurrence Monthly (Monthly) here-->
 </ex4D:constant>
 <a name="constant:6"></a>
 <h2>iCal View Modes</h2>
@@ -1707,10 +1771,16 @@
 <a name="constant:7"></a>
 <h2>iCal App Event Properties</h2>
 <p>
-<code><a name="constant:7,6"></a>Event stamp date (dateStamp)</code>
+<code><a name="constant:7,1"></a>Event description (notes)</code>
 </p>
-<ex4D:constant constant-id="6" name="Event stamp date" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event stamp date (dateStamp) here-->
+<ex4D:constant constant-id="1" name="Event description" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event description (notes) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:7,2"></a>Event start date (startDate)</code>
+</p>
+<ex4D:constant constant-id="2" name="Event start date" type="S" value="startDate" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event start date (startDate) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:7,3"></a>Event end date (endDate)</code>
@@ -1725,34 +1795,22 @@
 <!-- write documentation for Event allday event (isAllDay) here-->
 </ex4D:constant>
 <p>
-<code><a name="constant:7,10"></a>Event location (location)</code>
-</p>
-<ex4D:constant constant-id="10" name="Event location" type="S" value="location" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event location (location) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:7,1"></a>Event description (notes)</code>
-</p>
-<ex4D:constant constant-id="1" name="Event description" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event description (notes) here-->
-</ex4D:constant>
-<p>
 <code><a name="constant:7,5"></a>Event recurrence (recurrence)</code>
 </p>
 <ex4D:constant constant-id="5" name="Event recurrence" type="S" value="recurrence" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Event recurrence (recurrence) here-->
 </ex4D:constant>
 <p>
+<code><a name="constant:7,6"></a>Event stamp date (dateStamp)</code>
+</p>
+<ex4D:constant constant-id="6" name="Event stamp date" type="S" value="dateStamp" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event stamp date (dateStamp) here-->
+</ex4D:constant>
+<p>
 <code><a name="constant:7,7"></a>Event sequence (sequence)</code>
 </p>
 <ex4D:constant constant-id="7" name="Event sequence" type="S" value="sequence" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Event sequence (sequence) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:7,2"></a>Event start date (startDate)</code>
-</p>
-<ex4D:constant constant-id="2" name="Event start date" type="S" value="startDate" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Event start date (startDate) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:7,8"></a>Event status (status)</code>
@@ -1765,6 +1823,12 @@
 </p>
 <ex4D:constant constant-id="9" name="Event summary" type="S" value="title" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Event summary (title) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:7,10"></a>Event location (location)</code>
+</p>
+<ex4D:constant constant-id="10" name="Event location" type="S" value="location" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Event location (location) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:7,11"></a>Event url (url)</code>
@@ -1785,12 +1849,6 @@
 </p>
 <ex4D:constant constant-id="2" name="Task due date" type="S" value="dueDate" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Task due date (dueDate) here-->
-</ex4D:constant>
-<p>
-<code><a name="constant:8,7"></a>Task description (notes)</code>
-</p>
-<ex4D:constant constant-id="7" name="Task description" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
-<!-- write documentation for Task description (notes) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:8,3"></a>Task priority (priority)</code>
@@ -1815,6 +1873,12 @@
 </p>
 <ex4D:constant constant-id="6" name="Task summary" type="S" value="title" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for Task summary (title) here-->
+</ex4D:constant>
+<p>
+<code><a name="constant:8,7"></a>Task description (notes)</code>
+</p>
+<ex4D:constant constant-id="7" name="Task description" type="S" value="notes" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for Task description (notes) here-->
 </ex4D:constant>
 <p>
 <code><a name="constant:8,8"></a>Task url (url)</code>
@@ -1857,6 +1921,6 @@
 <!-- write documentation for Task complete (1) here-->
 </ex4D:constant>
 <p class="footer">
-<span class="title">Documentation Update: </span>2012-06-09T02:02:1409:00</p>
+<span class="title">Documentation Update: </span>2013-09-21T02:01:0709:00</p>
 </body>
 </html>

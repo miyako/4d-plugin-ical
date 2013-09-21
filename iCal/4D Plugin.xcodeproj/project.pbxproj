@@ -23,8 +23,8 @@
 		D10DD2EC135FAB2F00319781 /* C_DATE.h in Headers */ = {isa = PBXBuildFile; fileRef = D10DD2EA135FAB2F00319781 /* C_DATE.h */; };
 		D10EECA514960CCC00E2D870 /* PAListener.h in Headers */ = {isa = PBXBuildFile; fileRef = D10EECA314960CCC00E2D870 /* PAListener.h */; };
 		D10EECA614960CCC00E2D870 /* PAListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D10EECA414960CCC00E2D870 /* PAListener.m */; };
-		D115E1A913C8AD0600E4426B /* listener.h in Headers */ = {isa = PBXBuildFile; fileRef = D115E1A713C8AD0600E4426B /* listener.h */; };
-		D115E1AA13C8AD0600E4426B /* listener.m in Sources */ = {isa = PBXBuildFile; fileRef = D115E1A813C8AD0600E4426B /* listener.m */; };
+		D115E1A913C8AD0600E4426B /* ical_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = D115E1A713C8AD0600E4426B /* ical_listener.h */; };
+		D115E1AA13C8AD0600E4426B /* ical_listener.m in Sources */ = {isa = PBXBuildFile; fileRef = D115E1A813C8AD0600E4426B /* ical_listener.m */; };
 		D120937F13534DCC00A72CAA /* 4DPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = D120937E13534DCC00A72CAA /* 4DPlugin.h */; };
 		D1251DD816F0DCBD00A9B062 /* CalendarStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1251DD716F0DCBD00A9B062 /* CalendarStore.framework */; };
 		D1251DDE16F0DCC600A9B062 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1251DDD16F0DCC600A9B062 /* Cocoa.framework */; };
@@ -38,6 +38,22 @@
 		D1392DDA13582171004911A5 /* C_BLOB.h in Headers */ = {isa = PBXBuildFile; fileRef = D1392DD813582171004911A5 /* C_BLOB.h */; };
 		D13E88A013543F3800C1F956 /* ARRAY_REAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D13E889E13543F3800C1F956 /* ARRAY_REAL.cpp */; };
 		D13E88A113543F3800C1F956 /* ARRAY_REAL.h in Headers */ = {isa = PBXBuildFile; fileRef = D13E889F13543F3800C1F956 /* ARRAY_REAL.h */; };
+		D14E78F717EC4C2000ECD031 /* ical_timezome.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E78F517EC4C2000ECD031 /* ical_timezome.h */; };
+		D14E78F817EC4C2000ECD031 /* ical_timezome.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E78F617EC4C2000ECD031 /* ical_timezome.mm */; };
+		D14E797817EC56F600ECD031 /* ical_application.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E797617EC56F600ECD031 /* ical_application.h */; };
+		D14E797917EC56F600ECD031 /* ical_application.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E797717EC56F600ECD031 /* ical_application.mm */; };
+		D14E798E17EC582D00ECD031 /* ical_event.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E798C17EC582D00ECD031 /* ical_event.h */; };
+		D14E798F17EC582D00ECD031 /* ical_event.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E798D17EC582D00ECD031 /* ical_event.mm */; };
+		D14E799617EC58A600ECD031 /* ical_task.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E799417EC58A600ECD031 /* ical_task.h */; };
+		D14E799717EC58A600ECD031 /* ical_task.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E799517EC58A600ECD031 /* ical_task.mm */; };
+		D14E79C517EC596E00ECD031 /* ical_calendar.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E79C317EC596E00ECD031 /* ical_calendar.h */; };
+		D14E79C617EC596E00ECD031 /* ical_calendar.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E79C417EC596E00ECD031 /* ical_calendar.mm */; };
+		D14E79DA17EC59EC00ECD031 /* ical_calendar_store.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E79D817EC59EC00ECD031 /* ical_calendar_store.h */; };
+		D14E79DB17EC59EC00ECD031 /* ical_calendar_store.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E79D917EC59EC00ECD031 /* ical_calendar_store.mm */; };
+		D14E7A0117EC5AEA00ECD031 /* ical_alarm.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E79FF17EC5AEA00ECD031 /* ical_alarm.h */; };
+		D14E7A0217EC5AEA00ECD031 /* ical_alarm.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E7A0017EC5AEA00ECD031 /* ical_alarm.mm */; };
+		D14E7A3017EC5BC000ECD031 /* ical_tools.h in Headers */ = {isa = PBXBuildFile; fileRef = D14E7A2E17EC5BC000ECD031 /* ical_tools.h */; };
+		D14E7A3117EC5BC000ECD031 /* ical_tools.mm in Sources */ = {isa = PBXBuildFile; fileRef = D14E7A2F17EC5BC000ECD031 /* ical_tools.mm */; };
 		D19271A51353D6F2001CEA07 /* ARRAY_TEXT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D19271A31353D6F2001CEA07 /* ARRAY_TEXT.cpp */; };
 		D19271A61353D6F2001CEA07 /* ARRAY_TEXT.h in Headers */ = {isa = PBXBuildFile; fileRef = D19271A41353D6F2001CEA07 /* ARRAY_TEXT.h */; };
 		D19271AA1353D771001CEA07 /* ARRAY_LONGINT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D19271A81353D771001CEA07 /* ARRAY_LONGINT.cpp */; };
@@ -99,8 +115,8 @@
 		D10DD2EA135FAB2F00319781 /* C_DATE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_DATE.h; path = Classes/C_DATE.h; sourceTree = "<group>"; };
 		D10EECA314960CCC00E2D870 /* PAListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAListener.h; sourceTree = "<group>"; };
 		D10EECA414960CCC00E2D870 /* PAListener.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = PAListener.m; sourceTree = "<group>"; };
-		D115E1A713C8AD0600E4426B /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
-		D115E1A813C8AD0600E4426B /* listener.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = listener.m; sourceTree = "<group>"; };
+		D115E1A713C8AD0600E4426B /* ical_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_listener.h; sourceTree = "<group>"; };
+		D115E1A813C8AD0600E4426B /* ical_listener.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ical_listener.m; sourceTree = "<group>"; };
 		D120937E13534DCC00A72CAA /* 4DPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 4DPlugin.h; sourceTree = "<group>"; };
 		D1251DD716F0DCBD00A9B062 /* CalendarStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CalendarStore.framework; path = System/Library/Frameworks/CalendarStore.framework; sourceTree = SDKROOT; };
 		D1251DDD16F0DCC600A9B062 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -114,6 +130,22 @@
 		D1392DD813582171004911A5 /* C_BLOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_BLOB.h; path = Classes/C_BLOB.h; sourceTree = "<group>"; };
 		D13E889E13543F3800C1F956 /* ARRAY_REAL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_REAL.cpp; path = Classes/ARRAY_REAL.cpp; sourceTree = "<group>"; };
 		D13E889F13543F3800C1F956 /* ARRAY_REAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRAY_REAL.h; path = Classes/ARRAY_REAL.h; sourceTree = "<group>"; };
+		D14E78F517EC4C2000ECD031 /* ical_timezome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_timezome.h; sourceTree = "<group>"; };
+		D14E78F617EC4C2000ECD031 /* ical_timezome.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_timezome.mm; sourceTree = "<group>"; };
+		D14E797617EC56F600ECD031 /* ical_application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_application.h; sourceTree = "<group>"; };
+		D14E797717EC56F600ECD031 /* ical_application.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_application.mm; sourceTree = "<group>"; };
+		D14E798C17EC582D00ECD031 /* ical_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_event.h; sourceTree = "<group>"; };
+		D14E798D17EC582D00ECD031 /* ical_event.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_event.mm; sourceTree = "<group>"; };
+		D14E799417EC58A600ECD031 /* ical_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_task.h; sourceTree = "<group>"; };
+		D14E799517EC58A600ECD031 /* ical_task.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_task.mm; sourceTree = "<group>"; };
+		D14E79C317EC596E00ECD031 /* ical_calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_calendar.h; sourceTree = "<group>"; };
+		D14E79C417EC596E00ECD031 /* ical_calendar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_calendar.mm; sourceTree = "<group>"; };
+		D14E79D817EC59EC00ECD031 /* ical_calendar_store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_calendar_store.h; sourceTree = "<group>"; };
+		D14E79D917EC59EC00ECD031 /* ical_calendar_store.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_calendar_store.mm; sourceTree = "<group>"; };
+		D14E79FF17EC5AEA00ECD031 /* ical_alarm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_alarm.h; sourceTree = "<group>"; };
+		D14E7A0017EC5AEA00ECD031 /* ical_alarm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_alarm.mm; sourceTree = "<group>"; };
+		D14E7A2E17EC5BC000ECD031 /* ical_tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_tools.h; sourceTree = "<group>"; };
+		D14E7A2F17EC5BC000ECD031 /* ical_tools.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_tools.mm; sourceTree = "<group>"; };
 		D19271A31353D6F2001CEA07 /* ARRAY_TEXT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_TEXT.cpp; path = Classes/ARRAY_TEXT.cpp; sourceTree = "<group>"; };
 		D19271A41353D6F2001CEA07 /* ARRAY_TEXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRAY_TEXT.h; path = Classes/ARRAY_TEXT.h; sourceTree = "<group>"; };
 		D19271A81353D771001CEA07 /* ARRAY_LONGINT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_LONGINT.cpp; path = Classes/ARRAY_LONGINT.cpp; sourceTree = "<group>"; };
@@ -192,15 +224,12 @@
 		08FB77ADFE841716C02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D115E1A813C8AD0600E4426B /* listener.m */,
-				D115E1A713C8AD0600E4426B /* listener.h */,
+				D14E78EA17EC4C1500ECD031 /* iCal */,
 				D10EECA414960CCC00E2D870 /* PAListener.m */,
 				D10EECA314960CCC00E2D870 /* PAListener.h */,
 				D1F42EF513C6FA9A00D840CE /* scpt */,
 				18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */,
 				D120937E13534DCC00A72CAA /* 4DPlugin.h */,
-				D1A31F1313C768F700AB9878 /* ical_support.cpp */,
-				D1A31F1213C768F700AB9878 /* ical_support.h */,
 				18B684ED06944F2000CC6A1E /* 4D Plugin API */,
 				32BAE0B30371A71500C91783 /* 4D Plugin_Prefix.pch */,
 			);
@@ -227,6 +256,33 @@
 				18B684F406944F2000CC6A1E /* PublicTypes.h */,
 			);
 			path = "4D Plugin API";
+			sourceTree = "<group>";
+		};
+		D14E78EA17EC4C1500ECD031 /* iCal */ = {
+			isa = PBXGroup;
+			children = (
+				D1A31F1313C768F700AB9878 /* ical_support.cpp */,
+				D1A31F1213C768F700AB9878 /* ical_support.h */,
+				D115E1A813C8AD0600E4426B /* ical_listener.m */,
+				D115E1A713C8AD0600E4426B /* ical_listener.h */,
+				D14E7A2E17EC5BC000ECD031 /* ical_tools.h */,
+				D14E7A2F17EC5BC000ECD031 /* ical_tools.mm */,
+				D14E79FF17EC5AEA00ECD031 /* ical_alarm.h */,
+				D14E7A0017EC5AEA00ECD031 /* ical_alarm.mm */,
+				D14E79D817EC59EC00ECD031 /* ical_calendar_store.h */,
+				D14E79D917EC59EC00ECD031 /* ical_calendar_store.mm */,
+				D14E79C317EC596E00ECD031 /* ical_calendar.h */,
+				D14E79C417EC596E00ECD031 /* ical_calendar.mm */,
+				D14E799417EC58A600ECD031 /* ical_task.h */,
+				D14E799517EC58A600ECD031 /* ical_task.mm */,
+				D14E798C17EC582D00ECD031 /* ical_event.h */,
+				D14E798D17EC582D00ECD031 /* ical_event.mm */,
+				D14E78F517EC4C2000ECD031 /* ical_timezome.h */,
+				D14E78F617EC4C2000ECD031 /* ical_timezome.mm */,
+				D14E797617EC56F600ECD031 /* ical_application.h */,
+				D14E797717EC56F600ECD031 /* ical_application.mm */,
+			);
+			name = iCal;
 			sourceTree = "<group>";
 		};
 		D19CC171135378140004336E /* Classes */ = {
@@ -300,8 +356,16 @@
 				D10DD2C5135FA56100319781 /* C_TIME.h in Headers */,
 				D10DD2EC135FAB2F00319781 /* C_DATE.h in Headers */,
 				D1A31F1413C768F700AB9878 /* ical_support.h in Headers */,
-				D115E1A913C8AD0600E4426B /* listener.h in Headers */,
+				D115E1A913C8AD0600E4426B /* ical_listener.h in Headers */,
 				D10EECA514960CCC00E2D870 /* PAListener.h in Headers */,
+				D14E78F717EC4C2000ECD031 /* ical_timezome.h in Headers */,
+				D14E797817EC56F600ECD031 /* ical_application.h in Headers */,
+				D14E798E17EC582D00ECD031 /* ical_event.h in Headers */,
+				D14E799617EC58A600ECD031 /* ical_task.h in Headers */,
+				D14E79C517EC596E00ECD031 /* ical_calendar.h in Headers */,
+				D14E79DA17EC59EC00ECD031 /* ical_calendar_store.h in Headers */,
+				D14E7A0117EC5AEA00ECD031 /* ical_alarm.h in Headers */,
+				D14E7A3017EC5BC000ECD031 /* ical_tools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,8 +460,16 @@
 				D10DD2C4135FA56100319781 /* C_TIME.cpp in Sources */,
 				D10DD2EB135FAB2F00319781 /* C_DATE.cpp in Sources */,
 				D1A31F1513C768F700AB9878 /* ical_support.cpp in Sources */,
-				D115E1AA13C8AD0600E4426B /* listener.m in Sources */,
+				D115E1AA13C8AD0600E4426B /* ical_listener.m in Sources */,
 				D10EECA614960CCC00E2D870 /* PAListener.m in Sources */,
+				D14E78F817EC4C2000ECD031 /* ical_timezome.mm in Sources */,
+				D14E797917EC56F600ECD031 /* ical_application.mm in Sources */,
+				D14E798F17EC582D00ECD031 /* ical_event.mm in Sources */,
+				D14E799717EC58A600ECD031 /* ical_task.mm in Sources */,
+				D14E79C617EC596E00ECD031 /* ical_calendar.mm in Sources */,
+				D14E79DB17EC59EC00ECD031 /* ical_calendar_store.mm in Sources */,
+				D14E7A0217EC5AEA00ECD031 /* ical_alarm.mm in Sources */,
+				D14E7A3117EC5BC000ECD031 /* ical_tools.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,15 +595,15 @@
 		42D60B440A9DDBC8002ABB42 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OBJROOT = "$(SRCROOT)/build";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "$(SRCROOT)/Sample.4dbase/Plugins";
 			};
 			name = Development;
@@ -544,8 +616,8 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				GCC_VERSION = 4.2;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				GCC_VERSION = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OBJROOT = "$(SRCROOT)/build";
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "$(SRCROOT)/Sample.4dbase/Plugins";
@@ -555,13 +627,13 @@
 		42D60B460A9DDBC8002ABB42 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "$(SRCROOT)/Sample.4dbase/Plugins";
 			};
 			name = Default;

@@ -1,4 +1,4 @@
-#import "listener.h"
+#import "ical_listener.h"
 
 @implementation iCalListener
 
@@ -59,23 +59,38 @@
 
 - (void)calendarsChanged:(NSNotification *)notification 
 {
-	[self setNotificationInfo:notification];
-	self.notificationType = @"Calendar Notification";
-	PA_UnfreezeProcess([self.listenerProcessNumber intValue]);	
+	if([self lock]){	
+		
+		[self setNotificationInfo:notification];
+		
+		self.notificationType = @"Calendar Notification";
+		
+		PA_UnfreezeProcess([self.listenerProcessNumber intValue]);	
+	}
 }
 
 - (void)eventsChanged:(NSNotification *)notification
 {	
-	[self setNotificationInfo:notification];	
-	self.notificationType = @"Event Notification";
-	PA_UnfreezeProcess([self.listenerProcessNumber intValue]);	
+	if([self lock]){	
+		
+		[self setNotificationInfo:notification];	
+		
+		self.notificationType = @"Event Notification";
+		
+		PA_UnfreezeProcess([self.listenerProcessNumber intValue]);	
+	}
 }
 
 - (void)tasksChanged:(NSNotification *)notification
 {
-	[self setNotificationInfo:notification];	
-	self.notificationType = @"Task Notification";
-	PA_UnfreezeProcess([self.listenerProcessNumber intValue]);
+	if([self lock]){
+		
+		[self setNotificationInfo:notification];	
+		
+		self.notificationType = @"Task Notification";
+		
+		PA_UnfreezeProcess([self.listenerProcessNumber intValue]);
+	}
 }
 
 @end
