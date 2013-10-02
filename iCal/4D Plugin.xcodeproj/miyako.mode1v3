@@ -269,7 +269,6 @@
 								<string>08FB77ADFE841716C02AAC07</string>
 								<string>18B684ED06944F2000CC6A1E</string>
 								<string>089C167CFE841241C02AAC07</string>
-								<string>089C1671FE841209C02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
@@ -277,7 +276,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>2</integer>
+									<integer>4</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
@@ -302,7 +301,7 @@
 							<real>200</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>674 157 727 622 0 0 1440 878 </string>
+						<string>543 256 727 622 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -318,7 +317,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ical_support.cpp</string>
+								<string>PAListener.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,17 +325,16 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>ical_support.cpp</string>
+										<string>PAListener.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D14B187017ED34A500F0C298</string>
+										<string>D17E6B5917FAEFA50028B063</string>
 										<key>history</key>
 										<array>
 											<string>D1A31FDB13C7CAB500AB9878</string>
 											<string>D19D8ECF13FB2BC500BE291B</string>
 											<string>D10EDD2213FBF97D00F69716</string>
-											<string>D10EECB914960DFA00E2D870</string>
 											<string>D112BB831582EA9300E8C1ED</string>
 											<string>D112BB841582EA9300E8C1ED</string>
 											<string>D112BB861582EA9300E8C1ED</string>
@@ -363,12 +361,12 @@
 											<string>D14E7A4017EC910B00ECD031</string>
 											<string>D14E7A4117EC910B00ECD031</string>
 											<string>D14E7A4217EC910B00ECD031</string>
-											<string>D14E7A4317EC910B00ECD031</string>
 											<string>D14B186C17ED34A500F0C298</string>
 											<string>D14B186D17ED34A500F0C298</string>
 											<string>D14B186E17ED34A500F0C298</string>
 											<string>D14B186F17ED34A500F0C298</string>
-											<string>D10EEB491495B30300E2D870</string>
+											<string>D17E6B5817FAEFA50028B063</string>
+											<string>D10EECB914960DFA00E2D870</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -380,14 +378,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {505, 324}}</string>
+								<string>{{0, 0}, {505, 305}}</string>
 								<key>RubberWindowFrame</key>
-								<string>674 157 727 622 0 0 1440 878 </string>
+								<string>543 256 727 622 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>324pt</string>
+							<string>305pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -400,14 +398,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 329}, {505, 252}}</string>
+								<string>{{0, 310}, {505, 271}}</string>
 								<key>RubberWindowFrame</key>
-								<string>674 157 727 622 0 0 1440 878 </string>
+								<string>543 256 727 622 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>252pt</string>
+							<string>271pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -426,9 +424,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D14B187117ED34A500F0C298</string>
+				<string>D17E6B5A17FAEFA50028B063</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D14B187217ED34A500F0C298</string>
+				<string>D17E6B5B17FAEFA50028B063</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -567,11 +565,10 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>D1F42EEF13C6FA6400D840CE</string>
-		<string>1CD10A99069EF8BA00B06720</string>
-		<string>/Users/miyako/github-miyako/4d-plugin-ical/iCal のコピー/4D Plugin.xcodeproj</string>
+		<string>/Users/miyako/github-miyako/4d-plugin-ical/iCal/4D Plugin.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>674 157 727 622 0 0 1440 878 </string>
+	<string>543 256 727 622 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -648,7 +645,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D1F42EEF13C6FA6400D840CE</string>
-				<string>D14B184817ED2FF700F0C298</string>
+				<string>D17E6B5C17FAEFA50028B063</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

@@ -21,7 +21,10 @@
 #include "ical_event.h"
 #include "ical_task.h"
 
-iCalListener *listener = nil;
+namespace iCal
+{
+    iCalListener *listener = nil;
+};
 
 void PluginMain(int32_t selector, PA_PluginParameters params)
 {
@@ -285,14 +288,14 @@ void listenerLoopExecuteMethodByID()
 	params[2] = PA_CreateVariable(eVK_Unistring);					
 	params[3] = PA_CreateVariable(eVK_Unistring);	
 	
-	PA_Unistring u1 = PA_setUnistringVariable(&params[0], listener.insertedRecordsString);
-	PA_Unistring u2 = PA_setUnistringVariable(&params[1], listener.updatedRecordsString);
-	PA_Unistring u3 = PA_setUnistringVariable(&params[2], listener.deletedRecordsString);
-	PA_Unistring u4 = PA_setUnistringVariable(&params[3], listener.notificationType);				
+	PA_Unistring u1 = PA_setUnistringVariable(&params[0], iCal::listener.insertedRecordsString);
+	PA_Unistring u2 = PA_setUnistringVariable(&params[1], iCal::listener.updatedRecordsString);
+	PA_Unistring u3 = PA_setUnistringVariable(&params[2], iCal::listener.deletedRecordsString);
+	PA_Unistring u4 = PA_setUnistringVariable(&params[3], iCal::listener.notificationType);				
 	
-	PA_ExecuteMethodByID([listener.listenerMethodId intValue], params, 4);
+	PA_ExecuteMethodByID([iCal::listener.listenerMethodId intValue], params, 4);
 	
-	[listener unlock];
+	[iCal::listener unlock];
 	
 	PA_DisposeUnistring(&u1);
 	PA_DisposeUnistring(&u2);
@@ -302,10 +305,10 @@ void listenerLoopExecuteMethodByID()
 
 void listenerLoopFinish(){
 	
-	if(listener){
-		[[NSNotificationCenter defaultCenter]removeObserver:listener];
-		[listener release];
-		listener = nil;
+	if(iCal::listener){
+		[[NSNotificationCenter defaultCenter]removeObserver:iCal::listener];
+		[iCal::listener release];
+		iCal::listener = nil;
 	}	
 	
 }
@@ -321,11 +324,11 @@ void listenerLoop(){
 	while (!done)
 	{ 
 		PA_YieldAbsolute();
-		done = (PA_IsProcessDying()) || ([listener shouldTerminate]);
+		done = (PA_IsProcessDying()) || ([iCal::listener shouldTerminate]);
 		
 		if (!done){		
 			
-			PA_NewProcess((void *)listenerLoopExecuteMethodByID, 512*1024, listener.notificationType);
+			PA_NewProcess((void *)listenerLoopExecuteMethodByID, 512*1024, iCal::listener.notificationType);
 			
 			PA_FreezeProcess(listenerProcessNumber);
 			
@@ -352,9 +355,9 @@ void iCal_Set_notification_method(sLONG_PTR *pResult, PackagePtr pParams)
 	
 	if(!Param1.getUTF16Length()){
 		
-		if(listener)
+		if(iCal::listener)
 		{
-			[listener terminate];
+			[iCal::listener terminate];
 			success = 1;
 		}
 		
@@ -366,36 +369,36 @@ void iCal_Set_notification_method(sLONG_PTR *pResult, PackagePtr pParams)
 			
 			success = 1;
 			
-			if(!listener){		
+			if(!iCal::listener){		
 				
 				int iCalListenerProcessNumber = PA_NewProcess((void *)listenerLoop, -512*1024, @"$iCal Notification Process");
 				
-				listener = [[iCalListener alloc]
+				iCal::listener = [[iCalListener alloc]
 							initWithMethodName:methodName
 							methodId:[NSNumber numberWithInt:methodId]
 							processNumber:[NSNumber numberWithInt:iCalListenerProcessNumber]];
 				
 				[[NSNotificationCenter defaultCenter]
-				 addObserver:listener 
+				 addObserver:iCal::listener 
 				 selector:@selector(eventsChanged:)
 				 name:CalEventsChangedExternallyNotification 
 				 object:[CalCalendarStore defaultCalendarStore]];	
 				
 				[[NSNotificationCenter defaultCenter]
-				 addObserver:listener 
+				 addObserver:iCal::listener 
 				 selector:@selector(tasksChanged:)
 				 name:CalTasksChangedExternallyNotification 
 				 object:[CalCalendarStore defaultCalendarStore]];	
 				
 				[[NSNotificationCenter defaultCenter]
-				 addObserver:listener 
+				 addObserver:iCal::listener 
 				 selector:@selector(calendarsChanged:)
 				 name:CalCalendarsChangedExternallyNotification 
 				 object:[CalCalendarStore defaultCalendarStore]];
 				
 			}else{
-				listener.listenerMethodName = methodName;				
-				listener.listenerMethodId = [NSNumber numberWithInt:methodId];				
+				iCal::listener.listenerMethodName = methodName;				
+				iCal::listener.listenerMethodId = [NSNumber numberWithInt:methodId];				
 			}
 			
 		}
@@ -417,9 +420,9 @@ void iCal_Get_notification_method(sLONG_PTR *pResult, PackagePtr pParams)
 	
 	int success = 0;
 	
-	if(listener)
+	if(iCal::listener)
 	{
-		Param1.setUTF16String(listener.listenerMethodName);
+		Param1.setUTF16String(iCal::listener.listenerMethodName);
 		Param1.toParamAtIndex(pParams, 1);
 		success = 1;		
 	}
