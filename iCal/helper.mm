@@ -60,20 +60,21 @@ NSArray * _getCalendars(CalCalendarStore *calendarStore, NSArray *calendarNames,
 	NSArray *calendars = [calendarStore calendars];
 	NSMutableArray *foundCalendars = [NSMutableArray array];
 	CalCalendar *calendar;
-	for(unsigned int i = 0; i < [calendars count]; ++i){
-		
+    unsigned int i, j;
+	for(i = 0; i < [calendarNames count]; ++i){
 		calendar = [calendarStore calendarWithUID:[calendarNames objectAtIndex:i]];
-		
 		if(calendar){
 			[foundCalendars addObject:calendar];
 		}else{
-			 calendar = [calendars objectAtIndex:i];
-			if([calendarNames containsObject:[calendar title]]){
-				[foundCalendars addObject:calendar];
-			}
-		}	
-	}
-	
+            for(j = 0; j < [calendars count]; ++j){
+                calendar = [calendars objectAtIndex:j];
+                if([calendarNames containsObject:[calendar title]]){
+                    [foundCalendars addObject:calendar];
+                }
+            }        
+        }
+    }
+
 	if(![foundCalendars count]){
 		returnValue.setIntValue(ERROR_CALENDAR_NOT_FOUND);
 	}

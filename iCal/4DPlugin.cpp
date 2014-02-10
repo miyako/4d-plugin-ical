@@ -634,7 +634,27 @@ void PluginMain(int32_t selector, PA_PluginParameters params)
 		sLONG_PTR *pResult = (sLONG_PTR *)params->fResult;
 		PackagePtr pParams = (PackagePtr)params->fParameters;
 
-		CommandDispatcher(pProcNum, pResult, pParams); 
+		switch(selector){
+			case 30 :
+				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_EVENT, params);	
+				break;
+				
+			case 31 :
+				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_TASK, params);
+				break;
+				
+			case 32 :
+				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SET_VIEW, params);
+				break;
+				
+			case 33 :
+				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_DATE, params);
+				break;		
+			default:
+				CommandDispatcher(pProcNum, pResult, pParams); 	
+				break;
+		}
+
 	}
 	catch(...)
 	{
@@ -785,19 +805,19 @@ void CommandDispatcher (int32_t pProcNum, sLONG_PTR *pResult, PackagePtr pParams
 // --- iCal Direct
 
 		case 30 :
-			iCal_SHOW_EVENT(pResult, pParams);
+		//	iCal_SHOW_EVENT(pResult, pParams);
 			break;
 
 		case 31 :
-			iCal_SHOW_TASK(pResult, pParams);
+		//	iCal_SHOW_TASK(pResult, pParams);
 			break;
 
 		case 32 :
-			iCal_SET_VIEW(pResult, pParams);
+		//	iCal_SET_VIEW(pResult, pParams);
 			break;
 
 		case 33 :
-			iCal_SHOW_DATE(pResult, pParams);
+		//	iCal_SHOW_DATE(pResult, pParams);
 			break;
 
 		case 34 :

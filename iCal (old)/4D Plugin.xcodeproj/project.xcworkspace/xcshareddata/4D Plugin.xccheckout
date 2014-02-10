@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>569E3AD2-7B3C-41C7-8429-7AF920744619</string>
+	<key>IDESourceControlProjectName</key>
+	<string>4D Plugin</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7E4936BF-F75D-449A-928A-47427C9F71DB</key>
+		<string>https://github.com/miyako/4d-plugin-ical.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iCal/4D Plugin.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7E4936BF-F75D-449A-928A-47427C9F71DB</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/miyako/4d-plugin-ical.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7E4936BF-F75D-449A-928A-47427C9F71DB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7E4936BF-F75D-449A-928A-47427C9F71DB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>4d-plugin-ical</string>
+		</dict>
+	</array>
+</dict>
+</plist>

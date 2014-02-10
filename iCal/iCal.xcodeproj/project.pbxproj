@@ -44,6 +44,8 @@
 		D1392DDA13582171004911A5 /* C_BLOB.h in Headers */ = {isa = PBXBuildFile; fileRef = D1392DD813582171004911A5 /* C_BLOB.h */; };
 		D13E88A013543F3800C1F956 /* ARRAY_REAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D13E889E13543F3800C1F956 /* ARRAY_REAL.cpp */; };
 		D13E88A113543F3800C1F956 /* ARRAY_REAL.h in Headers */ = {isa = PBXBuildFile; fileRef = D13E889F13543F3800C1F956 /* ARRAY_REAL.h */; };
+		D169DBD318A8E3C70082863B /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D169DBD218A8E3C70082863B /* ScriptingBridge.framework */; };
+		D169DC4318A916A00082863B /* iCal.h in Headers */ = {isa = PBXBuildFile; fileRef = D169DC4218A916A00082863B /* iCal.h */; };
 		D16AC3AA147CB499000AA750 /* ARRAY_BOOLEAN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D16AC3A8147CB499000AA750 /* ARRAY_BOOLEAN.cpp */; };
 		D16AC3AB147CB499000AA750 /* ARRAY_BOOLEAN.h in Headers */ = {isa = PBXBuildFile; fileRef = D16AC3A9147CB499000AA750 /* ARRAY_BOOLEAN.h */; };
 		D19271A51353D6F2001CEA07 /* ARRAY_TEXT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D19271A31353D6F2001CEA07 /* ARRAY_TEXT.cpp */; };
@@ -138,6 +140,8 @@
 		D1392DD813582171004911A5 /* C_BLOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_BLOB.h; path = Classes/C_BLOB.h; sourceTree = "<group>"; };
 		D13E889E13543F3800C1F956 /* ARRAY_REAL.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_REAL.cpp; path = Classes/ARRAY_REAL.cpp; sourceTree = "<group>"; };
 		D13E889F13543F3800C1F956 /* ARRAY_REAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRAY_REAL.h; path = Classes/ARRAY_REAL.h; sourceTree = "<group>"; };
+		D169DBD218A8E3C70082863B /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		D169DC4218A916A00082863B /* iCal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCal.h; sourceTree = "<group>"; };
 		D16AC3A8147CB499000AA750 /* ARRAY_BOOLEAN.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_BOOLEAN.cpp; path = Classes/ARRAY_BOOLEAN.cpp; sourceTree = "<group>"; };
 		D16AC3A9147CB499000AA750 /* ARRAY_BOOLEAN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRAY_BOOLEAN.h; path = Classes/ARRAY_BOOLEAN.h; sourceTree = "<group>"; };
 		D19271A31353D6F2001CEA07 /* ARRAY_TEXT.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ARRAY_TEXT.cpp; path = Classes/ARRAY_TEXT.cpp; sourceTree = "<group>"; };
@@ -183,6 +187,7 @@
 				D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */,
 				D1D4834818A85B7500AEC315 /* CalendarStore.framework in Frameworks */,
 				D1D484B818A88D8A00AEC315 /* AppKit.framework in Frameworks */,
+				D169DBD318A8E3C70082863B /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +212,7 @@
 				08EA7FFBFE8413EDC02AAC07 /* Carbon.framework */,
 				D130064E12F02D9700702C0E /* Cocoa.framework */,
 				D1D4834718A85B7500AEC315 /* CalendarStore.framework */,
+				D169DBD218A8E3C70082863B /* ScriptingBridge.framework */,
 			);
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 		D1D4837918A8607A00AEC315 /* iCal */ = {
 			isa = PBXGroup;
 			children = (
+				D169DC4218A916A00082863B /* iCal.h */,
 				D1389C3118A8AEEE001BB845 /* ical_task.h */,
 				D1389C3218A8AEEE001BB845 /* ical_task.mm */,
 				D1389BD318A8A174001BB845 /* ical_calendar.h */,
@@ -381,6 +388,7 @@
 				D1389BD518A8A174001BB845 /* ical_calendar.h in Headers */,
 				D1389C1718A8AB8C001BB845 /* ical_alarm.h in Headers */,
 				D1389C3318A8AEEE001BB845 /* ical_task.h in Headers */,
+				D169DC4318A916A00082863B /* iCal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +528,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "4D Plugin_Prefix.pch";
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
@@ -559,7 +567,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "4D Plugin_Prefix.pch";
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
@@ -596,7 +604,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "4D Plugin_Prefix.pch";
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
