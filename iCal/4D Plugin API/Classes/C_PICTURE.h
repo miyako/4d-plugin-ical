@@ -51,7 +51,7 @@ extern "C" {
 		PA_Picture getPicture();
 		void setPicture(PA_Picture picture);
 		
-		void convertToGreyScale();	
+		PA_Picture createGrayScale();	
 		
 		
 		
@@ -87,7 +87,7 @@ extern "C" {
 		PA_Picture getPicture();
 		void setPicture(PA_Picture picture);
 
-		void convertToGreyScale();
+		PA_Picture createGrayScale();
 		
 		
 		

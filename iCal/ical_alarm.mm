@@ -1,13 +1,12 @@
-#include "ical_application.h"
+#import "ical_alarm.h"
+#include "ical_support.h"
+#import "helper.h"
 
 // ------------------------------------- Alarm ------------------------------------
 
-void iCal_Make_alarm(sLONG_PTR *pResult, PackagePtr pParams)
-{
+void iCal_Make_alarm(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT returnValue;
-	
-	// --- write the code of iCal_Make_alarm here...
-	
+		
 	CalAlarm *alarm = [CalAlarm alarm];
 	NSString *alarmString = copyAlarmString(alarm);
 	
@@ -15,11 +14,9 @@ void iCal_Make_alarm(sLONG_PTR *pResult, PackagePtr pParams)
 	returnValue.setReturn(pResult);
 	
 	[alarmString release];
-	
 }
 
-void iCal_Get_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
-{
+void iCal_Get_alarm_property(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_TEXT Param2;
 	C_TEXT Param3;
@@ -27,9 +24,7 @@ void iCal_Get_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
 	
 	Param1.fromParamAtIndex(pParams, 1);
 	Param2.fromParamAtIndex(pParams, 2);
-	
-	// --- write the code of iCal_Get_alarm_property here...
-	
+		
 	int success = 0;
 	
 	NSString *dictionary = Param1.copyUTF16String();
@@ -95,11 +90,9 @@ void iCal_Get_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
 	
 	returnValue.setIntValue(success);
 	returnValue.setReturn(pResult);
-	
 }
 
-void iCal_Set_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
-{
+void iCal_Set_alarm_property(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_TEXT Param2;
 	C_TEXT Param3;
@@ -108,8 +101,6 @@ void iCal_Set_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
 	Param1.fromParamAtIndex(pParams, 1);
 	Param2.fromParamAtIndex(pParams, 2);
 	Param3.fromParamAtIndex(pParams, 3);
-	
-	// --- write the code of iCal_Set_alarm_property here...
 	
 	int success = 0;
 	
@@ -178,12 +169,10 @@ void iCal_Set_alarm_property(sLONG_PTR *pResult, PackagePtr pParams)
 	[value release];
 	
 	returnValue.setIntValue(success);		
-	returnValue.setReturn(pResult);
-	
+	returnValue.setReturn(pResult);	
 }
 
-void iCal_Add_alarm_to_event(sLONG_PTR *pResult, PackagePtr pParams)
-{
+void iCal_Add_alarm_to_event(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_TEXT Param2;
 	C_LONGINT returnValue;
@@ -191,25 +180,27 @@ void iCal_Add_alarm_to_event(sLONG_PTR *pResult, PackagePtr pParams)
 	Param1.fromParamAtIndex(pParams, 1);
 	Param2.fromParamAtIndex(pParams, 2);
 	
-	// --- write the code of iCal_Add_alarm_to_event here...
-	
-	int success = 0;
-	NSError *error = nil;
-	
 	NSString *eventId = Param1.copyUTF16String();
 	NSString *dictionary = Param2.copyUTF16String();
 	
-	CalEvent *event = [[CalCalendarStore defaultCalendarStore]eventWithUID:eventId occurrence:nil];	
-	CalAlarm *alarm = getAlarmFromString(dictionary);
+	int success = 0;
 	
-	if(event){		
-		[event addAlarm:alarm];
-		success = [[CalCalendarStore defaultCalendarStore]saveEvent:event span:CalSpanThisEvent error:&error];
-	}
+	NSError *error = nil;
 	
-	if(error){
-		success = [error code];
-		NSLog(@"can't update event: %@", [error localizedDescription]);
+	CalCalendarStore *defaultCalendarStore = _getCalendarStore(returnValue);
+	
+	if(defaultCalendarStore){
+		CalEvent *event = [defaultCalendarStore eventWithUID:eventId occurrence:nil];	
+		CalAlarm *alarm = getAlarmFromString(dictionary);
+		if(event){		
+			[event addAlarm:alarm];
+			success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
+		}
+		
+		if(error){
+			success = [error code];
+			NSLog(@"can't update event: %@", [error localizedDescription]);
+		}		
 	}
 	
 	[eventId release];
@@ -219,8 +210,7 @@ void iCal_Add_alarm_to_event(sLONG_PTR *pResult, PackagePtr pParams)
 	returnValue.setReturn(pResult);
 }
 
-void iCal_Add_alarm_to_task(sLONG_PTR *pResult, PackagePtr pParams)
-{
+void iCal_Add_alarm_to_task(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_TEXT Param2;
 	C_LONGINT returnValue;
@@ -228,25 +218,30 @@ void iCal_Add_alarm_to_task(sLONG_PTR *pResult, PackagePtr pParams)
 	Param1.fromParamAtIndex(pParams, 1);
 	Param2.fromParamAtIndex(pParams, 2);
 	
-	// --- write the code of iCal_Add_alarm_to_task here...
-	
 	int success = 0;
+	
 	NSError *error = nil;
-	
+
 	NSString *taskId = Param1.copyUTF16String();
-	NSString *dictionary = Param2.copyUTF16String();
+	NSString *dictionary = Param2.copyUTF16String();	
 	
-	CalTask *task = [[CalCalendarStore defaultCalendarStore]taskWithUID:taskId];	
-	CalAlarm *alarm = getAlarmFromString(dictionary);
+	CalCalendarStore *defaultCalendarStore = _getCalendarStore(returnValue);
 	
-	if(task){
-		[task addAlarm:alarm];
-		success = [[CalCalendarStore defaultCalendarStore]saveTask:task error:&error];
-	}
+	if(defaultCalendarStore){
 	
-	if(error){
-		success = [error code];
-		NSLog(@"can't update task: %@", [error localizedDescription]);
+		CalTask *task = [defaultCalendarStore taskWithUID:taskId];	
+		CalAlarm *alarm = getAlarmFromString(dictionary);
+		
+		if(task){
+			[task addAlarm:alarm];
+			success = [defaultCalendarStore saveTask:task error:&error];
+		}
+		
+		if(error){
+			success = [error code];
+			NSLog(@"can't update task: %@", [error localizedDescription]);
+		}		
+		
 	}
 	
 	[taskId release];

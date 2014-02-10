@@ -202,6 +202,11 @@ void CPicture::toParamAtIndex(PackagePtr pParams, uint32_t index)
 				PA_DisposePicture(*p);
 				*p = PA_DuplicatePicture(this->_CPicture, 1);//1=retain			
 			}
+		}else{
+			
+			//happens in compiled mode
+			*p = PA_DuplicatePicture(this->_CPicture, 1);//1=retain	
+			
 		}
 	}	
 }
@@ -224,31 +229,33 @@ uint32_t CPicture::getCount()
 
 #define CMU_TRANSFORM_PICTURE 988
 
-#define CMU_PICTURE_PROPERTIES 457
-
-#define Fade_to_grey_scale 101
-#define Retain_only 1
-
-void CPicture::convertToGreyScale()
+PA_Picture CPicture::createGrayScale()
 {
 	PA_Picture p;
 	
-	p = PA_DuplicatePicture(this->_CPicture, Retain_only);
+	p = PA_DuplicatePicture(this->_CPicture, 1);
 	
-	PA_Variable params[2];
-	params[0] = PA_CreateVariable(eVK_Picture);
-	PA_SetPictureVariable(&params[0], p);
-	params[1] = PA_CreateVariable(eVK_Longint);
-	PA_SetLongintVariable(&params[1], Fade_to_grey_scale);
-	PA_ExecuteCommandByID(CMU_TRANSFORM_PICTURE, params, 2);
+	PA_Variable args[2];
 	
-	p = PA_GetPictureVariable(params[0]);
+	args[0] = PA_CreateVariable(eVK_Picture);
+	args[1] = PA_CreateVariable(eVK_Longint);
 	
-	setPicture(p);
+	PA_SetPictureVariable(&args[0], p);	
+	PA_SetLongintVariable(&args[1], 101);
 	
-	PA_ClearVariable(&params[0]);	
-	PA_ClearVariable(&params[1]);
+	PA_ExecuteCommandByID(CMU_TRANSFORM_PICTURE, args, 2);
+	
+	p = PA_GetPictureVariable(args[0]);
+
+	PA_SetPictureVariable(&args[0], NULL);
+	
+	PA_ClearVariable(&args[0]);	
+	PA_ClearVariable(&args[1]);
+	
+	return p;	
 }
+
+#define CMU_PICTURE_PROPERTIES 457
 
 void CPicture::getSize(unsigned int *width, unsigned int *height)
 {
@@ -363,9 +370,9 @@ uint32_t C_PICTURE::getBytesLength(CUTF8String *pType)
 	return this->_CPicture->getBytesLength(pType);	
 }
 
-void C_PICTURE::convertToGreyScale()
+PA_Picture C_PICTURE::createGrayScale()
 {
-	this->_CPicture->convertToGreyScale();	
+	return this->_CPicture->createGrayScale();	
 }
 
 void C_PICTURE::getSize(unsigned int *width, unsigned int *height)

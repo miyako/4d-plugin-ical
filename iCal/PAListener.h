@@ -26,6 +26,3 @@
 @property (nonatomic, retain) NSString *notificationType;
 
 @end
-
-int PA_NewProcess(void* procPtr, int stackSize, NSString *name);
-PA_Unistring PA_setUnistringVariable(PA_Variable *v, NSString *s);
