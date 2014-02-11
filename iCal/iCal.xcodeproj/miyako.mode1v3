@@ -197,7 +197,48 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>D148949518AA134400D51D68</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>ical_event.mm</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>D148949618AA134400D51D68</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>ical_event.mm</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>D148949A18AA134400D51D68</string>
+						<key>history</key>
+						<array>
+							<string>D148948C18AA133800D51D68</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {833, 737}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>138 100 833 778 0 0 1440 878 </string>
+			</dict>
+		</dict>
+	</array>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -267,8 +308,6 @@
 							<array>
 								<string>089C166AFE841209C02AAC07</string>
 								<string>08FB77ADFE841716C02AAC07</string>
-								<string>D1D4837918A8607A00AEC315</string>
-								<string>D1D4834D18A85B8700AEC315</string>
 								<string>18B684ED06944F2000CC6A1E</string>
 								<string>089C167CFE841241C02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
@@ -278,8 +317,7 @@
 							<array>
 								<array>
 									<integer>18</integer>
-									<integer>2</integer>
-									<integer>1</integer>
+									<integer>15</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -303,7 +341,7 @@
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>135 57 999 776 0 0 1440 878 </string>
+						<string>135 100 999 776 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -319,7 +357,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>helper.mm</string>
+								<string>ical_event.mm</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -327,11 +365,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>helper.mm</string>
+										<string>ical_event.mm</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D1CB0D7D18AA0FE600D7CFAE</string>
+										<string>D148949918AA134400D51D68</string>
 										<key>history</key>
 										<array>
 											<string>D1D4833718A8577E00AEC315</string>
@@ -361,11 +399,12 @@
 											<string>D169DC0718A911580082863B</string>
 											<string>D169DC4F18A917170082863B</string>
 											<string>D1CB0D7818AA0FE600D7CFAE</string>
-											<string>D1CB0D7918AA0FE600D7CFAE</string>
 											<string>D1CB0D7A18AA0FE600D7CFAE</string>
 											<string>D1CB0D7B18AA0FE600D7CFAE</string>
 											<string>D1CB0D7C18AA0FE600D7CFAE</string>
-											<string>D1389C6A18A8B59C001BB845</string>
+											<string>D148948F18AA134400D51D68</string>
+											<string>D148949018AA134400D51D68</string>
+											<string>D148949118AA134400D51D68</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -377,14 +416,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {791, 493}}</string>
+								<string>{{0, 0}, {791, 486}}</string>
 								<key>RubberWindowFrame</key>
-								<string>135 57 999 776 0 0 1440 878 </string>
+								<string>135 100 999 776 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>493pt</string>
+							<string>486pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -397,14 +436,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 498}, {791, 237}}</string>
+								<string>{{0, 491}, {791, 244}}</string>
 								<key>RubberWindowFrame</key>
-								<string>135 57 999 776 0 0 1440 878 </string>
+								<string>135 100 999 776 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>237pt</string>
+							<string>244pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -423,9 +462,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D1CB0D7E18AA0FE600D7CFAE</string>
+				<string>D148949318AA134400D51D68</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D1CB0D7F18AA0FE600D7CFAE</string>
+				<string>D148949418AA134400D51D68</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -563,14 +602,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>D1CB0D8118AA0FE600D7CFAE</string>
-		<string>D1CB0D8218AA0FE600D7CFAE</string>
-		<string>D1CB0D8318AA0FE600D7CFAE</string>
-		<string>D1D4832918A8567B00AEC315</string>
 		<string>/Users/miyako/github-miyako/4d-plugin-ical/iCal/iCal.xcodeproj</string>
+		<string>D1D4832918A8567B00AEC315</string>
+		<string>D148949518AA134400D51D68</string>
 	</array>
 	<key>WindowString</key>
-	<string>135 57 999 776 0 0 1440 878 </string>
+	<string>135 100 999 776 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -591,7 +628,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>ical_event.mm</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -608,6 +645,8 @@
 							<string>326pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -647,7 +686,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D1D4832918A8567B00AEC315</string>
-				<string>D1CB0D8018AA0FE600D7CFAE</string>
+				<string>D148949818AA134400D51D68</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -660,7 +699,7 @@
 			<key>WindowToolGUID</key>
 			<string>D1D4832918A8567B00AEC315</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

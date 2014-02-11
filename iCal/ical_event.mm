@@ -169,14 +169,6 @@ void iCal_Set_event_property(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	if(defaultCalendarStore){
 		CalEvent *event = [defaultCalendarStore eventWithUID:uid occurrence:[NSDate dateWithString:date]];	
-		NSArray *eventProperties = [NSArray arrayWithObjects:
-									@"isAllDay", @"isDetached", 
-									@"location", @"occurrence", 
-									@"recurrenceRule" ,@"startDate", 
-									@"calendar", @"hasAlarm", 
-									@"nextAlarmDate", @"dateStamp", 
-									@"notes", @"title", 
-									@"url", @"endDate", nil];
 		if(event){
             _set_event_property(event, key, value);
             success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
