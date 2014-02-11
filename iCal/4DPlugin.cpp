@@ -106,7 +106,7 @@ void _iCal_Get_task_alarm(){
 				[alarmString release];
 				recordSpecifier.isOK = true;			
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 			
 		}		
@@ -345,7 +345,7 @@ void _iCal_Get_event_alarm(){
 				[alarmString release];
 				recordSpecifier.isOK = true;			
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 		}		
 	}

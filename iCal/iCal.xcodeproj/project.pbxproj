@@ -24,12 +24,9 @@
 		D10DD2EC135FAB2F00319781 /* C_DATE.h in Headers */ = {isa = PBXBuildFile; fileRef = D10DD2EA135FAB2F00319781 /* C_DATE.h */; };
 		D120937F13534DCC00A72CAA /* 4DPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = D120937E13534DCC00A72CAA /* 4DPlugin.h */; };
 		D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D130064E12F02D9700702C0E /* Cocoa.framework */; };
-		D1389B7418A895C7001BB845 /* get_event_property.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6518A895A1001BB845 /* get_event_property.scpt */; };
-		D1389B7518A895C7001BB845 /* get_task_property.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6618A895A1001BB845 /* get_task_property.scpt */; };
 		D1389B7618A895C7001BB845 /* show_date.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6718A895A1001BB845 /* show_date.scpt */; };
 		D1389B7718A895C7001BB845 /* show_event.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6818A895A1001BB845 /* show_event.scpt */; };
 		D1389B7818A895C7001BB845 /* show_task.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6918A895A1001BB845 /* show_task.scpt */; };
-		D1389B7918A895C7001BB845 /* switch_view.scpt in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1389B6A18A895A1001BB845 /* switch_view.scpt */; };
 		D1389BD118A8A167001BB845 /* ical_calendar_store.h in Headers */ = {isa = PBXBuildFile; fileRef = D1389BCF18A8A167001BB845 /* ical_calendar_store.h */; };
 		D1389BD218A8A167001BB845 /* ical_calendar_store.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1389BD018A8A167001BB845 /* ical_calendar_store.mm */; };
 		D1389BD518A8A174001BB845 /* ical_calendar.h in Headers */ = {isa = PBXBuildFile; fileRef = D1389BD318A8A174001BB845 /* ical_calendar.h */; };
@@ -89,12 +86,9 @@
 			dstPath = scpt;
 			dstSubfolderSpec = 7;
 			files = (
-				D1389B7418A895C7001BB845 /* get_event_property.scpt in CopyFiles */,
-				D1389B7518A895C7001BB845 /* get_task_property.scpt in CopyFiles */,
 				D1389B7618A895C7001BB845 /* show_date.scpt in CopyFiles */,
 				D1389B7718A895C7001BB845 /* show_event.scpt in CopyFiles */,
 				D1389B7818A895C7001BB845 /* show_task.scpt in CopyFiles */,
-				D1389B7918A895C7001BB845 /* switch_view.scpt in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,12 +114,9 @@
 		D10DD2EA135FAB2F00319781 /* C_DATE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_DATE.h; path = Classes/C_DATE.h; sourceTree = "<group>"; };
 		D120937E13534DCC00A72CAA /* 4DPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 4DPlugin.h; sourceTree = "<group>"; };
 		D130064E12F02D9700702C0E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		D1389B6518A895A1001BB845 /* get_event_property.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = get_event_property.scpt; sourceTree = "<group>"; };
-		D1389B6618A895A1001BB845 /* get_task_property.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = get_task_property.scpt; sourceTree = "<group>"; };
 		D1389B6718A895A1001BB845 /* show_date.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = show_date.scpt; sourceTree = "<group>"; };
 		D1389B6818A895A1001BB845 /* show_event.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = show_event.scpt; sourceTree = "<group>"; };
 		D1389B6918A895A1001BB845 /* show_task.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = show_task.scpt; sourceTree = "<group>"; };
-		D1389B6A18A895A1001BB845 /* switch_view.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = switch_view.scpt; sourceTree = "<group>"; };
 		D1389BCF18A8A167001BB845 /* ical_calendar_store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_calendar_store.h; sourceTree = "<group>"; };
 		D1389BD018A8A167001BB845 /* ical_calendar_store.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ical_calendar_store.mm; sourceTree = "<group>"; };
 		D1389BD318A8A174001BB845 /* ical_calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ical_calendar.h; sourceTree = "<group>"; };
@@ -265,12 +256,9 @@
 		D1389B6418A895A1001BB845 /* scpt */ = {
 			isa = PBXGroup;
 			children = (
-				D1389B6518A895A1001BB845 /* get_event_property.scpt */,
-				D1389B6618A895A1001BB845 /* get_task_property.scpt */,
 				D1389B6718A895A1001BB845 /* show_date.scpt */,
 				D1389B6818A895A1001BB845 /* show_event.scpt */,
 				D1389B6918A895A1001BB845 /* show_task.scpt */,
-				D1389B6A18A895A1001BB845 /* switch_view.scpt */,
 			);
 			name = scpt;
 			path = ../iCal/scpt;

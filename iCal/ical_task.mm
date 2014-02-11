@@ -315,7 +315,7 @@ void iCal_Remove_task_alarm(sLONG_PTR *pResult, PackagePtr pParams){
 				[task removeAlarm:alarm];
 				success = 1;			
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 			
 		}else{
@@ -371,7 +371,7 @@ void iCal_Set_task_alarm(sLONG_PTR *pResult, PackagePtr pParams){
 				[alarms release];
 				
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 			
 		}else{

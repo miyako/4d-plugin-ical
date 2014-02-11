@@ -63,7 +63,7 @@ void iCal_Get_alarm_property(sLONG_PTR *pResult, PackagePtr pParams){
 				break;
 			case 3://relativeTrigger
 				if(alarm.relativeTrigger){
-					Param3.setUTF16String([NSString stringWithFormat:@"%@", alarm.relativeTrigger]);
+					Param3.setUTF16String([NSString stringWithFormat:@"%f", alarm.relativeTrigger]);
 					success = 1;					
 				}
 				break;

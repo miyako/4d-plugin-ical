@@ -3,16 +3,93 @@
 
 // ------------------------------------- Event ------------------------------------
 
+void _set_event_property(CalEvent *event, NSString *key, NSString *value){
+	NSArray *eventProperties = [NSArray arrayWithObjects:
+								@"isAllDay", @"isDetached", 
+								@"location", @"occurrence", 
+								@"recurrenceRule" ,@"startDate", 
+								@"calendar", @"hasAlarm", 
+								@"nextAlarmDate", @"dateStamp", 
+								@"notes", @"title", 
+								@"url", @"endDate", nil];
+	if(event){
+		NSUInteger pid = [eventProperties indexOfObject:key];
+		switch (pid){
+			case 0://isAllDay
+				event.isAllDay = [value boolValue];	
+				break;
+			case 1://isDetached (readonly)			
+				break;
+			case 2://location
+				event.location = value;					
+				break;
+			case 3://occurrence (readonly) 
+				break;
+			case 4://recurrenceRule (dedicated command)
+				break;
+			case 5://startDate
+				if([NSDate dateWithString:value]){
+					event.startDate = [NSDate dateWithString:value];
+				}
+				break;
+			case 6://calendar
+            {
+                C_LONGINT returnValue;
+                CalCalendarStore *defaultCalendarStore = _getCalendarStore(returnValue);
+                if(defaultCalendarStore){
+                    CalCalendar *calendar = _getCalendar(defaultCalendarStore, value, returnValue);
+                    if(calendar){
+                        event.calendar = calendar;
+                    }
+                }
+            }
+				break;
+			case 7://hasAlarm (readonly)
+				break;
+			case 8://nextAlarmDate (readonly)
+				break;
+			case 9://dateStamp (readonly)
+				break;																																																								
+			case 10://notes
+				event.notes = value;				
+				break;
+			case 11://title
+				event.title = value;							
+				break;
+			case 12://url
+			{
+				NSURL *url = [NSURL URLWithString:value];
+				if(url){
+					event.url = url;
+				}
+			}
+				break;
+			case 13://endDate
+				if([NSDate dateWithString:value]){
+					event.endDate = [NSDate dateWithString:value];	
+				}			
+				break;				
+			default:
+				break;
+		}		
+		
+	}
+}
+
 void iCal_Create_event(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_TEXT Param2;
 	C_TEXT Param3;
+	ARRAY_TEXT Param4;
+	ARRAY_TEXT Param5;	
 	C_TEXT returnValue;
 	C_LONGINT _returnValue;
 	
 	Param1.fromParamAtIndex(pParams, 1);
 	Param2.fromParamAtIndex(pParams, 2);
 	Param3.fromParamAtIndex(pParams, 3);
+	Param4.fromParamAtIndex(pParams, 4);
+	Param5.fromParamAtIndex(pParams, 5);	
 	
 	NSError *error = nil;
 	
@@ -33,7 +110,20 @@ void iCal_Create_event(sLONG_PTR *pResult, PackagePtr pParams){
 			if((startDate) && (endDate)){
 				event.startDate = startDate;
 				event.endDate = endDate;
-				event.calendar = calendar;
+				if(Param4.getSize() == Param5.getSize()){
+					unsigned int len = Param4.getSize();
+					for (unsigned int i = 0; i < len;++i){
+						CUTF16String _key, _value;
+						Param4.copyUTF16StringAtIndex(&_key, i);
+						Param5.copyUTF16StringAtIndex(&_value, i);
+						NSString *key = [[NSString alloc]initWithCharacters:(const unichar *)_key.c_str() length:_key.length()];
+						NSString *value = [[NSString alloc]initWithCharacters:(const unichar *)_value.c_str() length:_value.length()];
+						_set_event_property(event, key, value);
+						[key release];
+						[value release];
+					}
+				}
+                event.calendar = calendar;
 				if(![defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error]){
 					NSLog(@"can't save event: %@", [error localizedDescription]);
 				}else{
@@ -88,72 +178,8 @@ void iCal_Set_event_property(sLONG_PTR *pResult, PackagePtr pParams){
 									@"notes", @"title", 
 									@"url", @"endDate", nil];
 		if(event){
-			NSUInteger pid = [eventProperties indexOfObject:key];
-			switch (pid){
-				case 0://isAllDay
-					event.isAllDay = [value boolValue];		
-					success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
-					break;
-				case 1://isDetached (readonly)			
-					break;
-				case 2://location
-					event.location = value;	
-					success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];					
-					break;
-				case 3://occurrence (readonly) 
-					break;
-				case 4://recurrenceRule (dedicated command)
-					break;
-				case 5://startDate
-					if([NSDate dateWithString:value]){
-						event.startDate = [NSDate dateWithString:value];
-						success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
-					}
-					break;
-				case 6://calendar
-					{
-						CalCalendar *calendar = _getCalendar(defaultCalendarStore, value, returnValue);
-						if(calendar)
-						{
-							event.calendar = calendar;
-							success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];	
-						}
-					}
-					break;
-				case 7://hasAlarm (readonly)
-					break;
-				case 8://nextAlarmDate (readonly)
-					break;
-				case 9://dateStamp (readonly)
-					break;																																																								
-				case 10://notes
-					event.notes = value;	
-					success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];			
-					break;
-				case 11://title
-					event.title = value;	
-					success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];						
-					break;
-				case 12://url
-					{
-						NSURL *url = [NSURL URLWithString:value];
-						if(url)
-						{
-							event.url = url;
-							success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
-						}
-					}
-					break;
-				case 13://endDate
-					if([NSDate dateWithString:value]){
-						event.endDate = [NSDate dateWithString:value];	
-						success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
-					}			
-					break;				
-				default:
-					break;
-			}		
-			
+            _set_event_property(event, key, value);
+            success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
 		}
 		
 		if(error){
@@ -226,7 +252,7 @@ void iCal_Remove_event_alarm(sLONG_PTR *pResult, PackagePtr pParams){
 				[event removeAlarm:alarm];
 				success = 1;			
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 		}
 	}
@@ -272,7 +298,7 @@ void iCal_Set_event_alarm(sLONG_PTR *pResult, PackagePtr pParams){
 				}
 				[alarms release];
 			}else{
-				NSLog(@"invalid alarm index: %@", index);				
+				NSLog(@"invalid alarm index: %i", index);				
 			}
 		}
 	}

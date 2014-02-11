@@ -197,88 +197,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>D169DC5218A917170082863B</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>iCal.h</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>D169DC5318A917170082863B</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>iCal.h</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>D1D67CAF18A921DA0089741F</string>
-						<key>history</key>
-						<array>
-							<string>D1388D6B18A92120009DF287</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {613, 730}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>92 100 613 771 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>D169DC7418A91AE00082863B</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>SBElementArray.h</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>D169DC7518A91AE00082863B</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>SBElementArray.h</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>D1D67CB018A921DA0089741F</string>
-						<key>history</key>
-						<array>
-							<string>D1388D6C18A92120009DF287</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {613, 730}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>0 100 613 771 0 0 1440 878 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -335,7 +254,7 @@
 						<dict>
 							<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 							<array>
-								<real>201</real>
+								<real>186</real>
 							</array>
 							<key>PBXSmartGroupTreeModuleColumnsKey_v4</key>
 							<array>
@@ -349,8 +268,8 @@
 								<string>089C166AFE841209C02AAC07</string>
 								<string>08FB77ADFE841716C02AAC07</string>
 								<string>D1D4837918A8607A00AEC315</string>
-								<string>D1389B6418A895A1001BB845</string>
 								<string>D1D4834D18A85B8700AEC315</string>
+								<string>18B684ED06944F2000CC6A1E</string>
 								<string>089C167CFE841241C02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
@@ -365,7 +284,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 9}, {201, 717}}</string>
+							<string>{{0, 0}, {186, 717}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -381,10 +300,10 @@
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
-							<real>201</real>
+							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>248 102 999 776 0 0 1440 878 </string>
+						<string>135 57 999 776 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -400,7 +319,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ical_application.mm</string>
+								<string>helper.mm</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -408,11 +327,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>ical_application.mm</string>
+										<string>helper.mm</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D1D67CAE18A921DA0089741F</string>
+										<string>D1CB0D7D18AA0FE600D7CFAE</string>
 										<key>history</key>
 										<array>
 											<string>D1D4833718A8577E00AEC315</string>
@@ -422,9 +341,7 @@
 											<string>D1389BFF18A8AB7D001BB845</string>
 											<string>D1389C0018A8AB7D001BB845</string>
 											<string>D1389C0118A8AB7D001BB845</string>
-											<string>D1389C0218A8AB7D001BB845</string>
 											<string>D1389C0C18A8AB7D001BB845</string>
-											<string>D1389C0F18A8AB7D001BB845</string>
 											<string>D1389C3618A8AF3E001BB845</string>
 											<string>D1389C3718A8AF3E001BB845</string>
 											<string>D1389C3818A8AF3E001BB845</string>
@@ -439,13 +356,16 @@
 											<string>D1389C4318A8AF3E001BB845</string>
 											<string>D1389C4518A8AF3E001BB845</string>
 											<string>D1389C6818A8B59C001BB845</string>
-											<string>D1389C6918A8B59C001BB845</string>
-											<string>D1389C6A18A8B59C001BB845</string>
 											<string>D170F35218A8DF8C0098F4BD</string>
 											<string>D169DBEA18A8E47A0082863B</string>
 											<string>D169DC0718A911580082863B</string>
 											<string>D169DC4F18A917170082863B</string>
-											<string>D1D67CA718A921DA0089741F</string>
+											<string>D1CB0D7818AA0FE600D7CFAE</string>
+											<string>D1CB0D7918AA0FE600D7CFAE</string>
+											<string>D1CB0D7A18AA0FE600D7CFAE</string>
+											<string>D1CB0D7B18AA0FE600D7CFAE</string>
+											<string>D1CB0D7C18AA0FE600D7CFAE</string>
+											<string>D1389C6A18A8B59C001BB845</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -457,14 +377,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {791, 500}}</string>
+								<string>{{0, 0}, {791, 493}}</string>
 								<key>RubberWindowFrame</key>
-								<string>248 102 999 776 0 0 1440 878 </string>
+								<string>135 57 999 776 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>500pt</string>
+							<string>493pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -477,14 +397,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 505}, {791, 230}}</string>
+								<string>{{0, 498}, {791, 237}}</string>
 								<key>RubberWindowFrame</key>
-								<string>248 102 999 776 0 0 1440 878 </string>
+								<string>135 57 999 776 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>230pt</string>
+							<string>237pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -503,9 +423,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D1D67CA918A921DA0089741F</string>
+				<string>D1CB0D7E18AA0FE600D7CFAE</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D1D67CAA18A921DA0089741F</string>
+				<string>D1CB0D7F18AA0FE600D7CFAE</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -643,14 +563,14 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>D1CB0D8118AA0FE600D7CFAE</string>
+		<string>D1CB0D8218AA0FE600D7CFAE</string>
+		<string>D1CB0D8318AA0FE600D7CFAE</string>
 		<string>D1D4832918A8567B00AEC315</string>
-		<string>D169DBC218A8E38B0082863B</string>
-		<string>D169DC7418A91AE00082863B</string>
-		<string>D169DC5218A917170082863B</string>
 		<string>/Users/miyako/github-miyako/4d-plugin-ical/iCal/iCal.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>248 102 999 776 0 0 1440 878 </string>
+	<string>135 57 999 776 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -727,7 +647,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D1D4832918A8567B00AEC315</string>
-				<string>D1D67CAD18A921DA0089741F</string>
+				<string>D1CB0D8018AA0FE600D7CFAE</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

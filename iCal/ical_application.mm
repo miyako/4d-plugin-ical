@@ -1,6 +1,7 @@
 #import "ical_application.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 #import "iCal.h"
+#import "helper.h"
 
 // ---------------------------------- Application ---------------------------------
 
@@ -21,35 +22,43 @@ void iCal_LAUNCH(sLONG_PTR *pResult, PackagePtr pParams){
 // ---------------------------------- iCal Direct ---------------------------------
 
 void iCal_SHOW_EVENT(PA_PluginParameters params){
-/*
 	PackagePtr pParams = (PackagePtr)params->fParameters;
 	
 	C_TEXT Param1;
 	
 	Param1.fromParamAtIndex(pParams, 1);
 	
-	NSString *eventId = Param1.copyUTF16String();
-		
-	appleScriptExecuteFunction(@"show_event", @"show_event", eventId, nil, nil);
-	
-	[eventId release];	
- */
+	NSString *eventId = Param1.copyUTF16String();    
+    C_LONGINT _returnValue;
+    CalCalendarStore *defaultCalendarStore = _getCalendarStore(_returnValue);
+    if(defaultCalendarStore){
+        CalEvent *event = [defaultCalendarStore eventWithUID:eventId occurrence:nil];	
+        if(event){
+            NSString *calendarId =event.calendar.uid;
+            appleScriptExecuteFunction(@"show_event", @"show_event", calendarId, eventId, nil);
+        }
+    }            
+	[eventId release];
 }
 
 void iCal_SHOW_TASK(PA_PluginParameters params){
-/*	
 	PackagePtr pParams = (PackagePtr)params->fParameters;
 	
 	C_TEXT Param1;
 	
 	Param1.fromParamAtIndex(pParams, 1);
 	
-	NSString *taskId = Param1.copyUTF16String();
-	
-	appleScriptExecuteFunction(@"show_task", @"show_task", taskId, nil, nil);
-	
-	[taskId release];
- */
+	NSString *taskId = Param1.copyUTF16String();    
+    C_LONGINT _returnValue;
+    CalCalendarStore *defaultCalendarStore = _getCalendarStore(_returnValue);
+    if(defaultCalendarStore){
+        CalTask *task = [defaultCalendarStore taskWithUID:taskId];	
+        if(task){
+            NSString *calendarId =task.calendar.uid;
+            appleScriptExecuteFunction(@"show_task", @"show_task", calendarId, taskId, nil);
+        }
+    }            
+	[taskId release];    
 }
 
 void iCal_SET_VIEW(PA_PluginParameters params){
