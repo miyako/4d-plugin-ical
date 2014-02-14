@@ -84,8 +84,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 413799188;
-			PBXWorkspaceStateSaveDate = 413799188;
+			PBXPerProjectTemplateStateSaveDate = 414029638;
+			PBXWorkspaceStateSaveDate = 414029638;
 		};
 		perUserProjectItems = {
 			D1389BFB18A8AB7D001BB845 /* PBXTextBookmark */ = D1389BFB18A8AB7D001BB845 /* PBXTextBookmark */;
@@ -106,19 +106,23 @@
 			D1389C3F18A8AF3E001BB845 /* PBXTextBookmark */ = D1389C3F18A8AF3E001BB845 /* PBXTextBookmark */;
 			D1389C4118A8AF3E001BB845 /* PBXTextBookmark */ = D1389C4118A8AF3E001BB845 /* PBXTextBookmark */;
 			D1389C4218A8AF3E001BB845 /* PBXTextBookmark */ = D1389C4218A8AF3E001BB845 /* PBXTextBookmark */;
-			D1389C4318A8AF3E001BB845 /* PBXTextBookmark */ = D1389C4318A8AF3E001BB845 /* PBXTextBookmark */;
 			D1389C4518A8AF3E001BB845 /* PBXTextBookmark */ = D1389C4518A8AF3E001BB845 /* PBXTextBookmark */;
 			D1389C6818A8B59C001BB845 /* PBXTextBookmark */ = D1389C6818A8B59C001BB845 /* PBXTextBookmark */;
-			D148948C18AA133800D51D68 /* XCBuildMessageTextBookmark */ = D148948C18AA133800D51D68 /* XCBuildMessageTextBookmark */;
 			D148948F18AA134400D51D68 /* PBXTextBookmark */ = D148948F18AA134400D51D68 /* PBXTextBookmark */;
 			D148949018AA134400D51D68 /* PBXTextBookmark */ = D148949018AA134400D51D68 /* PBXTextBookmark */;
-			D148949118AA134400D51D68 /* XCBuildMessageTextBookmark */ = D148949118AA134400D51D68 /* XCBuildMessageTextBookmark */;
-			D148949918AA134400D51D68 /* PBXTextBookmark */ = D148949918AA134400D51D68 /* PBXTextBookmark */;
-			D148949A18AA134400D51D68 /* PBXTextBookmark */ = D148949A18AA134400D51D68 /* PBXTextBookmark */;
+			D162C4C118AD9603005518F2 /* PBXTextBookmark */ = D162C4C118AD9603005518F2 /* PBXTextBookmark */;
+			D162C4C818AD9603005518F2 /* PBXTextBookmark */ = D162C4C818AD9603005518F2 /* PBXTextBookmark */;
+			D162C4CC18AD9603005518F2 /* PBXTextBookmark */ = D162C4CC18AD9603005518F2 /* PBXTextBookmark */;
+			D162C4D718AD983D005518F2 /* PBXTextBookmark */ = D162C4D718AD983D005518F2 /* PBXTextBookmark */;
+			D162C4D818AD983D005518F2 /* PBXTextBookmark */ = D162C4D818AD983D005518F2 /* PBXTextBookmark */;
+			D162C4D918AD983D005518F2 /* PBXTextBookmark */ = D162C4D918AD983D005518F2 /* PBXTextBookmark */;
+			D162C4DA18AD983D005518F2 /* PBXTextBookmark */ = D162C4DA18AD983D005518F2 /* PBXTextBookmark */;
+			D162C4DD18AD983D005518F2 /* PBXTextBookmark */ = D162C4DD18AD983D005518F2 /* PBXTextBookmark */;
+			D162C4DE18AD983D005518F2 /* PBXTextBookmark */ = D162C4DE18AD983D005518F2 /* PBXTextBookmark */;
+			D162C4DF18AD983D005518F2 /* PBXTextBookmark */ = D162C4DF18AD983D005518F2 /* PBXTextBookmark */;
+			D162C4E118AD983D005518F2 /* PBXTextBookmark */ = D162C4E118AD983D005518F2 /* PBXTextBookmark */;
 			D169DBEA18A8E47A0082863B /* PBXTextBookmark */ = D169DBEA18A8E47A0082863B /* PBXTextBookmark */;
 			D169DC0718A911580082863B /* PBXTextBookmark */ = D169DC0718A911580082863B /* PBXTextBookmark */;
-			D169DC4F18A917170082863B /* PBXTextBookmark */ = D169DC4F18A917170082863B /* PBXTextBookmark */;
-			D170F35218A8DF8C0098F4BD /* PBXTextBookmark */ = D170F35218A8DF8C0098F4BD /* PBXTextBookmark */;
 			D1CB0D7818AA0FE600D7CFAE /* PBXTextBookmark */ = D1CB0D7818AA0FE600D7CFAE /* PBXTextBookmark */;
 			D1CB0D7A18AA0FE600D7CFAE /* PBXTextBookmark */ = D1CB0D7A18AA0FE600D7CFAE /* PBXTextBookmark */;
 			D1CB0D7B18AA0FE600D7CFAE /* PBXTextBookmark */ = D1CB0D7B18AA0FE600D7CFAE /* PBXTextBookmark */;
@@ -141,8 +145,8 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1748, 12831}}";
 			sepNavSelRange = "{20683, 0}";
-			sepNavVisRange = "{20325, 847}";
-			sepNavWindowFrame = "{{395, 46}, {1045, 802}}";
+			sepNavVisRange = "{18079, 873}";
+			sepNavWindowFrame = "{{137, 76}, {592, 802}}";
 		};
 	};
 	8D01CCC60486CAD60068D4B7 /* iCal */ = {
@@ -155,8 +159,8 @@
 	};
 	D120937E13534DCC00A72CAA /* 4DPlugin.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {986, 674}}";
-			sepNavSelRange = "{725, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {730, 440}}";
+			sepNavSelRange = "{290, 0}";
 			sepNavVisRange = "{0, 725}";
 			sepNavWindowFrame = "{{328, 52}, {1045, 802}}";
 		};
@@ -408,16 +412,6 @@
 		vrLen = 1023;
 		vrLoc = 2350;
 	};
-	D1389C4318A8AF3E001BB845 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = D120937E13534DCC00A72CAA /* 4DPlugin.h */;
-		name = "4DPlugin.h: 10";
-		rLen = 0;
-		rLoc = 290;
-		rType = 0;
-		vrLen = 1166;
-		vrLoc = 0;
-	};
 	D1389C4518A8AF3E001BB845 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = D1389C3118A8AEEE001BB845 /* ical_task.h */;
@@ -437,15 +431,6 @@
 		rType = 0;
 		vrLen = 986;
 		vrLoc = 0;
-	};
-	D148948C18AA133800D51D68 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Unused variable 'eventProperties'";
-		fRef = D1D4839118A861A300AEC315 /* ical_event.mm */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 0;
-		rLoc = 170;
-		rType = 1;
 	};
 	D148948F18AA134400D51D68 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -467,16 +452,7 @@
 		vrLen = 172;
 		vrLoc = 0;
 	};
-	D148949118AA134400D51D68 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Unused variable 'eventProperties'";
-		fRef = D1D4839118A861A300AEC315 /* ical_event.mm */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 0;
-		rLoc = 170;
-		rType = 1;
-	};
-	D148949918AA134400D51D68 /* PBXTextBookmark */ = {
+	D162C4C118AD9603005518F2 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = D1D4839118A861A300AEC315 /* ical_event.mm */;
 		name = "ical_event.mm: 171";
@@ -486,15 +462,124 @@
 		vrLen = 957;
 		vrLoc = 4370;
 	};
-	D148949A18AA134400D51D68 /* PBXTextBookmark */ = {
+	D162C4C818AD9603005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D162C4C918AD9603005518F2 /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 60";
+		rLen = 0;
+		rLoc = 1174;
+		rType = 0;
+		vrLen = 915;
+		vrLoc = 735;
+	};
+	D162C4C918AD9603005518F2 /* 4DPlugin.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = 4DPlugin.cpp;
+		path = /Users/miyako/Desktop/ic/4DPlugin.cpp;
+		sourceTree = "<absolute>";
+	};
+	D162C4CC18AD9603005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 819";
+		rLen = 0;
+		rLoc = 20683;
+		rType = 0;
+		vrLen = 886;
+		vrLoc = 18079;
+	};
+	D162C4D718AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D120937E13534DCC00A72CAA /* 4DPlugin.h */;
+		name = "4DPlugin.h: 10";
+		rLen = 0;
+		rLoc = 290;
+		rType = 0;
+		vrLen = 725;
+		vrLoc = 0;
+	};
+	D162C4D818AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 344";
+		rLen = 0;
+		rLoc = 9148;
+		rType = 0;
+		vrLen = 989;
+		vrLoc = 8755;
+	};
+	D162C4D918AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D169DC4218A916A00082863B /* iCal.h */;
+		name = "iCal.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1537;
+		vrLoc = 44;
+	};
+	D162C4DA18AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D1D483D818A8676200AEC315 /* ical_tools.mm */;
+		name = "ical_tools.mm: 1";
+		rLen = 23;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 961;
+		vrLoc = 2350;
+	};
+	D162C4DD18AD983D005518F2 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = D1D4839118A861A300AEC315 /* ical_event.mm */;
 		name = "ical_event.mm: 171";
 		rLen = 0;
 		rLoc = 5024;
 		rType = 0;
-		vrLen = 1389;
+		vrLen = 1357;
 		vrLoc = 4167;
+	};
+	D162C4DE18AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D1D4839118A861A300AEC315 /* ical_event.mm */;
+		name = "ical_event.mm: 191";
+		rLen = 0;
+		rLoc = 5451;
+		rType = 0;
+		vrLen = 1542;
+		vrLoc = 5310;
+	};
+	D162C4DF18AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = D162C4E018AD983D005518F2 /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 60";
+		rLen = 0;
+		rLoc = 1174;
+		rType = 0;
+		vrLen = 915;
+		vrLoc = 735;
+	};
+	D162C4E018AD983D005518F2 /* 4DPlugin.cpp */ = {
+		isa = PBXFileReference;
+		name = 4DPlugin.cpp;
+		path = /Users/miyako/Desktop/ic/4DPlugin.cpp;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {774, 13910}}";
+			sepNavSelRange = "{1174, 0}";
+			sepNavVisRange = "{735, 915}";
+			sepNavWindowFrame = "{{607, 46}, {833, 832}}";
+		};
+	};
+	D162C4E118AD983D005518F2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 819";
+		rLen = 0;
+		rLoc = 20683;
+		rType = 0;
+		vrLen = 873;
+		vrLoc = 18079;
 	};
 	D169DBEA18A8E47A0082863B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -533,30 +618,10 @@
 	D169DC4218A916A00082863B /* iCal.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1384, 3848}}";
-			sepNavSelRange = "{6611, 4}";
-			sepNavVisRange = "{11250, 2835}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{44, 1537}";
 			sepNavWindowFrame = "{{92, 44}, {613, 827}}";
 		};
-	};
-	D169DC4F18A917170082863B /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = D169DC4218A916A00082863B /* iCal.h */;
-		name = "iCal.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1581;
-		vrLoc = 0;
-	};
-	D170F35218A8DF8C0098F4BD /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
-		name = "4DPlugin.cpp: 344";
-		rLen = 0;
-		rLoc = 9148;
-		rType = 0;
-		vrLen = 1097;
-		vrLoc = 8619;
 	};
 	D19271A41353D6F2001CEA07 /* ARRAY_TEXT.h */ = {
 		uiCtxt = {
@@ -708,10 +773,10 @@
 	};
 	D1D4839118A861A300AEC315 /* ical_event.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1720, 7488}}";
-			sepNavSelRange = "{5024, 0}";
-			sepNavVisRange = "{4598, 712}";
-			sepNavWindowFrame = "{{138, 44}, {833, 834}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1720, 8320}}";
+			sepNavSelRange = "{5451, 0}";
+			sepNavVisRange = "{5310, 1542}";
+			sepNavWindowFrame = "{{503, 46}, {833, 832}}";
 		};
 	};
 	D1D4839418A861C500AEC315 /* ical_support.mm */ = {
@@ -795,9 +860,9 @@
 	};
 	D1D483D818A8676200AEC315 /* ical_tools.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {730, 1859}}";
+			sepNavIntBoundsRect = "{{0, 0}, {730, 1794}}";
 			sepNavSelRange = "{0, 23}";
-			sepNavVisRange = "{2350, 1023}";
+			sepNavVisRange = "{2350, 961}";
 		};
 	};
 	D1D484A018A88C7200AEC315 /* ical_application.h */ = {

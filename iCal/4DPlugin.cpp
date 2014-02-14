@@ -889,7 +889,12 @@ void CommandDispatcher (int32_t pProcNum, sLONG_PTR *pResult, PackagePtr pParams
 		case 49 :
 			iCal_Get_system_timezone(pResult, pParams);
 			break;
-
+			
+			// --- Event II
+			
+		case 50 :
+			iCal_Set_event_properties(pResult, pParams);
+			break;			
 	}
 }
 

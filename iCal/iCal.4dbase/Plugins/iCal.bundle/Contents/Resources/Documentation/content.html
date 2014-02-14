@@ -19,12 +19,45 @@
 <a name="command:1,1"></a>
 <h3>iCal Create event</h3>
 <p>
-<code>TEXT:=iCal Create event (TEXT; TEXT; TEXT)</code>
+<code>eventId:=iCal Create event (calendar; startDate; endDate; properties; values)</code>
 </p>
 <p>
-<code>returnValue</code> (TEXT)<br>
-<ex4D:return-value label="" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<code>calendar (TEXT)</code>
+</p>
+<ex4D:argument argument-id="1" label="calendar" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $1 (TEXT) here-->
+<p>Name (title) or UID of calendar to register the event.</p>
+</ex4D:argument>
+<p>
+<code>startDate (TEXT)</code>
+</p>
+<ex4D:argument argument-id="2" label="startDate" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $2 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>endDate (TEXT)</code>
+</p>
+<ex4D:argument argument-id="3" label="endDate" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $3 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>properties (ARRAY)</code>
+</p>
+<ex4D:argument argument-id="4" label="properties" type="Y" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $4 (ARRAY) here-->
+<p>Optional. Any other property to set for the new event. Setting the calendar here will not over-write $1.</p>
+</ex4D:argument>
+<p>
+<code>values (ARRAY)</code>
+</p>
+<ex4D:argument argument-id="5" label="values" type="Y" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $5 (ARRAY) here-->
+</ex4D:argument>
+<p>
+<code>eventId</code> (TEXT)<br>
+<ex4D:return-value label="eventId" type="T" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for return value (TEXT) here-->
+<p>Empty string means the event could not be created. More information may be available in the console.</p>
 </ex4D:return-value>
 </p>
 <p>
@@ -36,11 +69,37 @@
 <a name="command:1,3"></a>
 <h3>iCal Get event property</h3>
 <p>
-<code>LONGINT:=iCal Get event property (TEXT; TEXT; TEXT; TEXT)</code>
+<code>error:=iCal Get event property (eventId; propertyName; propertyValue; date)</code>
 </p>
 <p>
-<code>returnValue</code> (LONGINT)<br>
-<ex4D:return-value label="" type="L" xmlns:ex4D="http://www.4d.com/plugin">
+<code>eventId (TEXT)</code>
+</p>
+<ex4D:argument argument-id="1" label="eventId" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $1 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>propertyName (TEXT)</code>
+</p>
+<ex4D:argument argument-id="2" label="propertyName" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $2 (TEXT) here-->
+</ex4D:argument>
+<p>You can use a <a href="#constant:1">iCal Event Properties</a> constant for <code>propertyName</code>.</p>
+<p>
+<code>propertyValue (TEXT)</code>
+</p>
+<ex4D:argument argument-id="3" label="propertyValue" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $3 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>date (TEXT)</code>
+</p>
+<ex4D:argument argument-id="4" label="date" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $4 (TEXT) here-->
+<p>Optional. Use to specify an instance of a recurring event.</p>
+</ex4D:argument>
+<p>
+<code>error</code> (LONGINT)<br>
+<ex4D:return-value label="error" type="L" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for return value (LONGINT) here-->
 </ex4D:return-value>
 </p>
@@ -53,11 +112,17 @@
 <a name="command:1,4"></a>
 <h3>iCal Remove event</h3>
 <p>
-<code>LONGINT:=iCal Remove event (TEXT)</code>
+<code>error:=iCal Remove event (eventId)</code>
 </p>
 <p>
-<code>returnValue</code> (LONGINT)<br>
-<ex4D:return-value label="" type="L" xmlns:ex4D="http://www.4d.com/plugin">
+<code>eventId (TEXT)</code>
+</p>
+<ex4D:argument argument-id="1" label="eventId" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $1 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>error</code> (LONGINT)<br>
+<ex4D:return-value label="error" type="L" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for return value (LONGINT) here-->
 </ex4D:return-value>
 </p>
@@ -70,11 +135,37 @@
 <a name="command:1,2"></a>
 <h3>iCal Set event property</h3>
 <p>
-<code>LONGINT:=iCal Set event property (TEXT; TEXT; TEXT; TEXT)</code>
+<code>error:=iCal Set event property (eventId; propertyName; propertyValue; date)</code>
 </p>
 <p>
-<code>returnValue</code> (LONGINT)<br>
-<ex4D:return-value label="" type="L" xmlns:ex4D="http://www.4d.com/plugin">
+<code>eventId (TEXT)</code>
+</p>
+<ex4D:argument argument-id="1" label="eventId" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $1 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>propertyName (TEXT)</code>
+</p>
+<ex4D:argument argument-id="2" label="propertyName" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $2 (TEXT) here-->
+</ex4D:argument>
+<p>You can use a <a href="#constant:1">iCal Event Properties</a> constant for <code>propertyName</code>.</p>
+<p>
+<code>propertyValue (TEXT)</code>
+</p>
+<ex4D:argument argument-id="3" label="propertyValue" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $3 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>date (TEXT)</code>
+</p>
+<ex4D:argument argument-id="4" label="date" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $4 (TEXT) here-->
+<p>Optional. Use to specify an instance of a recurring event.</p>
+</ex4D:argument>
+<p>
+<code>error</code> (LONGINT)<br>
+<ex4D:return-value label="error" type="L" xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for return value (LONGINT) here-->
 </ex4D:return-value>
 </p>
@@ -799,6 +890,50 @@
 <ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
 <!-- write documentation for iCal TIMEZONE LIST here -->
 </ex4D:command-description>
+<a name="command:13"></a>
+<h2>Event II</h2>
+<a name="command:13,50"></a>
+<h3>iCal Set event properties</h3>
+<p>
+<code>error:=iCal Set event properties (event; properties; values; date)</code>
+</p>
+<p>
+<code>event (TEXT)</code>
+</p>
+<ex4D:argument argument-id="1" label="event" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $1 (TEXT) here-->
+</ex4D:argument>
+<p>
+<code>properties (ARRAY)</code>
+</p>
+<ex4D:argument argument-id="2" label="properties" type="Y" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $2 (ARRAY) here-->
+</ex4D:argument>
+<p>
+<code>values (ARRAY)</code>
+</p>
+<ex4D:argument argument-id="3" label="values" type="Y" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $3 (ARRAY) here-->
+</ex4D:argument>
+<p>
+<code>date (TEXT)</code>
+</p>
+<ex4D:argument argument-id="4" label="date" type="T" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for $4 (TEXT) here-->
+<p>Optional. Use to specify an instance of a recurring event.</p>
+</ex4D:argument>
+<p>
+<code>error</code> (LONGINT)<br>
+<ex4D:return-value label="error" type="L" xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for return value (LONGINT) here-->
+</ex4D:return-value>
+</p>
+<p>
+<span class="title">Discussion</span>
+</p>
+<ex4D:command-description xmlns:ex4D="http://www.4d.com/plugin">
+<!-- write documentation for iCal Set event properties here -->
+</ex4D:command-description>
 <a name="constant:1"></a>
 <h2>iCal Event Properties</h2>
 <p>
@@ -1198,6 +1333,6 @@
 <!-- write documentation for Task complete (1) here-->
 </ex4D:constant>
 <p class="footer">
-<span class="title">Documentation Update: </span>2014-02-10T00:35:0809:00</p>
+<span class="title">Documentation Update: </span>2014-02-14T00:21:5309:00</p>
 </body>
 </html>

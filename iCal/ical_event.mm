@@ -189,6 +189,62 @@ void iCal_Set_event_property(sLONG_PTR *pResult, PackagePtr pParams){
 	returnValue.setReturn(pResult);
 }
 
+void iCal_Set_event_properties(sLONG_PTR *pResult, PackagePtr pParams)
+{
+	C_TEXT Param1;
+	ARRAY_TEXT Param2;
+	ARRAY_TEXT Param3;
+	C_TEXT Param4;
+	C_LONGINT returnValue;
+	
+	Param1.fromParamAtIndex(pParams, 1);
+	Param2.fromParamAtIndex(pParams, 2);
+	Param3.fromParamAtIndex(pParams, 3);
+	Param4.fromParamAtIndex(pParams, 4);
+	
+	int success = 0;
+	
+	NSError *error = nil;
+	
+	NSString *uid = Param1.copyUTF16String();
+	NSString *date = Param4.copyUTF16String();
+	
+	CalCalendarStore *defaultCalendarStore = _getCalendarStore(returnValue);
+	
+	if(defaultCalendarStore){
+		CalEvent *event = [defaultCalendarStore eventWithUID:uid occurrence:[NSDate dateWithString:date]];	
+		if(event){
+			
+			if(Param2.getSize() == Param3.getSize()){
+				unsigned int len = Param2.getSize();
+				for (unsigned int i = 0; i < len;++i){
+					CUTF16String _key, _value;
+					Param2.copyUTF16StringAtIndex(&_key, i);
+					Param3.copyUTF16StringAtIndex(&_value, i);
+					NSString *key = [[NSString alloc]initWithCharacters:(const unichar *)_key.c_str() length:_key.length()];
+					NSString *value = [[NSString alloc]initWithCharacters:(const unichar *)_value.c_str() length:_value.length()];
+					_set_event_property(event, key, value);
+					[key release];
+					[value release];
+				}
+				success = [defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error];
+			}
+			
+		}
+		
+		if(error){
+			success = [error code];
+			NSLog(@"can't update event: %@", [error localizedDescription]);
+		}		
+	}
+	
+	[uid release];
+	[date release];
+
+	returnValue.setIntValue(success);
+	returnValue.setReturn(pResult);
+}
+
 void iCal_Remove_event(sLONG_PTR *pResult, PackagePtr pParams){
 	C_TEXT Param1;
 	C_LONGINT returnValue;
