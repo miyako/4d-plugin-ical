@@ -50,7 +50,7 @@ Now:
 Commands
 ---
 
-```c
+```
 // --- Type Cast
 iCal Make date
 iCal GET DATE
