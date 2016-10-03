@@ -19,7 +19,9 @@ This branch  includes updates for 4D v15R5 and v16 (64 bits), as well as workaro
 
 **Changes**:
 
-The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
+* The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
+
+  Why? The code uses ``NSRegularExpression``, which is not in the 10.6 SDK, to find sqllite3 folders.
 
 The callback method signature has been changed.
 
