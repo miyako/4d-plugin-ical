@@ -17,7 +17,7 @@
 
 This branch  includes updates for 4D v15R5 and v16 (64 bits), as well as workarounds for El Capitan.
 
-Changes:
+**Changes**:
 
 The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
 
@@ -44,70 +44,70 @@ Commands
 
 ```c
 // --- Type Cast
-iCal_Make_date
-iCal_GET_DATE
-iCal_Make_color
-iCal_GET_COLOR
-iCal_Make_color_from_index
+iCal Make date
+iCal GET DATE
+iCal Make color
+iCal GET COLOR
+iCal Make color from index
 
 // --- Timezone
-iCal_TIMEZONE_LIST
-iCal_Get_timezone_info
-iCal_Get_timezone_for_offset
-iCal_Get_system_timezone
+iCal TIMEZONE LIST
+iCal Get timezone info
+iCal Get timezone for offset
+iCal Get system timezone
 
 // --- Task
-iCal_Create_task
-iCal_Set_task_property
-iCal_Get_task_property
-iCal_Remove_task
-iCal_Count_task_alarms
-iCal_Get_task_alarm
-iCal_Remove_task_alarm
-iCal_Set_task_alarm
+iCal Create task
+iCal Set task property
+iCal Get task property
+iCal Remove task
+iCal Count task alarms
+iCal Get task alarm
+iCal Remove task alarm
+iCal Set task alarm
 
 // --- Event
-iCal_Create_event
-iCal_Set_event_property
-iCal_Get_event_property
-iCal_Remove_event
-iCal_Get_event_alarm
-iCal_Count_event_alarms
-iCal_Remove_event_alarm
-iCal_Set_event_alarm
-iCal_Set_event_properties
+iCal Create event
+iCal Set event property
+iCal Get event property
+iCal Remove event
+iCal Get event alarm
+iCal Count event alarms
+iCal Remove event alarm
+iCal Set event alarm
+iCal Set event properties
 
 // --- Recurrence Rule
-iCal_Remove_event_recurrence
-iCal_Set_event_recurrence
+iCal Remove event recurrence
+iCal Set event recurrence
 
 // --- Calendar Store
-iCal_QUERY_EVENT
-iCal_GET_CALENDAR_LIST
-iCal_QUERY_TASK
+iCal QUERY EVENT
+iCal GET CALENDAR LIST
+iCal QUERY TASK
 
 // --- Calendar
-iCal_Create_calendar
-iCal_Set_calendar_property
-iCal_Get_calendar_property
-iCal_Remove_calendar
+iCal Create calendar
+iCal Set calendar property
+iCal Get calendar property
+iCal Remove calendar
 
 // --- Application
-iCal_TERMINATE
-iCal_LAUNCH
+iCal TERMINATE
+iCal LAUNCH
 
 // --- iCal Direct
-iCal_SHOW_EVENT(PA_PluginParameters params);
-iCal_SHOW_TASK(PA_PluginParameters params);
-iCal_SET_VIEW(PA_PluginParameters params);
-iCal_SHOW_DATE(PA_PluginParameters params);
-iCal_app_Get_task_property
-iCal_app_Get_event_property
+iCal SHOW EVENT(PA PluginParameters params);
+iCal SHOW TASK(PA PluginParameters params);
+iCal SET VIEW(PA PluginParameters params);
+iCal SHOW DATE(PA PluginParameters params);
+iCal app Get task property
+iCal app Get event property
 
 // --- Alarm
-iCal_Make_alarm
-iCal_Get_alarm_property
-iCal_Set_alarm_property
-iCal_Add_alarm_to_event
-iCal_Add_alarm_to_task
+iCal Make alarm
+iCal Get alarm property
+iCal Set alarm property
+iCal Add alarm to event
+iCal Add alarm to task
 ```
