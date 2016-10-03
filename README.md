@@ -1,7 +1,7 @@
 4d-plugin-ical
 ==============
 
-4D plugin to access to the CalendarStore. (minimum OS 10.7)
+4D plugin to access to the CalendarStore.
 
 ##Platform
 
@@ -13,8 +13,31 @@
 
 <img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" />
 
-**Important!** Compatibiliy break
+###About v2 branch 
 
+This branch  includes updates for 4D v15R5 and v16 (64 bits), as well as workarounds for El Capitan.
+
+Changes:
+
+The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
+
+The callback method signature has been changed.
+
+Previously:
+
+| param | type | description |
+|:------:|:-----:|:---------:|
+| inserted | TEXT | event IDs separated by ``\n`` |
+| updated | TEXT | event IDs separated by ``\n`` |
+| deleted | TEXT | event IDs separated by ``\n`` |
+| notificationType | TEXT | not used |
+
+Now:
+
+| param | type | description |
+|:------:|:-----:|:---------:|
+| event | TEXT | event ID |
+| notificationType | TEXT | ``0``:created, ``1``:updated, ``2``:deleted |
 
 Commands
 ---
