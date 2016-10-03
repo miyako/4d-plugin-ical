@@ -1,7 +1,7 @@
 4d-plugin-ical
 ==============
 
-4D plugin to access to the CalendarStore.
+4D plugin to access Calendar.app data.
 
 ##Platform
 
