@@ -23,23 +23,29 @@ This branch  includes updates for 4D v15R5 and v16 (64 bits), as well as workaro
 
   Why? The code uses ``NSRegularExpression``, which is not in the 10.6 SDK, to find sqllite3 folders.
 
-The callback method signature has been changed.
+* The callback method signature has been changed.
+
+  Why? Since OS 10.11 El Capitan, the ``CalendarStore``'s ``NSNotificationCenter`` notifications no longer returns the event ID. It simply tells what had happened (create, delete, modify), but not where. Note that this was always the case with the newer ``EventKit`` API. To preserve old behaviour, the plugin now uses ``FSEventStream`` to monitor changes to the backend ``sqllite3`` folders.
+
+* The callback method is no longer called for task change events.
+
+  Why?  management of tasks has been detached from the Calendar.app, and the notification no longer contains the task ID, which makes it pretty useless.
 
 Previously:
 
 | param | type | description |
 |:------:|:-----:|:---------:|
-| inserted | TEXT | event IDs separated by ``\n`` |
-| updated | TEXT | event IDs separated by ``\n`` |
-| deleted | TEXT | event IDs separated by ``\n`` |
-| notificationType | TEXT | not used |
+| inserted | TEXT | event IDs separated by ``\r`` |
+| updated | TEXT | event IDs separated by ``\r`` |
+| deleted | TEXT | event IDs separated by ``\r`` |
+| type | TEXT | ``Task Notification`` for task events, empty for calendar events |
 
 Now:
 
 | param | type | description |
 |:------:|:-----:|:---------:|
 | event | TEXT | event ID |
-| notificationType | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
+| type | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
 
 Commands
 ---
