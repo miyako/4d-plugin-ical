@@ -37,7 +37,7 @@ Now:
 | param | type | description |
 |:------:|:-----:|:---------:|
 | event | TEXT | event ID |
-| notificationType | TEXT | ``0``:created, ``1``:updated, ``2``:deleted |
+| notificationType | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
 
 Commands
 ---
