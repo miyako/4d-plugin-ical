@@ -142,3 +142,14 @@ These commands are deprecated; they do nothing
 
 ``iCal app Get task property``
 ``iCal app Get event property``
+
+These commands internally start a new process; this is because the ``CalendarStore`` framework seems to return old values when a getter is called from the same thread that called its corresponding setter.
+
+``iCal Get task property``
+``iCal Count task alarms``
+``iCal Get task alarm``
+``iCal Get event property``
+``iCal Get event alarm``
+``iCal Count event alarms``
+``iCal Get calendar property``
+``iCal Get alarm property``
