@@ -109,8 +109,6 @@ iCal SHOW EVENT(PA PluginParameters params);
 iCal SHOW TASK(PA PluginParameters params);
 iCal SET VIEW(PA PluginParameters params);
 iCal SHOW DATE(PA PluginParameters params);
-iCal app Get task property
-iCal app Get event property
 
 // --- Alarm
 iCal Make alarm
@@ -119,3 +117,28 @@ iCal Set alarm property
 iCal Add alarm to event
 iCal Add alarm to task
 ```
+
+###Remarks
+
+This command internally use ``SBApplication``
+
+``iCal SET VIEW``
+
+These commands internally use ``NSAppleScript`` 
+
+``iCal SHOW TASK``
+``iCal SHOW DATE``
+``iCal SHOW EVENT``
+
+This commands internally use ``NSRunningApplication``
+
+``iCal TERMINATE``
+
+This commands internally use ``NSWorkspace``
+
+``iCal LAUNCH``
+
+These commands are deprecated; they do nothing
+
+``iCal app Get task property``
+``iCal app Get event property``
