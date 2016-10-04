@@ -2813,26 +2813,7 @@ void PluginMain(PA_long32 selector, PA_PluginParameters params)
 		sLONG_PTR *pResult = (sLONG_PTR *)params->fResult;
 		PackagePtr pParams = (PackagePtr)params->fParameters;
 		
-		switch(selector){
-			case 30 :
-				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_EVENT, params);
-				break;
-				
-			case 31 :
-				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_TASK, params);
-				break;
-				
-			case 32 :
-				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SET_VIEW, params);
-				break;
-				
-			case 33 :
-				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)iCal_SHOW_DATE, params);
-				break;
-			default:
-				CommandDispatcher(pProcNum, pResult, pParams);
-				break;
-		}
+		CommandDispatcher(pProcNum, pResult, pParams);
 		
 	}
 	catch(...)
@@ -2986,20 +2967,20 @@ void CommandDispatcher (PA_long32 pProcNum, sLONG_PTR *pResult, PackagePtr pPara
 
 // --- iCal Direct
 
-//		case 30 :
-//			iCal_SHOW_EVENT(pResult, pParams);
+		case 30 :
+			iCal_SHOW_EVENT(pResult, pParams);
 			break;
 
-//		case 31 :
-//			iCal_SHOW_TASK(pResult, pParams);
+		case 31 :
+			iCal_SHOW_TASK(pResult, pParams);
 			break;
 
-//		case 32 :
-//			iCal_SET_VIEW(pResult, pParams);
+		case 32 :
+			iCal_SET_VIEW(pResult, pParams);
 			break;
 
-//		case 33 :
-//			iCal_SHOW_DATE(pResult, pParams);
+		case 33 :
+			iCal_SHOW_DATE(pResult, pParams);
 			break;
 
 		case 34 :
@@ -4933,8 +4914,7 @@ void iCal_LAUNCH(sLONG_PTR *pResult, PackagePtr pParams){
 	[[NSWorkspace sharedWorkspace]launchApplication:@"iCal"];
 }
 
-void iCal_SHOW_EVENT(PA_PluginParameters params){
-	PackagePtr pParams = (PackagePtr)params->fParameters;
+void iCal_SHOW_EVENT(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	C_TEXT Param1;
 	
@@ -4953,8 +4933,7 @@ void iCal_SHOW_EVENT(PA_PluginParameters params){
 	[eventId release];
 }
 
-void iCal_SHOW_TASK(PA_PluginParameters params){
-	PackagePtr pParams = (PackagePtr)params->fParameters;
+void iCal_SHOW_TASK(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	C_TEXT Param1;
 	
@@ -4973,11 +4952,33 @@ void iCal_SHOW_TASK(PA_PluginParameters params){
 	[taskId release];
 }
 
-void iCal_SET_VIEW(PA_PluginParameters params){
+void iCal_SET_VIEW(sLONG_PTR *pResult, PackagePtr pParams){
 	
+	BOOL useAppleScript = false;
+	
+	if(useAppleScript)
+	{
+		C_LONGINT Param1;
+		
+		Param1.fromParamAtIndex(pParams, 1);
+		
+		switch (Param1.getIntValue()){
+			case 0:
+				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Day", nil, nil);
+				break;
+			case 1:
+				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Week", nil, nil);
+				break;
+			case 2:
+				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Month", nil, nil);
+				break;
+			default:
+				break;
+		}
+	}
+	
+	//using SBApplication in main thread was crashing 4D cocoa on quit (autoreleasepool violation)
 	iCalApplication *iCal = [SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
-	
-	PackagePtr pParams = (PackagePtr)params->fParameters;
 	
 	C_LONGINT Param1;
 	
@@ -4985,15 +4986,12 @@ void iCal_SET_VIEW(PA_PluginParameters params){
 	
 	switch (Param1.getIntValue()){
 		case 0:
-			//	appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Day", nil, nil);
 			[iCal switchViewTo:iCalCALViewTypeForScriptingDayView];
 			break;
 		case 1:
-			//	appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Week", nil, nil);
 			[iCal switchViewTo:iCalCALViewTypeForScriptingWeekView];
 			break;
 		case 2:
-			//	appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Month", nil, nil);
 			[iCal switchViewTo:iCalCALViewTypeForScriptingMonthView];
 			break;
 		default:
@@ -5002,9 +5000,7 @@ void iCal_SET_VIEW(PA_PluginParameters params){
 	
 }
 
-void iCal_SHOW_DATE(PA_PluginParameters params){
-	
-	PackagePtr pParams = (PackagePtr)params->fParameters;
+void iCal_SHOW_DATE(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	C_DATE Param1;
 	
