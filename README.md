@@ -47,8 +47,19 @@ Now:
 | event | TEXT | event ID |
 | type | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
 
-Commands
----
+###Syntax
+
+```
+success:=iCal Set notification method (method)
+success:=iCal Get notification method (method)
+```
+
+Parameter|Type|Description
+------------|------------|----
+method|TEXT|Callback method name
+success|INT32|``1`` on success
+
+##Commands
 
 ```
 // --- Type Cast
