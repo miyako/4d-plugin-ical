@@ -13,7 +13,7 @@
 
 <img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" />
 
-###About v2 branch 
+### About v2 branch 
 
 This branch  includes updates for 4D v15R5 and v16 (64 bits), as well as workarounds for El Capitan.
 
@@ -47,7 +47,7 @@ Now:
 | event | TEXT | event ID |
 | type | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
 
-###Syntax
+### Syntax
 
 ```
 success:=iCal Set notification method (method)
@@ -59,7 +59,7 @@ Parameter|Type|Description
 method|TEXT|Callback method name
 success|INT32|``1`` on success
 
-##Commands
+## Commands
 
 ```
 // --- Type Cast
