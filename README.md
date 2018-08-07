@@ -57,7 +57,23 @@ success:=iCal Get notification method (method)
 Parameter|Type|Description
 ------------|------------|----
 method|TEXT|Callback method name
-success|INT32|``1`` on success
+success|LONGINT|``1`` on success
+
+```
+success:=iCal Set event recurrence (event;kind;interval;endDate;daysOfWeek;weeksOfMonth;monthOfYear)
+```
+
+Parameter|Type|Description
+------------|------------|----
+event|TEXT|
+kind|TEXT|``Daily``, ``Weekly``, ``Monthly``, ``Yearly``
+interval|LONGINT|``1`` = every, ``2`` = every other, etc
+endDate|TEXT|``""`` = no end
+daysOfWeek|TEXT|csv
+weeksOfMonth|TEXT|csv
+monthOfYear|TEXT|csv
+
+``iCal Set event property`` + ``Event recurrence`` does nothing; use dedicated command instead
 
 ## Commands
 
