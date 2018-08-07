@@ -45,7 +45,7 @@ Now:
 | param | type | description |
 |:------:|:-----:|:---------:|
 | event | TEXT | event ID |
-| type | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
+| type | LONGINT | ``0``:created, ``1``:updated, ``2``:deleted |
 
 ### Syntax
 
