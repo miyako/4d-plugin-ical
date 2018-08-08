@@ -703,7 +703,7 @@ namespace iCal
 		NSArray *eventProperties = [NSArray arrayWithObjects:
 																@"isAllDay", @"isDetached",
 																@"location", @"occurrence",
-																@"recurrenceRule" ,@"startDate",
+																@"recurrence" ,@"startDate",
 																@"calendar", @"hasAlarm",
 																@"nextAlarmDate", @"dateStamp",
 																@"notes", @"title",
@@ -721,7 +721,7 @@ namespace iCal
 					break;
 				case 3://occurrence (readonly)
 					break;
-				case 4://recurrenceRule (dedicated command)
+				case 4://recurrence (dedicated command)
 					break;
 				case 5://startDate
 					if([NSDate dateWithString:value]){
@@ -794,7 +794,7 @@ namespace iCal
 				NSArray *eventProperties = [NSArray arrayWithObjects:
 																		@"isAllDay", @"isDetached",
 																		@"location", @"occurrence",
-																		@"recurrenceRule" ,@"startDate",
+																		@"recurrence" ,@"startDate",
 																		@"calendar", @"hasAlarm",
 																		@"nextAlarmDate", @"dateStamp",
 																		@"notes", @"title",
@@ -830,9 +830,77 @@ namespace iCal
 							recordSpecifier.value.setUTF16String([event.occurrence description]);
 							recordSpecifier.isOK = true;
 							break;
-						case 4://recurrenceRule
-							recordSpecifier.value.setUTF16String([event.recurrenceRule description]);
-							recordSpecifier.isOK = true;
+						case 4://recurrence
+                        {
+                            CalRecurrenceRule *recurrenceRule = event.recurrenceRule;
+                            @autoreleasepool
+                            {
+                                NSNumber *recurrenceInterval = [NSNumber numberWithInt:0];
+                                NSString *firstDayOfTheWeek = @"";
+                                NSString *recurrenceType = @"";
+                                NSArray *daysOfTheWeek = @[];
+                                NSArray *daysOfTheMonth = @[];
+                                NSArray *nthWeekDaysOfTheMonth = @[];
+                                NSArray *monthsOfTheYear = @[];
+                                NSDictionary *recurrenceEnd = @{};
+                                
+                                if(recurrenceRule)
+                                {
+                                    recurrenceInterval = [NSNumber numberWithInt:recurrenceRule.recurrenceInterval];
+                                    firstDayOfTheWeek = [@[@"",
+                                                           @"Sunday",
+                                                           @"Monday",
+                                                           @"Tuesday",
+                                                           @"Wednesday",
+                                                           @"Thursday",
+                                                           @"Friday",
+                                                           @"Saturday"] objectAtIndex:recurrenceRule.firstDayOfTheWeek];
+                                    recurrenceType = [@[@"Daily",
+                                                        @"Weekly",
+                                                        @"Monthly",
+                                                        @"Yearly"] objectAtIndex:recurrenceRule.recurrenceType];
+                                    daysOfTheWeek = recurrenceRule.daysOfTheWeek ? recurrenceRule.daysOfTheWeek : @[];
+                                    daysOfTheMonth = recurrenceRule.daysOfTheMonth ? recurrenceRule.daysOfTheMonth : @[];
+                                    nthWeekDaysOfTheMonth = recurrenceRule.nthWeekDaysOfTheMonth ? recurrenceRule.nthWeekDaysOfTheMonth : @[];
+                                    monthsOfTheYear = recurrenceRule.monthsOfTheYear ? recurrenceRule.monthsOfTheYear : @[];
+                                    
+                                    #define DATE_FORMAT_ISO_GMT @"yyyy-MM-dd'T'HH:mm:ss'Z'"
+                                    NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
+                                    [GMT setDateFormat:DATE_FORMAT_ISO_GMT];
+                                    [GMT setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+
+                                    recurrenceEnd = recurrenceRule.recurrenceEnd ? @{
+                                                                                     @"occurrenceCount":[NSNumber numberWithInt:recurrenceRule.recurrenceEnd.occurrenceCount],
+                                                                                     @"endDate":recurrenceRule.recurrenceEnd.endDate ? [GMT stringFromDate:recurrenceRule.recurrenceEnd.endDate] : @""
+                                                                                     } : @{};
+                                     [GMT release];
+                                }
+                                
+                                NSDictionary *recurrence = @{
+                                                             @"recurrenceInterval":recurrenceInterval,
+                                                             @"firstDayOfTheWeek":firstDayOfTheWeek,
+                                                             @"recurrenceType":recurrenceType,
+                                                             @"recurrenceEnd":recurrenceEnd,
+                                                             @"daysOfTheWeek":daysOfTheWeek,
+                                                             @"daysOfTheMonth":daysOfTheMonth,
+                                                             @"nthWeekDaysOfTheMonth":nthWeekDaysOfTheMonth,
+                                                             @"monthsOfTheYear":monthsOfTheYear
+                                                             };
+                                if([NSJSONSerialization isValidJSONObject:recurrence])
+                                {
+                                    NSData *jsonData = [NSJSONSerialization
+                                                        dataWithJSONObject:recurrence
+                                                        options:0
+                                                        error:NULL];
+                                    if(jsonData)
+                                    {
+                                        NSString *json = [NSString stringWithCString:(const char *)[jsonData bytes] encoding:NSUTF8StringEncoding];
+                                        recordSpecifier.value.setUTF16String(json);
+                                        recordSpecifier.isOK = true;
+                                    }
+                                }
+                            }
+                        }
 							break;
 						case 5://startDate
 							recordSpecifier.value.setUTF16String([event.startDate description]);
