@@ -75,6 +75,33 @@ monthOfYear|TEXT|csv
 
 ``iCal Set event property`` + ``Event recurrence`` does nothing; use dedicated command instead
 
+
+```
+success:=iCal Set event property (event;property;value)
+success:=iCal Get event property (event;property;value)
+```
+
+Parameter|Type|Description
+------------|------------|----
+event|TEXT|
+property|TEXT|
+property|TEXT|
+
+when ``Event recurrence`` is passed to ``iCal Get event property``, value is returned in JSON.
+
+```
+{
+recurrenceInterval:number,
+firstDayOfTheWeek:"" or "Monday" or "Tuesday" or...,
+recurrenceType:"" or "Daily" or "Weekly" or "Monthly" or "Yearly",
+recurrenceEnd:{occurrenceCount:number, endDate:"" or GMT},
+daysOfTheWeek:[array or numbers],
+daysOfTheMonth:[array or numbers],
+nthWeekDaysOfTheMonth:[array or numbers],
+monthsOfTheYear:[array or numbers]
+}
+```
+ 
 ## Commands
 
 ```
