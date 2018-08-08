@@ -11,7 +11,7 @@
 
 ### Version
 
-<img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" />
+<img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" /> <img src="https://user-images.githubusercontent.com/1725068/41266195-ddf767b2-6e30-11e8-9d6b-2adf6a9f57a5.png" width="32" height="32" />
 
 ### About v2 branch 
 
@@ -45,7 +45,7 @@ Now:
 | param | type | description |
 |:------:|:-----:|:---------:|
 | event | TEXT | event ID |
-| type | INT32 | ``0``:created, ``1``:updated, ``2``:deleted |
+| type | LONGINT | ``0``:created, ``1``:updated, ``2``:deleted |
 
 ### Syntax
 
@@ -57,8 +57,51 @@ success:=iCal Get notification method (method)
 Parameter|Type|Description
 ------------|------------|----
 method|TEXT|Callback method name
-success|INT32|``1`` on success
+success|LONGINT|``1`` on success
 
+```
+success:=iCal Set event recurrence (event;kind;interval;endDate;daysOfWeek;weeksOfMonth;monthOfYear)
+```
+
+Parameter|Type|Description
+------------|------------|----
+event|TEXT|
+kind|TEXT|``Daily``, ``Weekly``, ``Monthly``, ``Yearly``
+interval|LONGINT|``1`` = every, ``2`` = every other, etc
+endDate|TEXT|``""`` = no end
+daysOfWeek|TEXT|csv
+weeksOfMonth|TEXT|csv
+monthOfYear|TEXT|csv
+
+``iCal Set event property`` + ``Event recurrence`` does nothing; use dedicated command instead
+
+
+```
+success:=iCal Set event property (event;property;value)
+success:=iCal Get event property (event;property;value)
+```
+
+Parameter|Type|Description
+------------|------------|----
+event|TEXT|
+property|TEXT|
+property|TEXT|
+
+when ``Event recurrence`` is passed to ``iCal Get event property``, value is returned in JSON.
+
+```
+{
+recurrenceInterval:number,
+firstDayOfTheWeek:"" or "Monday" or "Tuesday" or...,
+recurrenceType:"" or "Daily" or "Weekly" or "Monthly" or "Yearly",
+recurrenceEnd:{occurrenceCount:number, endDate:"" or GMT},
+daysOfTheWeek:[array or numbers],
+daysOfTheMonth:[array or numbers],
+nthWeekDaysOfTheMonth:[array or numbers],
+monthsOfTheYear:[array or numbers]
+}
+```
+ 
 ## Commands
 
 ```
