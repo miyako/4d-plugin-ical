@@ -39,7 +39,28 @@ timezones|TEXT|JSON ``Is collection`` each item represents a timezone
 
 
 
+---
 
+* Not thread safe
+
+* iCal Get notification method
+* iCal Set notification method
+* iCal Get event property
+* iCal Get task property
+* iCal Get calendar property
+* iCal Get alarm property
+* iCal Count event alarms
+* iCal Count task alarms
+* iCal Get task alarm
+* iCal Get event alarm  
+
+* iCal QUERY EVENT
+* iCal QUERY TASK  
+
+* iCal TIMEZONE LIST => iCal Get timezones
+* iCal GET CALENDAR LIST => iCal Get calendars
+* iCal Create event => iCal Add event
+* iCal Set event properties => iCal Modify event
 
 
 
