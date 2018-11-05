@@ -41,7 +41,7 @@ timezones|TEXT|JSON ``Is collection`` each item represents a timezone
 
 ---
 
-* Not thread safe
+#### Not thread safe
 
 * iCal Get notification method
 * iCal Set notification method
