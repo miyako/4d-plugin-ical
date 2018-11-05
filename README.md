@@ -22,7 +22,7 @@ calendars:=iCal_Get_calendars
 
 Parameter|Type|Description
 ------------|------------|----
-calendars|TEXT|JSON ``Is collection`` each item represents a calendar
+calendars|TEXT|JSON ``Is collection``. each item represents a calendar
 
 ```
 timezones:=iCal Get timezones 
@@ -30,7 +30,7 @@ timezones:=iCal Get timezones
 
 Parameter|Type|Description
 ------------|------------|----
-timezones|TEXT|JSON ``Is collection`` each item represents a timezone
+timezones|TEXT|JSON ``Is collection``. each item represents a timezone
 
 ```
 error:=iCal Add event(event)
@@ -38,7 +38,7 @@ error:=iCal Add event(event)
 
 Parameter|Type|Description
 ------------|------------|----
-event|TEXT|JSON ``Is object`` ``startDate`` and ``endDate`` and ``calendar`` are mandatory
+event|TEXT|JSON ``Is object``. ``startDate`` and ``endDate`` and ``calendar`` are mandatory
 uid|TEXT|
 
 ```
@@ -47,17 +47,17 @@ error:=iCal Modify event(event{;date})
 
 Parameter|Type|Description
 ------------|------------|----
-event|TEXT|JSON ``Is object`` ``uid`` is mandatory
+event|TEXT|JSON ``Is object``. ``uid`` is mandatory
 date|TEXT|speficy a single occurance of a recurring event
 error|LONGINT|``0`` on success
 
 ```
-vent:=iCal Find event(event{;date})
+event:=iCal Find event(event{;date})
 ```
 
 Parameter|Type|Description
 ------------|------------|----
-event|TEXT|JSON ``uid`` is mandatory
+event|TEXT|JSON ``Is object``. ``uid`` is mandatory
 date|TEXT|speficy a single occurance of a recurring event
 event|TEXT|JSON ``Is object`` 
 
