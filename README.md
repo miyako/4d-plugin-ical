@@ -61,17 +61,9 @@ event|TEXT|JSON ``Is object``. ``uid`` is mandatory
 date|TEXT|speficy a single occurance of a recurring event
 event|TEXT|JSON ``Is object`` 
 
-
-
-
-
-
-
-
-
 ---
 
-#### Not thread safe
+#### Not thread safe => thread safe
 
 * iCal Get notification method
 * iCal Set notification method
@@ -92,12 +84,9 @@ event|TEXT|JSON ``Is object``
 * iCal Create event => iCal Add event
 * iCal Set event properties => iCal Modify event
 
+---
 
-
-
-
-
-**Changes**:
+**Changes for v2**:
 
 * The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
 
