@@ -287,3 +287,5 @@ These commands internally start a new process; this is because the ``CalendarSto
 ``iCal Count event alarms``
 ``iCal Get calendar property``
 ``iCal Get alarm property``
+
+**Note**: at least as of v17, it seems no longer necessary to get in a new process.
