@@ -75,7 +75,7 @@ event|TEXT|JSON ``Is object``
 
 * iCal Get notification method
 * iCal Set notification method
-* iCal Get event property
+* iCal Get event property => iCal Find event
 * iCal Get task property
 * iCal Get calendar property
 * iCal Get alarm property
