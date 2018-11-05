@@ -78,11 +78,11 @@ event|TEXT|JSON ``Is object``
 * iCal Get event property => iCal Find event
 * iCal Get task property
 * iCal Get calendar property
-* iCal Get alarm property
-* iCal Count event alarms
+* iCal Get alarm property => iCal Find event
+* iCal Count event alarms => iCal Find event
 * iCal Count task alarms
 * iCal Get task alarm
-* iCal Get event alarm  
+* iCal Get event alarm => iCal Find event  
 
 * iCal QUERY EVENT
 * iCal QUERY TASK  
