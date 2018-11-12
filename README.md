@@ -15,7 +15,6 @@
 
 ### New syntax
 
-
 ```
 calendars:=iCal_Get_calendars
 ```
@@ -60,6 +59,17 @@ Parameter|Type|Description
 event|TEXT|JSON ``Is object``. ``uid`` is mandatory
 date|TEXT|speficy a single occurance of a recurring event
 event|TEXT|JSON ``Is object`` 
+
+```
+iCal SET NOTIFICATION METHOD (method)
+method:=iCal Get notification method 
+```
+
+Parameter|Type|Description
+------------|------------|----
+method|TEXT|   
+
+**Warning**: Old syntax will crash instantly!
 
 ---
 
