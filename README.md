@@ -96,37 +96,24 @@ method|TEXT|
 
 ---
 
-**Changes for v2**:
+### TODO
 
-* The minimum OS is now 10.7 for 32 bits, 10.8 for 64 bits. 
+support recurrence with 
 
-  Why? The code uses ``NSRegularExpression``, which is not in the 10.6 SDK, to find sqllite3 folders.
+* iCal Find event
+* iCal Modify event
+* iCal Add event
 
-* The callback method signature has been changed.
-
-  Why? Since OS 10.11 El Capitan, the ``CalendarStore``'s ``NSNotificationCenter`` notifications no longer returns the event ID. It simply tells what had happened (create, delete, modify), but not where. Note that this was always the case with the newer ``EventKit`` API. To preserve old behaviour, the plugin now uses ``FSEventStream`` to monitor changes to the backend ``sqllite3`` folders.
-
-* The callback method is no longer called for task change events.
-
-  Why?  management of tasks has been detached from the Calendar.app, and the notification no longer contains the task ID, which makes it pretty useless.
-
-Previously:
-
-| param | type | description |
-|:------:|:-----:|:---------:|
-| inserted | TEXT | event IDs separated by ``\r`` |
-| updated | TEXT | event IDs separated by ``\r`` |
-| deleted | TEXT | event IDs separated by ``\r`` |
-| type | TEXT | ``Task Notification`` for task events, empty for calendar events |
-
-Now:
+### Notification callback method signature
 
 | param | type | description |
 |:------:|:-----:|:---------:|
 | event | TEXT | event ID |
 | type | LONGINT | ``0``:created, ``1``:updated, ``2``:deleted |
 
-### Syntax
+---
+
+### Recurrence (deprecated)
 
 ```
 success:=iCal Set event recurrence (event;kind;interval;endDate;daysOfWeek;weeksOfMonth;monthOfYear)
