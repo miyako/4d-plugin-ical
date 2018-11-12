@@ -255,11 +255,14 @@ This command internally use ``SBApplication``
 
 ``iCal SET VIEW``
 
-These commands internally use ``NSAppleScript`` 
+These commands internally use ``NSAppleScript``
 
 ``iCal SHOW TASK``
-``iCal SHOW DATE``
 ``iCal SHOW EVENT``
+
+These commands internally use ~~``NSAppleScript``~~ ``SBApplication``
+
+``iCal SHOW DATE``
 
 This commands internally use ``NSRunningApplication``
 
@@ -269,7 +272,7 @@ This commands internally use ``NSWorkspace``
 
 ``iCal LAUNCH``
 
-These commands are deprecated; they do nothing
+These commands are __deprecated__; they do nothing
 
 ``iCal app Get task property``
 ``iCal app Get event property``
