@@ -129,16 +129,6 @@ Now:
 ### Syntax
 
 ```
-success:=iCal Set notification method (method)
-success:=iCal Get notification method (method)
-```
-
-Parameter|Type|Description
-------------|------------|----
-method|TEXT|Callback method name
-success|LONGINT|``1`` on success
-
-```
 success:=iCal Set event recurrence (event;kind;interval;endDate;daysOfWeek;weeksOfMonth;monthOfYear)
 ```
 
@@ -181,76 +171,6 @@ monthsOfTheYear:[array or numbers]
 }
 ```
  
-## Commands
-
-```
-// --- Type Cast
-iCal Make date
-iCal GET DATE
-iCal Make color
-iCal GET COLOR
-iCal Make color from index
-
-// --- Timezone
-iCal TIMEZONE LIST
-iCal Get timezone info
-iCal Get timezone for offset
-iCal Get system timezone
-
-// --- Task
-iCal Create task
-iCal Set task property
-iCal Get task property
-iCal Remove task
-iCal Count task alarms
-iCal Get task alarm
-iCal Remove task alarm
-iCal Set task alarm
-
-// --- Event
-iCal Create event
-iCal Set event property
-iCal Get event property
-iCal Remove event
-iCal Get event alarm
-iCal Count event alarms
-iCal Remove event alarm
-iCal Set event alarm
-iCal Set event properties
-
-// --- Recurrence Rule
-iCal Remove event recurrence
-iCal Set event recurrence
-
-// --- Calendar Store
-iCal QUERY EVENT
-iCal GET CALENDAR LIST
-iCal QUERY TASK
-
-// --- Calendar
-iCal Create calendar
-iCal Set calendar property
-iCal Get calendar property
-iCal Remove calendar
-
-// --- Application
-iCal TERMINATE
-iCal LAUNCH
-
-// --- iCal Direct
-iCal SHOW EVENT(PA PluginParameters params);
-iCal SHOW TASK(PA PluginParameters params);
-iCal SET VIEW(PA PluginParameters params);
-iCal SHOW DATE(PA PluginParameters params);
-
-// --- Alarm
-iCal Make alarm
-iCal Get alarm property
-iCal Set alarm property
-iCal Add alarm to event
-iCal Add alarm to task
-```
-
 ### Remarks
 
 These commands internally use ~~``NSAppleScript``~~ ``NSTask``
