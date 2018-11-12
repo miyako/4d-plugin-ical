@@ -73,26 +73,35 @@ method|TEXT|
 
 **Warning**: __Old syntax will crash instantly!__
 
+* callback signature
+
+| param | type | description |
+|:------:|:-----:|:---------:|
+| event | TEXT | event ID |
+| type | LONGINT | ``0``:created, ``1``:updated, ``2``:deleted |
+
 ---
 
 #### Not thread safe => thread safe
 
 * iCal Get event property => iCal Find event
-* iCal Get task property
+* iCal Get task property => **deprecated**
 * iCal Get calendar property => iCal Get calendars
 * iCal Get alarm property => iCal Find event
 * iCal Count event alarms => iCal Find event
-* iCal Count task alarms
-* iCal Get task alarm
+* iCal Count task alarms => **deprecated**
+* iCal Get task alarm => **deprecated**
 * iCal Get event alarm => iCal Find event  
 
 * iCal QUERY EVENT
-* iCal QUERY TASK  
+* iCal QUERY TASK => **deprecated**  
 
 * iCal TIMEZONE LIST => iCal Get timezones
 * iCal GET CALENDAR LIST => iCal Get calendars
 * iCal Create event => iCal Add event
 * iCal Set event properties => iCal Modify event
+
+commands on the left side are all **deprecated** 
 
 ---
 
@@ -104,12 +113,9 @@ support recurrence with
 * iCal Modify event
 * iCal Add event
 
-### Notification callback method signature
+create replacement for deprecated
 
-| param | type | description |
-|:------:|:-----:|:---------:|
-| event | TEXT | event ID |
-| type | LONGINT | ``0``:created, ``1``:updated, ``2``:deleted |
+* iCal QUERY EVENT
 
 ---
 
@@ -130,7 +136,6 @@ weeksOfMonth|TEXT|csv
 monthOfYear|TEXT|csv
 
 ``iCal Set event property`` + ``Event recurrence`` does nothing; use dedicated command instead
-
 
 ```
 success:=iCal Set event property (event;property;value)
