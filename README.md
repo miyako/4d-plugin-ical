@@ -251,17 +251,14 @@ iCal Add alarm to task
 
 ### Remarks
 
-This command internally use ``SBApplication``
-
-``iCal SET VIEW``
-
-These commands internally use ``NSAppleScript``
+These commands internally use ~~``NSAppleScript``~~ ``NSTask``
 
 ``iCal SHOW TASK``
 ``iCal SHOW EVENT``
 
 These commands internally use ~~``NSAppleScript``~~ ``SBApplication``
 
+``iCal SET VIEW``
 ``iCal SHOW DATE``
 
 This commands internally use ``NSRunningApplication``
