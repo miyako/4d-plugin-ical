@@ -16,7 +16,7 @@
 ### New syntax
 
 ```
-calendars:=iCal_Get_calendars
+calendars:=iCal Get calendars
 ```
 
 Parameter|Type|Description
