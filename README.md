@@ -69,14 +69,12 @@ Parameter|Type|Description
 ------------|------------|----
 method|TEXT|   
 
-**Warning**: Old syntax will crash instantly!
+**Warning**: __Old syntax will crash instantly!__
 
 ---
 
 #### Not thread safe => thread safe
 
-* iCal Get notification method
-* iCal Set notification method
 * iCal Get event property => iCal Find event
 * iCal Get task property
 * iCal Get calendar property => iCal Get calendars
