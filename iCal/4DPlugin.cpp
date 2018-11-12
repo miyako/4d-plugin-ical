@@ -11,6 +11,79 @@
 #include "4DPluginAPI.h"
 #include "4DPlugin.h"
 
+#define CALLBACK_IN_NEW_PROCESS 1
+#define CALLBACK_SLEEP_TIME 59
+
+std::mutex mutexSqlite;
+
+std::mutex globalMutex; /* CALLBACK_EVENT_IDS */
+std::mutex globalMutex0;/* shouldPresentNotification */
+std::mutex globalMutex1;/* for MONITOR_PROCESS_ID */
+std::mutex globalMutex2;/* for LISTENER_METHOD */
+std::mutex globalMutex3;/* PROCESS_SHOULD_TERMINATE */
+std::mutex globalMutex4;/* PROCESS_SHOULD_RESUME */
+
+#pragma mark UserInfo
+
+class UserInfo
+{
+private:
+    
+    notification_t _notification;
+    CUTF8String _uid;
+    
+public:
+    
+    UserInfo(notification_t notification, NSString *event_uid);
+    
+    void get(notification_t *notification, CUTF16String &event);
+    
+    ~UserInfo();
+};
+
+UserInfo::UserInfo(notification_t notification, NSString *event_uid)
+{
+    this->_notification = notification;
+    if(event_uid)
+    {
+        this->_uid = CUTF8String((const uint8_t *)[event_uid UTF8String]);
+    }
+}
+
+void UserInfo::get(notification_t *notification, CUTF16String &event)
+{
+    *notification = this->_notification;
+    
+    C_TEXT t;
+    t.setUTF8String(&this->_uid);
+    t.copyUTF16String(&event);
+}
+
+UserInfo::~UserInfo()
+{
+    
+}
+
+namespace CalendarWatch
+{
+    Listener *listener = nil;
+    
+    const process_stack_size_t MONITOR_PROCESS_STACK_SIZE = 0;
+    const process_name_t MONITOR_PROCESS_NAME = (PA_Unichar *)"$\0C\0A\0L\0E\0N\0D\0A\0R\0_\0W\0A\0T\0C\0H\0\0\0";
+    
+    std::vector<CUTF8String> paths;
+    std::vector<UserInfo> notifications;
+    
+    FSEventStreamRef eventStream = 0;
+    NSTimeInterval latency = 1.0;
+    
+    //callback management
+    C_TEXT WATCH_METHOD;
+    process_number_t METHOD_PROCESS_ID = 0;
+    bool PROCESS_SHOULD_TERMINATE;
+    bool PROCESS_SHOULD_RESUME = false;
+}
+
 #pragma mark -
 
 const char *sql_get_calendar_group_uid = "SELECT\n\
@@ -18,11 +91,11 @@ ZUID\n\
 FROM ZNODE\n\
 WHERE Z_PK ==\n\
 (\n\
- SELECT ZGROUP\n\
- FROM  ZNODE\n\
- WHERE ZUID == ?\n\
- LIMIT 1\n\
- );";
+SELECT ZGROUP\n\
+FROM  ZNODE\n\
+WHERE ZUID == ?\n\
+LIMIT 1\n\
+);";
 
 const char *sql_get_calendars = "SELECT\n\
 ZUID, ZTITLE\n\
@@ -31,373 +104,254 @@ WHERE ZISTASKCONTAINER != 1\n\
 AND ZGROUP != '';";
 
 void sqlite3_get_calendar_group_uid(NSString *userCalendarPath,
-																		CUTF8String &calendar_uid,
-																		CUTF8String &group_uid)
+                                    CUTF8String &calendar_uid,
+                                    CUTF8String &group_uid)
 {
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		sqlite3 *sqlite3_calendar = NULL;
-		
-		int err = sqlite3_open([userCalendarPath UTF8String], &sqlite3_calendar);
-		
-		if(err != SQLITE_OK)
-		{
-			NSLog(@"failed to open sqlite database at:%@", userCalendarPath);
-		}else
-		{
-			sqlite3_stmt *sql = NULL;
-			err = sqlite3_prepare_v2(sqlite3_calendar, sql_get_calendar_group_uid, 1024, &sql, NULL);
-			if(err != SQLITE_OK)
-			{
-				NSLog(@"failed to prepare sqlite statement");
-			}else
-			{
-				sqlite3_bind_text(sql, 1, (const char *)calendar_uid.c_str(), calendar_uid.length(), NULL);
-				
-				while(SQLITE_ROW == (err = sqlite3_step(sql)))
-				{
-					const unsigned char *_group_uid = sqlite3_column_text(sql, 0);
-					if(_group_uid)
-					{
-						group_uid = CUTF8String(_group_uid, strlen((const char *)_group_uid));
-					}
-				}
-				sqlite3_finalize(sql);
-			}
-			sqlite3_close(sqlite3_calendar);
-		}
-		[l unlock];
-	}
-	[l release];
+    
+    std::lock_guard<std::mutex> lock(mutexSqlite);
+    
+    sqlite3 *sqlite3_calendar = NULL;
+    
+    int err = sqlite3_open([userCalendarPath UTF8String], &sqlite3_calendar);
+    
+    if(err != SQLITE_OK)
+    {
+        NSLog(@"failed to open sqlite database at:%@", userCalendarPath);
+    }else
+    {
+        sqlite3_stmt *sql = NULL;
+        err = sqlite3_prepare_v2(sqlite3_calendar, sql_get_calendar_group_uid, 1024, &sql, NULL);
+        if(err != SQLITE_OK)
+        {
+            NSLog(@"failed to prepare sqlite statement");
+        }else
+        {
+            sqlite3_bind_text(sql, 1, (const char *)calendar_uid.c_str(), calendar_uid.length(), NULL);
+            
+            while(SQLITE_ROW == (err = sqlite3_step(sql)))
+            {
+                const unsigned char *_group_uid = sqlite3_column_text(sql, 0);
+                if(_group_uid)
+                {
+                    group_uid = CUTF8String(_group_uid, strlen((const char *)_group_uid));
+                }
+            }
+            sqlite3_finalize(sql);
+        }
+        sqlite3_close(sqlite3_calendar);
+    }
 }
 
 void sqlite3_get_calendars(NSString *userCalendarPath,
-													 ARRAY_TEXT &uids,
-													 ARRAY_TEXT &titles)
+                           ARRAY_TEXT &uids,
+                           ARRAY_TEXT &titles)
 {
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		sqlite3 *sqlite3_calendar = NULL;
-		
-		int err = sqlite3_open([userCalendarPath UTF8String], &sqlite3_calendar);
-		
-		if(err != SQLITE_OK)
-		{
-			NSLog(@"failed to open sqlite database at:%@", userCalendarPath);
-		}else
-		{
-			sqlite3_stmt *sql = NULL;
-			err = sqlite3_prepare_v2(sqlite3_calendar, sql_get_calendars, 1024, &sql, NULL);
-			if(err != SQLITE_OK)
-			{
-				NSLog(@"failed to prepare sqlite statement");
-			}else
-			{
-				while(SQLITE_ROW == (err = sqlite3_step(sql)))
-				{
-					const unsigned char *_calendar_uid = sqlite3_column_text(sql, 0);
-					const unsigned char *_title = sqlite3_column_text(sql, 1);
-					
-					if(_calendar_uid)
-					{
-						if(_title)
-						{
-							uids.appendUTF8String(_calendar_uid, strlen((const char *)_calendar_uid));
-							titles.appendUTF8String(_title, strlen((const char *)_title));
-						}
-						
-					}
-				}
-				sqlite3_finalize(sql);
-			}
-			sqlite3_close(sqlite3_calendar);
-		}
-		[l unlock];
-	}
-	[l release];
+    std::lock_guard<std::mutex> lock(mutexSqlite);
+    
+    sqlite3 *sqlite3_calendar = NULL;
+    
+    int err = sqlite3_open([userCalendarPath UTF8String], &sqlite3_calendar);
+    
+    if(err != SQLITE_OK)
+    {
+        NSLog(@"failed to open sqlite database at:%@", userCalendarPath);
+    }else
+    {
+        sqlite3_stmt *sql = NULL;
+        err = sqlite3_prepare_v2(sqlite3_calendar, sql_get_calendars, 1024, &sql, NULL);
+        if(err != SQLITE_OK)
+        {
+            NSLog(@"failed to prepare sqlite statement");
+        }else
+        {
+            while(SQLITE_ROW == (err = sqlite3_step(sql)))
+            {
+                const unsigned char *_calendar_uid = sqlite3_column_text(sql, 0);
+                const unsigned char *_title = sqlite3_column_text(sql, 1);
+                
+                if(_calendar_uid)
+                {
+                    if(_title)
+                    {
+                        uids.appendUTF8String(_calendar_uid, strlen((const char *)_calendar_uid));
+                        titles.appendUTF8String(_title, strlen((const char *)_title));
+                    }
+                    
+                }
+            }
+            sqlite3_finalize(sql);
+        }
+        sqlite3_close(sqlite3_calendar);
+    }
 }
 
 #pragma mark -
 
-namespace CalendarWatch
+void gotEvent(FSEventStreamRef stream,
+              void *callbackInfo,
+              size_t numEvents,
+              void *eventPaths,
+              const FSEventStreamEventFlags eventFlags[],
+              const FSEventStreamEventId eventIds[]
+              )
 {
-	
-	class UserInfo
-	{
-	private:
-		
-		notification_t _notification;
-		CUTF8String _uid;
-		method_id_t _method;
-		
-	public:
-		
-		UserInfo(notification_t notification, NSString *event_uid, method_id_t method);
-		
-		void get(notification_t *notification, CUTF16String &event, method_id_t *method);
-		
-		~UserInfo();
-	};
-	
-	UserInfo::UserInfo(notification_t notification, NSString *event_uid, method_id_t method)
-	{
-		this->_notification = notification;
-		if(event_uid)
-		{
-			this->_uid = CUTF8String((const uint8_t *)[event_uid UTF8String]);
-		}
-		this->_method = method;
-	}
-	
-	void UserInfo::get(notification_t *notification, CUTF16String &event, method_id_t *method)
-	{
-		*notification = this->_notification;
-		
-		*method = this->_method;
-		
-		C_TEXT t;
-		t.setUTF8String(&this->_uid);
-		t.copyUTF16String(&event);
-	}
-	
-	UserInfo::~UserInfo()
-	{
-		
-	}
-	
-	const process_stack_size_t stachSize = 0;
-	const process_name_t processName = (PA_Unichar *)"$\0C\0A\0L\0E\0N\0D\0A\0R\0_\0W\0A\0T\0C\0H\0\0\0";
-	
-	std::map<CUTF8String, method_id_t> paths;
-	std::vector<UserInfo> notifications;
-	
-	FSEventStreamRef eventStream = 0;
-	NSTimeInterval latency = 1.0;
-	process_number_t monitorProcessId = 0;
-	bool processShouldTerminate = false;
-	
-	method_id_t getMethodId(NSString *path_ns)
-	{
-		@autoreleasepool
-		{
-			NSString *monitorPath_ns = [path_ns stringByDeletingLastPathComponent];
-			CUTF8String monitorPath = CUTF8String((const uint8_t *)[monitorPath_ns UTF8String]);
-			monitorPath += (const uint8_t *)"/";
-			//global variables: CalendarWatch::paths
-			NSLock *l = [[NSLock alloc]init];
-			if ([l tryLock])
-			{
-				auto i = paths.find(monitorPath);
-				if (i != paths.end())
-				{
-					return i->second;
-				}
-				[l unlock];
-			}
-			[l release];
-		}
-		return 0;
-	}
-	
-	void gotEvent(FSEventStreamRef stream,
-								void *callbackInfo,
-								size_t numEvents,
-								void *eventPaths,
-								const FSEventStreamEventFlags eventFlags[],
-								const FSEventStreamEventId eventIds[]
-								)
-	{
-		//global variables: CalendarWatch::notifications
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			@autoreleasepool
-			{
-				NSArray *paths_ns = (NSArray *)eventPaths;
-				NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"([:HexDigit:]{8}-[:HexDigit:]{4}-[:HexDigit:]{4}-[:HexDigit:]{4}-[:HexDigit:]{12})\\.ics$"
-																																							 options:NSRegularExpressionCaseInsensitive
-																																								 error:nil];
-				if(regex)
-				{
-					for(NSUInteger i = 0; i < numEvents; ++i)
-					{
-						NSString *path_ns = [paths_ns objectAtIndex:i];
-						
-						NSArray *matches = [regex matchesInString:path_ns
-																							options:0
-																								range:NSMakeRange(0, [path_ns length])];
-						
-						for (NSTextCheckingResult *match in matches)
-						{
-							NSString *event_uid = [path_ns substringWithRange:[match rangeAtIndex:1]];
-							FSEventStreamEventFlags flags = eventFlags[i];
-							method_id_t methodId = getMethodId(path_ns);
-							NSLog(@"flags:%d", (unsigned int)flags);
-							if(methodId)
-							{
-								if((flags & kFSEventStreamEventFlagItemRemoved) == kFSEventStreamEventFlagItemRemoved)
-								{
-									NSLog(@"removed calendar item:\t%@", event_uid);
-									UserInfo userInfo(notification_delete, event_uid, methodId);
-									notifications.push_back(userInfo);
-								}
-								else if((flags & kFSEventStreamEventFlagItemCreated) == kFSEventStreamEventFlagItemCreated)
-								{
-									NSLog(@"created calendar item:\t%@", event_uid);
-									UserInfo userInfo(notification_create, event_uid, methodId);
-									notifications.push_back(userInfo);
-								}
-								else
-								{
-									NSLog(@"modified calendar item:\t%@", event_uid);
-									UserInfo userInfo(notification_update, event_uid, methodId);
-									notifications.push_back(userInfo);
-								}
-							}
-						}
-					}
-				}
-			}//@autoreleasepool
-			listenerLoopExecute();
-			[l unlock];
-		}
-		[l release];
-	}
-	
-	void endMonitor()
-	{
-		//global variables: CalendarWatch::eventStream
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			if(eventStream)
-			{
-				FSEventStreamStop(eventStream);
-				FSEventStreamUnscheduleFromRunLoop (eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-				FSEventStreamInvalidate(eventStream);
-				FSEventStreamRelease(eventStream);
-				eventStream = 0;
-				NSLog(@"stop monitoring paths");
-			}
-			[l unlock];
-		}
-		[l release];
-	}
-	
-	void startMonitor()
-	{
-		FSEventStreamContext context = {0, NULL, NULL, NULL, NULL};
-		
-		NSMutableArray *paths_ns = [[NSMutableArray alloc]init];
-		//global variables: CalendarWatch::paths
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			for(std::map<CUTF8String, method_id_t>::iterator it = CalendarWatch::paths.begin(); it != CalendarWatch::paths.end(); it++)
-			{
-				CUTF8String path = it->first;
-				NSString *path_ns = [[NSString alloc]initWithUTF8String:(const char *)path.c_str()];
-				if(path_ns)
-				{
-					[paths_ns addObject:path_ns];
-					[path_ns release];
-				}
-			}
-			[l unlock];
-		}
-		
-		endMonitor();
-		
-		listenerLoopStart();
-		
-		if([paths_ns count])
-		{
-			if ([l tryLock])
-			{
-				eventStream = FSEventStreamCreate(NULL,
-																					(FSEventStreamCallback)gotEvent,
-																					&context,
-																					(CFArrayRef)paths_ns,
-																					kFSEventStreamEventIdSinceNow,
-																					(CFAbsoluteTime)latency,
-																					kFSEventStreamCreateFlagUseCFTypes
-																					| kFSEventStreamCreateFlagFileEvents
-																					| kFSEventStreamCreateFlagNoDefer
-																					| kFSEventStreamCreateFlagIgnoreSelf
-																					);
-				NSLog(@"start monitoring paths:%@", [paths_ns description]);
-				FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-				FSEventStreamStart(eventStream);
-				
-				[l unlock];
-			}
-			[l release];
-			
-		}
-		[paths_ns release];
-	}
-	
-	bool isInWatch(CUTF8String &path)
-	{
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			auto i = paths.find(path);
-			return (i != paths.end());
-			[l unlock];
-		}
-		[l release];
-		
-		return false;
-	}
-	
-	void addToWatch(CUTF8String &path, method_id_t methodId)
-	{
-		if (!isInWatch(path))
-		{
-			NSLock *l = [[NSLock alloc]init];
-			if ([l tryLock])
-			{
-				paths.insert(std::map<CUTF8String, method_id_t>::value_type(path, methodId));
-				PA_RunInMainProcess((PA_RunInMainProcessProcPtr)startMonitor, NULL);
-				[l unlock];
-			}
-			[l release];
-		}
-	}
-	
-	void removeFromWatch(CUTF8String &path)
-	{
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			paths.erase(path);
-			PA_RunInMainProcess((PA_RunInMainProcessProcPtr)startMonitor, NULL);
-			if(!paths.size())
-			{
-				listenerLoopFinish();
-			}
-			[l unlock];
-		}
-		[l release];
-	}
-	
-	void removeAllFromWatch()
-	{
-		NSLock *l = [[NSLock alloc]init];
-		if ([l tryLock])
-		{
-			paths.clear();
-			PA_RunInMainProcess((PA_RunInMainProcessProcPtr)endMonitor, NULL);
-			listenerLoopFinish();
-			[l unlock];
-		}
-		[l release];
-	}
-	
+    
+    @autoreleasepool
+    {
+        NSArray *paths_ns = (NSArray *)eventPaths;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"([:HexDigit:]{8}-[:HexDigit:]{4}-[:HexDigit:]{4}-[:HexDigit:]{4}-[:HexDigit:]{12})\\.ics$"
+                                                                               options:NSRegularExpressionCaseInsensitive
+                                                                                 error:nil];
+        if(regex)
+        {
+            std::lock_guard<std::mutex> lock(globalMutex);
+            
+            for(NSUInteger i = 0; i < numEvents; ++i)
+            {
+                NSString *path_ns = [paths_ns objectAtIndex:i];
+                
+                NSArray *matches = [regex matchesInString:path_ns
+                                                  options:0
+                                                    range:NSMakeRange(0, [path_ns length])];
+                
+                for (NSTextCheckingResult *match in matches)
+                {
+                    NSString *event_uid = [path_ns substringWithRange:[match rangeAtIndex:1]];
+                    FSEventStreamEventFlags flags = eventFlags[i];
+                    
+                    NSLog(@"flags:%d", (unsigned int)flags);
+                    
+                    if((flags & kFSEventStreamEventFlagItemIsFile) == kFSEventStreamEventFlagItemIsFile)
+                    {
+                        if((flags & kFSEventStreamEventFlagItemRemoved) == kFSEventStreamEventFlagItemRemoved)
+                        {
+                            NSLog(@"removed calendar item:\t%@", event_uid);
+                            UserInfo userInfo(notification_delete, event_uid);
+                            CalendarWatch::notifications.push_back(userInfo);
+                        }
+                        else if((flags & kFSEventStreamEventFlagItemCreated) == kFSEventStreamEventFlagItemCreated)
+                        {
+                            if(((flags & kFSEventStreamEventFlagItemModified) == kFSEventStreamEventFlagItemModified)
+                               ||((flags & kFSEventStreamEventFlagItemInodeMetaMod) == kFSEventStreamEventFlagItemInodeMetaMod))
+                            {
+                                NSLog(@"modified calendar item:\t%@", event_uid);
+                                UserInfo userInfo(notification_update, event_uid);
+                                CalendarWatch::notifications.push_back(userInfo);
+                            }else{
+                                NSLog(@"created calendar item:\t%@", event_uid);
+                                UserInfo userInfo(notification_create, event_uid);
+                                CalendarWatch::notifications.push_back(userInfo);
+                            }
+                        }
+                        else
+                        {
+                            NSLog(@"modified calendar item:\t%@", event_uid);
+                            UserInfo userInfo(notification_update, event_uid);
+                            CalendarWatch::notifications.push_back(userInfo);
+                        }
+                    }
+                }
+            }
+        }
+    }//@autoreleasepool
+    listenerLoopExecute();
 }
+
+@implementation Listener
+
+- (id)init
+{
+    if(!(self = [super init])) return self;
+    
+    /* setup object instance here */
+    
+    stream = 0;
+
+    return self;
+}
+
+- (void)dealloc
+{
+    if(stream)
+    {
+        FSEventStreamStop(stream);
+        FSEventStreamUnscheduleFromRunLoop (stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(stream);
+        FSEventStreamRelease(stream);
+        stream = 0;
+    }
+    
+    [super dealloc];
+}
+
+- (void)setPaths
+{
+    NSMutableArray *paths = [[NSMutableArray alloc]init];
+    
+    @autoreleasepool
+    {
+        NSString *userCalendarPath = [NSString stringWithFormat:@"%@/Calendars/",
+                                      [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)
+                                       objectAtIndex:0]];
+        ARRAY_TEXT uids;
+        ARRAY_TEXT titles;
+        
+        sqlite3_get_calendars([NSString stringWithFormat:@"%@Calendar Cache", userCalendarPath], uids, titles);
+        
+        NSUInteger size = uids.getSize();
+        
+        for(NSUInteger i = 0; i < size; ++i)
+        {
+            CUTF8String calendar_uid, group_uid;
+            uids.copyUTF8StringAtIndex(&calendar_uid, i);
+            
+            sqlite3_get_calendar_group_uid([NSString stringWithFormat:@"%@Calendar Cache", userCalendarPath], calendar_uid, group_uid);
+            
+            NSFileManager *defaultManager = [[NSFileManager alloc]init];
+            
+            NSString *path_caldav = [NSString stringWithFormat:@"%@%s%s/%s%s", userCalendarPath, group_uid.c_str(), ".caldav", calendar_uid.c_str(), ".calendar"];
+            NSString *path_exchange = [NSString stringWithFormat:@"%@%s%s/%s%s", userCalendarPath, group_uid.c_str(), ".exchange", calendar_uid.c_str(), ".calendar"];
+            
+            BOOL isDirectory;
+            if(([defaultManager fileExistsAtPath:path_caldav isDirectory:&isDirectory]) && isDirectory)
+            {
+                [paths addObject:[NSString stringWithFormat:@"%@/Events/", path_caldav]];
+            }
+            else if(([defaultManager fileExistsAtPath:path_exchange isDirectory:&isDirectory]) && isDirectory)
+            {
+                [paths addObject:[NSString stringWithFormat:@"%@/Events/", path_caldav]];
+            }
+            [defaultManager release];
+        }
+        
+    }//@autoreleasepool
+    
+    if([paths count])
+    {
+        FSEventStreamContext context = {0, NULL, NULL, NULL, NULL};
+        NSTimeInterval latency = CalendarWatch::latency;
+        
+        stream = FSEventStreamCreate(NULL,
+                                     (FSEventStreamCallback)gotEvent,
+                                     &context,
+                                     (CFArrayRef)paths,
+                                     kFSEventStreamEventIdSinceNow,
+                                     (CFAbsoluteTime)latency,
+                                     kFSEventStreamCreateFlagUseCFTypes
+                                     | kFSEventStreamCreateFlagFileEvents
+                                     | kFSEventStreamCreateFlagNoDefer
+                                     | kFSEventStreamCreateFlagIgnoreSelf
+                                     );
+        
+        NSLog(@"start monitoring paths:%@", [paths description]);
+        FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+        FSEventStreamStart(stream);
+    }
+    
+    [paths release];
+}
+
+@end
 
 #pragma mark -
 
@@ -415,13 +369,13 @@ void onCloseProcess()
 {
 	if(isProcessOnExit())
 	{
-		CalendarWatch::removeAllFromWatch();
+        listenerLoopFinish();
 	}
 }
 
 void onStartup()
 {
-	
+
 }
 
 #pragma mark -
@@ -437,130 +391,254 @@ void generateUuid(C_TEXT &returnValue)
 #endif
 }
 
+#pragma mark -
+
+void listener_start()
+{
+    if(!CalendarWatch::listener)
+    {
+        CalendarWatch::listener = [[Listener alloc]init];
+        [CalendarWatch::listener setPaths];
+    }
+}
+
+void listener_end()
+{
+    /* must do this in main process */
+    [CalendarWatch::listener release];
+    CalendarWatch::listener = nil;
+}
+
+#pragma mark -
+
 void listenerLoop()
 {
-	CalendarWatch::monitorProcessId = PA_GetCurrentProcessNumber();
-	NSLog(@"%@", @"listenerLoop:start");
-	
-	NSLock *l = [[NSLock alloc]init];
-	
-	while((!CalendarWatch::processShouldTerminate) && !PA_IsProcessDying())
-	{
-		PA_FreezeProcess(PA_GetCurrentProcessNumber());
-		PA_YieldAbsolute();
-		
-		//global variables: CalendarWatch::notifications,processShouldTerminate
-		if ([l tryLock])
-		{
-			if(!CalendarWatch::processShouldTerminate)
-			{
-				if(CalendarWatch::notifications.size())
-				{
-					C_TEXT processName;
-					generateUuid(processName);
-					PA_NewProcess((void *)listenerLoopExecuteMethod,
-												CalendarWatch::stachSize,
-												(PA_Unichar *)processName.getUTF16StringPtr());
-				}
-			}
-			[l unlock];
-		}
-	}//while(!CalendarWatch::processShouldTerminate)
-	CalendarWatch::monitorProcessId = 0;
-	
-	PA_KillProcess();
-	NSLog(@"%@", @"listenerLoop:end");
-	[l release];
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex3);
+        
+        CalendarWatch::PROCESS_SHOULD_TERMINATE = false;
+    }
+    
+    /* Current process returns 0 for PA_NewProcess */
+	PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+    
+    while(!PA_IsProcessDying())
+    {
+//        PA_YieldAbsolute();
+        
+        bool PROCESS_SHOULD_RESUME;
+        bool PROCESS_SHOULD_TERMINATE;
+        
+        if(1)
+        {
+            PROCESS_SHOULD_RESUME = CalendarWatch::PROCESS_SHOULD_RESUME;
+            PROCESS_SHOULD_TERMINATE = CalendarWatch::PROCESS_SHOULD_TERMINATE;
+        }
+        
+        if(PROCESS_SHOULD_RESUME)
+        {
+            size_t EVENT_IDS;
+            
+            if(1)
+            {
+                std::lock_guard<std::mutex> lock(globalMutex);
+                
+                EVENT_IDS = CalendarWatch::notifications.size();
+            }
+            
+            while(EVENT_IDS)
+            {
+//                PA_YieldAbsolute();
+                
+                if(CALLBACK_IN_NEW_PROCESS)
+                {
+                    C_TEXT processName;
+                    generateUuid(processName);
+                    PA_NewProcess((void *)listenerLoopExecuteMethod,
+                                  CalendarWatch::MONITOR_PROCESS_STACK_SIZE,
+                                  (PA_Unichar *)processName.getUTF16StringPtr());
+                }else
+                {
+                    listenerLoopExecuteMethod();
+                }
+                
+                if(PROCESS_SHOULD_TERMINATE)
+                    break;
+                
+                if(1)
+                {
+                    std::lock_guard<std::mutex> lock(globalMutex);
+                    
+                    EVENT_IDS = CalendarWatch::notifications.size();
+                    PROCESS_SHOULD_TERMINATE = CalendarWatch::PROCESS_SHOULD_TERMINATE;
+                }
+            }
+            
+            if(1)
+            {
+                std::lock_guard<std::mutex> lock(globalMutex4);
+                
+                CalendarWatch::PROCESS_SHOULD_RESUME = false;
+            }
+            
+        }else
+        {
+            PA_PutProcessToSleep(currentProcessNumber, CALLBACK_SLEEP_TIME);
+        }
+        
+        if(1)
+        {
+            PROCESS_SHOULD_TERMINATE = CalendarWatch::PROCESS_SHOULD_TERMINATE;
+        }
+        
+        if(PROCESS_SHOULD_TERMINATE)
+            break;
+        
+    }
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex);
+        
+        CalendarWatch::notifications.clear();
+    }
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex2);
+        
+        CalendarWatch::WATCH_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
+    }
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex1);
+        
+        CalendarWatch::METHOD_PROCESS_ID = 0;
+    }
+    
+    PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_end, NULL);
+    
+    PA_KillProcess();
+    
 }
 
 void listenerLoopStart()
 {
-	//global variables: CalendarWatch::monitorProcessId,processShouldTerminate
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		if(!CalendarWatch::monitorProcessId)
-		{
-			CalendarWatch::processShouldTerminate = false;
-			PA_NewProcess((void *)listenerLoop,
-										CalendarWatch::stachSize,
-										CalendarWatch::processName);
-		}
-		[l unlock];
-	}
-	[l release];
+    if (!CalendarWatch::METHOD_PROCESS_ID)
+    {
+        PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_start, NULL);
+        
+        std::lock_guard<std::mutex> lock(globalMutex1);
+        
+        CalendarWatch::METHOD_PROCESS_ID = PA_NewProcess((void *)listenerLoop,
+                                                         CalendarWatch::MONITOR_PROCESS_STACK_SIZE,
+                                                         CalendarWatch::MONITOR_PROCESS_NAME);
+    }
 }
- 
+
 void listenerLoopFinish()
 {
-	//global variables: CalendarWatch::monitorProcessId,processShouldTerminate
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		CalendarWatch::processShouldTerminate = true;
-		PA_UnfreezeProcess(CalendarWatch::monitorProcessId);
-		[l unlock];
-	}
-	[l release];
+    if(CalendarWatch::METHOD_PROCESS_ID)
+    {
+        if(1)
+        {
+            std::lock_guard<std::mutex> lock(globalMutex3);
+            
+            CalendarWatch::PROCESS_SHOULD_TERMINATE = true;
+        }
+        
+        if(1)
+        {
+            std::lock_guard<std::mutex> lock(globalMutex4);
+            
+            CalendarWatch::PROCESS_SHOULD_RESUME = true;
+        }
+    }
 }
 
 void listenerLoopExecute()
 {
-	//global variables: CalendarWatch::monitorProcessId,processShouldTerminate
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		CalendarWatch::processShouldTerminate = false;
-		PA_UnfreezeProcess(CalendarWatch::monitorProcessId);
-		[l unlock];
-	}
-	[l release];
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex3);
+        
+        CalendarWatch::PROCESS_SHOULD_TERMINATE = false;
+    }
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex4);
+        
+        CalendarWatch::PROCESS_SHOULD_RESUME = true;
+    }
 }
 
 void listenerLoopExecuteMethod()
 {
-	//global variables: CalendarWatch::notifications
-	NSLock *l = [[NSLock alloc]init];
-	if ([l tryLock])
-	{
-		if(CalendarWatch::notifications.size())
-		{
-			std::vector<CalendarWatch::UserInfo>::iterator it = CalendarWatch::notifications.begin();
-			
-			CalendarWatch::UserInfo userInfo = *it;
-			
-			notification_t notification;
-			CUTF16String eventId;
-			method_id_t methodId;
-			
-			userInfo.get(&notification, eventId, &methodId);
-			
-			PA_Variable	params[2];
-			
-			params[0] = PA_CreateVariable(eVK_Unistring);
-			params[1] = PA_CreateVariable(eVK_Longint);
-			
-			PA_Unistring event = PA_CreateUnistring((PA_Unichar *)eventId.c_str());
-			PA_SetStringVariable(&params[0], &event);
-			PA_SetLongintVariable(&params[1], notification);
-			
-			CalendarWatch::notifications.erase(it);
-			
-			PA_ExecuteMethodByID(methodId, params, 2);
-			
-			PA_ClearVariable(&params[0]);
-			PA_ClearVariable(&params[1]);
-		}
-		[l unlock];
-	}
-	[l release];
+    notification_t notification;
+    CUTF16String eventId;
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex);
+        
+        std::vector<UserInfo>::iterator e = CalendarWatch::notifications.begin();
+        
+        UserInfo userInfo = *e;
+        
+        userInfo.get(&notification, eventId);
+        
+        CalendarWatch::notifications.erase(e);
+    }
+    
+    method_id_t methodId = PA_GetMethodID((PA_Unichar *)CalendarWatch::WATCH_METHOD.getUTF16StringPtr());
+    
+    if(methodId)
+    {
+        PA_Variable    params[2];
+        params[0] = PA_CreateVariable(eVK_Unistring);
+        params[1] = PA_CreateVariable(eVK_Longint);
+        PA_Unistring event = PA_CreateUnistring((PA_Unichar *)eventId.c_str());
+        
+        PA_SetStringVariable(&params[0], &event);
+        PA_SetLongintVariable(&params[1], notification);
+        
+        PA_ExecuteMethodByID(methodId, params, 2);
+        
+        PA_ClearVariable(&params[0]);
+        PA_ClearVariable(&params[1]);
+    }else
+    {
+        PA_Variable    params[3];
+        params[1] = PA_CreateVariable(eVK_Unistring);
+        params[2] = PA_CreateVariable(eVK_Unistring);
+        params[3] = PA_CreateVariable(eVK_Longint);
+        PA_Unistring event = PA_CreateUnistring((PA_Unichar *)eventId.c_str());
+        
+        PA_SetStringVariable(&params[1], &event);
+        PA_SetLongintVariable(&params[2], notification);
+        
+        params[0] = PA_CreateVariable(eVK_Unistring);
+        PA_Unistring method = PA_CreateUnistring((PA_Unichar *)CalendarWatch::WATCH_METHOD.getUTF16StringPtr());
+        PA_SetStringVariable(&params[0], &method);
+        
+        /* execute method */
+        PA_ExecuteCommandByID(1007, params, 3);
+        
+        PA_ClearVariable(&params[0]);
+        PA_ClearVariable(&params[1]);
+        PA_ClearVariable(&params[2]);
+    }
 }
+
+#pragma mark -
 
 namespace iCal
 {
 	RecordSpecifier recordSpecifier;
 	RecordSpecifiers recordSpecifiers;
-	C_TEXT listenerMethodName;
 	
 	NSString *copyAttendeesDictionary(NSArray *attendees){
 		NSString *attendeesData = nil;
@@ -862,7 +940,6 @@ namespace iCal
                                     nthWeekDaysOfTheMonth = recurrenceRule.nthWeekDaysOfTheMonth ? recurrenceRule.nthWeekDaysOfTheMonth : @[];
                                     monthsOfTheYear = recurrenceRule.monthsOfTheYear ? recurrenceRule.monthsOfTheYear : @[];
                                     
-                                    #define DATE_FORMAT_ISO_GMT @"yyyy-MM-dd'T'HH:mm:ss'Z'"
                                     NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
                                     [GMT setDateFormat:DATE_FORMAT_ISO_GMT];
                                     [GMT setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -2612,95 +2689,257 @@ namespace iCal
 			recordSpecifier.isDone = true;
 		}
 	}
-	
-	NSString * appleScriptExecuteFunction(NSString *fileName, NSString *functionName, NSString *argument1, NSString *argument2, NSString *argument3){
-		NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.4DPlugin.iCal"];
-		NSString *returnString = nil;
-		
-		if(thisBundle){
-			NSString *scriptPath = [thisBundle
-															pathForResource:fileName
-															ofType:@"scpt"
-															inDirectory:@"scpt"];
-			
-			if(scriptPath){
-				NSURL *scriptUrl = [[NSURL alloc]initFileURLWithPath:scriptPath];
-				if(scriptUrl){
-					
-					NSDictionary *errInfo;
-					NSAppleScript *scriptObject = [[NSAppleScript alloc]initWithContentsOfURL:scriptUrl error:&errInfo];
-					BOOL scriptIsCompiled = NO;
-					
-					if(scriptObject){
-						
-						scriptIsCompiled = [scriptObject isCompiled];
-						
-						if(!scriptIsCompiled){
-							scriptIsCompiled = [scriptObject compileAndReturnError:&errInfo];
-						}
-						
-						if(scriptIsCompiled){
-							
-							
-							if((!argument1) && (!argument2) && (!argument3)){
-								
-								NSAppleEventDescriptor *returnValue = [scriptObject executeAndReturnError:&errInfo];
-								if(returnValue)
-									returnString = [returnValue stringValue];
-								
-							}else{
-								
-								NSAppleEventDescriptor *parameters = [NSAppleEventDescriptor listDescriptor];
-								
-								if(argument1){
-									NSAppleEventDescriptor *param1 = [NSAppleEventDescriptor descriptorWithString:argument1];
-									[parameters insertDescriptor:param1 atIndex:1];//The list indices are one-based.
-									if(argument2){
-										NSAppleEventDescriptor *param2 = [NSAppleEventDescriptor descriptorWithString:argument2];
-										[parameters insertDescriptor:param2 atIndex:2];//The list indices are one-based.
-										if(argument3){
-											NSAppleEventDescriptor *param3 = [NSAppleEventDescriptor descriptorWithString:argument3];
-											[parameters insertDescriptor:param3 atIndex:3];//The list indices are one-based.
-										}
-									}
-								}
-								
-								ProcessSerialNumber psn = {0, kCurrentProcess};
-								NSAppleEventDescriptor *target =
-								[NSAppleEventDescriptor
-								 descriptorWithDescriptorType:typeProcessSerialNumber
-								 bytes:&psn
-								 length:sizeof(ProcessSerialNumber)];
-								
-								NSAppleEventDescriptor *handler = [NSAppleEventDescriptor descriptorWithString:functionName];//the routine name must be in lower case.
-								
-								NSAppleEventDescriptor *event =
-								[NSAppleEventDescriptor appleEventWithEventClass:kASAppleScriptSuite
-																												 eventID:kASSubroutineEvent
-																								targetDescriptor:target
-																												returnID:kAutoGenerateReturnID
-																									 transactionID:kAnyTransactionID];
-								
-								[event setParamDescriptor:handler forKeyword:keyASSubroutineName];
-								[event setParamDescriptor:parameters forKeyword:keyDirectObject];
-								
-								NSAppleEventDescriptor *returnValue = [scriptObject executeAppleEvent:event error:&errInfo];
-								if(returnValue)
-									returnString = [returnValue stringValue];
-								
-							}
-							
-						}
-						
-						[scriptObject release];
-					}
-					[scriptUrl release];
-				}
-			}
-		}
-		return returnString;
-	}
+    
+    void reloadCalendars()
+    {
+        iCalApplication *iCal = [SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
+        [iCal reloadCalendars];
+    }
 
+    NSString *emailRegex =
+    @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
+    @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
+    @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"
+    @"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"
+    @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
+    @"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
+    @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+    
+    NSPredicate *emailPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", emailRegex];
+    /* https://stackoverflow.com/questions/800123/what-are-best-practices-for-validating-email-addresses-on-ios-2-0 */
+    
+    #define CMD_DELAY_PROCESS 323
+    
+    void PA_PutProcessToSleep2(PA_long32 process, double delay)
+    {
+        PA_Variable params[2];
+        params[0] = PA_CreateVariable(eVK_Longint);
+        PA_SetLongintVariable(&params[0], process);
+        
+        params[1] = PA_CreateVariable(eVK_Real);
+        PA_SetRealVariable(&params[1], delay);
+        
+        PA_ExecuteCommandByID(CMD_DELAY_PROCESS, params, 2);
+        
+        PA_ClearVariable(&params[0]);
+        PA_ClearVariable(&params[1]);
+    }
+    
+#pragma mark AppleScript v2
+
+    void show_task(NSString *calendar_id,
+                    NSString *task_id)
+    {
+        NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.iCal"];
+        if(thisBundle)
+        {
+            NSString *scriptPath = [thisBundle
+                                    pathForResource:@"show_task"
+                                    ofType:@"scpt"
+                                    inDirectory:@"scpt"];
+            if(scriptPath)
+            {
+                NSTask *task = [[NSTask alloc]init];
+                task.launchPath = @"/usr/bin/osascript";
+                
+                task.arguments = @[scriptPath,
+                                   calendar_id,
+                                   task_id];
+                
+                BOOL __block isRunning = YES;
+                
+                task.terminationHandler = ^(NSTask *task)
+                {
+                    NSLog(@"process %d terminated with status %d", [task processIdentifier], [task terminationStatus]);
+                    isRunning = NO;
+                };
+                [task launch];
+                
+                PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+                
+                while(isRunning)
+                {
+                    PA_PutProcessToSleep2(currentProcessNumber, 6);//100ms
+                }
+                [task release];
+            }
+        }
+    }
+    
+    void show_event(NSString *calendar_id,
+                    NSString *event_id)
+    {
+        NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.iCal"];
+        if(thisBundle)
+        {
+            NSString *scriptPath = [thisBundle
+                                    pathForResource:@"show_event"
+                                    ofType:@"scpt"
+                                    inDirectory:@"scpt"];
+            if(scriptPath)
+            {
+                NSTask *task = [[NSTask alloc]init];
+                task.launchPath = @"/usr/bin/osascript";
+                
+                task.arguments = @[scriptPath,
+                                   calendar_id,
+                                   event_id];
+                
+                BOOL __block isRunning = YES;
+                
+                task.terminationHandler = ^(NSTask *task)
+                {
+                    NSLog(@"process %d terminated with status %d", [task processIdentifier], [task terminationStatus]);
+                    isRunning = NO;
+                };
+                [task launch];
+                
+                PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+                
+                while(isRunning)
+                {
+                    PA_PutProcessToSleep2(currentProcessNumber, 6);//100ms
+                }
+                [task release];
+            }
+        }
+    }
+    
+    void show_date(NSString *yyyy, NSString *mm, NSString *dd)
+    {
+        NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.iCal"];
+        if(thisBundle)
+        {
+            NSString *scriptPath = [thisBundle
+                                    pathForResource:@"show_date"
+                                    ofType:@"scpt"
+                                    inDirectory:@"scpt"];
+            if(scriptPath)
+            {
+                NSTask *task = [[NSTask alloc]init];
+                task.launchPath = @"/usr/bin/osascript";
+                
+                task.arguments = @[scriptPath,
+                                   yyyy,
+                                   mm,
+                                   dd];
+                
+                BOOL __block isRunning = YES;
+                
+                task.terminationHandler = ^(NSTask *task)
+                {
+                    NSLog(@"process %d terminated with status %d", [task processIdentifier], [task terminationStatus]);
+                    isRunning = NO;
+                };
+                [task launch];
+                
+                PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+                
+                while(isRunning)
+                {
+                    PA_PutProcessToSleep2(currentProcessNumber, 6);//100ms
+                }
+                [task release];
+            }
+        }
+    }
+    
+    void switch_view(NSString *view)
+    {
+        NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.iCal"];
+        if(thisBundle)
+        {
+            NSString *scriptPath = [thisBundle
+                                    pathForResource:@"switch_view"
+                                    ofType:@"scpt"
+                                    inDirectory:@"scpt"];
+            if(scriptPath)
+            {
+                NSTask *task = [[NSTask alloc]init];
+                task.launchPath = @"/usr/bin/osascript";
+                
+                task.arguments = @[scriptPath,
+                                   view];
+                
+                BOOL __block isRunning = YES;
+                
+                task.terminationHandler = ^(NSTask *task)
+                {
+                    NSLog(@"process %d terminated with status %d", [task processIdentifier], [task terminationStatus]);
+                    isRunning = NO;
+                };
+                [task launch];
+                
+                PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+                
+                while(isRunning)
+                {
+                    PA_PutProcessToSleep2(currentProcessNumber, 6);//100ms
+                }
+                [task release];
+            }
+        }
+    }
+    
+    void add_attendee(NSString *calendar_id,
+                      NSString *event_id,
+                      NSString *attendee_name,
+                      NSString *attendee_email,
+                      NSString *attendee_status)
+    {
+        NSBundle *thisBundle = [NSBundle bundleWithIdentifier:@"com.4D.iCal"];
+        if(thisBundle)
+        {
+            NSString *scriptPath = [thisBundle
+                                    pathForResource:@"add_attendee"
+                                    ofType:@"scpt"
+                                    inDirectory:@"scpt"];
+            if(scriptPath)
+            {
+                if(attendee_email)
+                {
+                    if([attendee_email length])
+                    {
+                        if([emailPredicate evaluateWithObject:attendee_email])
+                        {
+                            NSTask *task = [[NSTask alloc]init];
+                            task.launchPath = @"/usr/bin/osascript";
+                            
+                            task.arguments = @[scriptPath,
+                                               calendar_id,
+                                               event_id,
+                                               attendee_name ? attendee_name : @"",
+                                               attendee_email,
+                                               attendee_status ? attendee_status : @""];
+                            
+                            BOOL __block isRunning = YES;
+                            
+                            task.terminationHandler = ^(NSTask *task)
+                            {
+                                NSLog(@"process %d terminated with status %d", [task processIdentifier], [task terminationStatus]);
+                                isRunning = NO;
+                            };
+                            [task launch];
+                            
+                            PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+                            
+                            while(isRunning)
+                            {
+                                PA_PutProcessToSleep2(currentProcessNumber, 6);//100ms
+                            }
+                            [task release];
+                            
+                        }else{
+                            NSLog(@"invalid email string %@", attendee_email);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+#pragma mark -
+    
 	void countTaskAlarms(){
 		C_LONGINT returnValue;
 		CalCalendarStore *defaultCalendarStore = getCalendarStore(returnValue);
@@ -2814,7 +3053,11 @@ namespace iCal
 						break;
 					case 3://relativeTrigger
 						if(alarm.relativeTrigger){
-							recordSpecifier.value.setUTF16String([NSString stringWithFormat:@"%f", alarm.relativeTrigger]);
+                            @autoreleasepool
+                            {
+                                NSString *relativeTrigger = [NSString stringWithFormat:@"%f", alarm.relativeTrigger];
+                                recordSpecifier.value.setUTF16String(relativeTrigger);
+                            }
 							recordSpecifier.isOK = true;
 						}
 						break;
@@ -2840,8 +3083,6 @@ namespace iCal
 	}
 	
 }
-
-
 
 #pragma mark -
 
@@ -3098,7 +3339,28 @@ void CommandDispatcher (PA_long32 pProcNum, sLONG_PTR *pResult, PackagePtr pPara
 		case 50 :
 			iCal_Set_event_properties(pResult, pParams);
 			break;
-
+            
+// --- v2
+            
+        case 51 :
+            iCal_Get_calendars(pResult, pParams);
+            break;
+            
+        case 52 :
+            iCal_Get_timezones(pResult, pParams);
+            break;
+            
+        case 53 :
+            iCal_Add_event(pResult, pParams);
+            break;
+            
+        case 54 :
+            iCal_Modify_event(pResult, pParams);
+            break;
+            
+        case 55 :
+            iCal_Find_event(pResult, pParams);
+            break;
 	}
 }
 
@@ -4956,40 +5218,48 @@ void iCal_LAUNCH(sLONG_PTR *pResult, PackagePtr pParams){
 
 void iCal_SHOW_EVENT(sLONG_PTR *pResult, PackagePtr pParams){
 	
-	C_TEXT Param1;
-	
-	Param1.fromParamAtIndex(pParams, 1);
-	
-	NSString *eventId = Param1.copyUTF16String();
-	C_LONGINT _returnValue;
-	CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(_returnValue);
-	if(defaultCalendarStore){
-		CalEvent *event = [defaultCalendarStore eventWithUID:eventId occurrence:nil];
-		if(event){
-			NSString *calendarId =event.calendar.uid;
-			iCal::appleScriptExecuteFunction(@"show_event", @"show_event", calendarId, eventId, nil);
-		}
-	}
-	[eventId release];
+    C_TEXT Param1;
+    
+    Param1.fromParamAtIndex(pParams, 1);
+    
+    NSString *eventId = Param1.copyUTF16String();
+    
+    C_LONGINT _returnValue;
+    CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(_returnValue);
+    
+    if(defaultCalendarStore)
+    {
+        CalEvent *event = [defaultCalendarStore eventWithUID:eventId occurrence:nil];
+        if(event)
+        {
+            iCal::show_event(event.calendar.uid, event.uid);
+        }
+    }
+    
+    [eventId release];
 }
 
 void iCal_SHOW_TASK(sLONG_PTR *pResult, PackagePtr pParams){
 	
-	C_TEXT Param1;
-	
-	Param1.fromParamAtIndex(pParams, 1);
-	
-	NSString *taskId = Param1.copyUTF16String();
-	C_LONGINT _returnValue;
-	CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(_returnValue);
-	if(defaultCalendarStore){
-		CalTask *task = [defaultCalendarStore taskWithUID:taskId];
-		if(task){
-			NSString *calendarId =task.calendar.uid;
-			iCal::appleScriptExecuteFunction(@"show_task", @"show_task", calendarId, taskId, nil);
-		}
-	}
-	[taskId release];
+    C_TEXT Param1;
+
+    Param1.fromParamAtIndex(pParams, 1);
+
+    NSString *taskId = Param1.copyUTF16String();
+    
+    C_LONGINT _returnValue;
+    CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(_returnValue);
+    
+    if(defaultCalendarStore)
+    {
+        CalTask *task = [defaultCalendarStore taskWithUID:taskId];
+        if(task)
+        {
+            iCal::show_task(task.calendar.uid, task.uid);
+        }
+    }
+    
+    [taskId release];
 }
 
 void iCal_SET_VIEW(sLONG_PTR *pResult, PackagePtr pParams){
@@ -4998,198 +5268,137 @@ void iCal_SET_VIEW(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	if(useAppleScript)
 	{
-		C_LONGINT Param1;
-		
-		Param1.fromParamAtIndex(pParams, 1);
-		
-		switch (Param1.getIntValue()){
-			case 0:
-				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Day", nil, nil);
-				break;
-			case 1:
-				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Week", nil, nil);
-				break;
-			case 2:
-				iCal::appleScriptExecuteFunction(@"switch_view", @"switch_view", @"Month", nil, nil);
-				break;
-			default:
-				break;
-		}
-	}
-	
-	//using SBApplication in main thread was crashing 4D cocoa on quit (autoreleasepool violation)
-	iCalApplication *iCal = [SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
-	
-	C_LONGINT Param1;
-	
-	Param1.fromParamAtIndex(pParams, 1);
-	
-	switch (Param1.getIntValue()){
-		case 0:
-			[iCal switchViewTo:iCalCALViewTypeForScriptingDayView];
-			break;
-		case 1:
-			[iCal switchViewTo:iCalCALViewTypeForScriptingWeekView];
-			break;
-		case 2:
-			[iCal switchViewTo:iCalCALViewTypeForScriptingMonthView];
-			break;
-		default:
-			break;
-	}
-	
+        C_LONGINT Param1;
+        
+        Param1.fromParamAtIndex(pParams, 1);
+        
+        switch (Param1.getIntValue()){
+            case 0:
+                iCal::switch_view(@"Day");
+                break;
+            case 1:
+                iCal::switch_view(@"Week");
+                break;
+            case 2:
+                iCal::switch_view(@"Month");
+                break;
+            default:
+                break;
+        }
+        
+    }else{
+        
+        iCalApplication *iCal = [SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
+        
+        C_LONGINT Param1;
+        
+        Param1.fromParamAtIndex(pParams, 1);
+        
+        switch (Param1.getIntValue()){
+            case 0:
+                [iCal switchViewTo:iCalCALViewTypeForScriptingDayView];
+                break;
+            case 1:
+                [iCal switchViewTo:iCalCALViewTypeForScriptingWeekView];
+                break;
+            case 2:
+                [iCal switchViewTo:iCalCALViewTypeForScriptingMonthView];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void iCal_SHOW_DATE(sLONG_PTR *pResult, PackagePtr pParams){
 	
 	C_DATE Param1;
-	
 	Param1.fromParamAtIndex(pParams, 1);
 	
-	NSString *yearValue = [[NSNumber numberWithShort:Param1.getYear()]stringValue];
-	NSString *monthValue = [[NSNumber numberWithShort:Param1.getMonth()]stringValue];
-	NSString *dayValue = [[NSNumber numberWithShort:Param1.getDay()]stringValue];
-	
-	iCal::appleScriptExecuteFunction(@"show_date", @"show_date", yearValue, monthValue, dayValue);
+    short yyyy = Param1.getYear();
+    short mm = Param1.getMonth();
+    short dd = Param1.getDay();
+    
+    BOOL useAppleScript = false;
+    
+    if(useAppleScript)
+    {
+        NSString *yearValue = [[NSNumber numberWithShort:yyyy] stringValue];
+        NSString *monthValue = [[NSNumber numberWithShort:mm] stringValue];
+        NSString *dayValue = [[NSNumber numberWithShort:dd] stringValue];
+        
+        iCal::show_date(yearValue, monthValue, dayValue);
+        
+    }else
+    {
+        NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
+        
+        [GMT setDateFormat:DATE_FORMAT_ISO];
+        [GMT setTimeZone:[NSTimeZone localTimeZone]];
+        
+        @autoreleasepool
+        {
+            iCalApplication *iCal = [SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
+
+            NSString *dateString = [NSString stringWithFormat:@"%04d-%02d-%02dT00:00:00", yyyy, mm, dd];
+            NSDate *date = [GMT dateFromString:dateString];
+            
+            if(date)
+            {
+                [iCal viewCalendarAt:date];
+            }
+        }
+        [GMT release];
+    }
 }
 
 #pragma mark Not Implemented
 
 void iCal_app_Get_task_property(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	C_TEXT Param1;
-	C_TEXT Param2;
-	C_TEXT Param3;
-	C_LONGINT returnValue;
 
-	Param1.fromParamAtIndex(pParams, 1);
-	Param2.fromParamAtIndex(pParams, 2);
-	Param3.fromParamAtIndex(pParams, 3);
-
-	// --- write the code of iCal_app_Get_task_property here...
-
-	returnValue.setReturn(pResult);
 }
 
 void iCal_app_Get_event_property(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	C_TEXT Param1;
-	C_TEXT Param2;
-	C_TEXT Param3;
-	C_LONGINT returnValue;
 
-	Param1.fromParamAtIndex(pParams, 1);
-	Param2.fromParamAtIndex(pParams, 2);
-	Param3.fromParamAtIndex(pParams, 3);
-
-	// --- write the code of iCal_app_Get_event_property here...
-
-	returnValue.setReturn(pResult);
 }
 
-#pragma mark -
+#pragma mark Notification v2
 
 // --------------------------------- Notification ---------------------------------
 
-void get_calendar_paths(ARRAY_TEXT &paths)
-{
-	@autoreleasepool
-	{
-		NSString *userCalendarPath = [NSString stringWithFormat:@"%@/Calendars/",
-																	[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)
-																	 objectAtIndex:0]];
-		
-		ARRAY_TEXT uids;
-		ARRAY_TEXT titles;
-		
-		paths.setSize(1);
-		uids.setSize(1);
-		titles.setSize(1);
-		
-		sqlite3_get_calendars([NSString stringWithFormat:@"%@Calendar Cache", userCalendarPath], uids, titles);
-		
-		NSUInteger size = uids.getSize();
-		
-		for(NSUInteger i = 0; i < size; ++i)
-		{
-			CUTF8String calendar_uid, group_uid;
-			uids.copyUTF8StringAtIndex(&calendar_uid, i);
-			
-			sqlite3_get_calendar_group_uid([NSString stringWithFormat:@"%@Calendar Cache", userCalendarPath], calendar_uid, group_uid);
-			
-			NSFileManager *defaultManager = [[NSFileManager alloc]init];
-			
-			NSString *path_caldav = [NSString stringWithFormat:@"%@%s%s/%s%s", userCalendarPath, group_uid.c_str(), ".caldav", calendar_uid.c_str(), ".calendar"];
-			NSString *path_exchange = [NSString stringWithFormat:@"%@%s%s/%s%s", userCalendarPath, group_uid.c_str(), ".exchange", calendar_uid.c_str(), ".calendar"];
-			
-			BOOL isDirectory;
-			if(([defaultManager fileExistsAtPath:path_caldav isDirectory:&isDirectory]) && isDirectory)
-			{
-				paths.appendUTF16String([NSString stringWithFormat:@"%@/Events/", path_caldav]);
-			}
-			else if(([defaultManager fileExistsAtPath:path_exchange isDirectory:&isDirectory]) && isDirectory)
-			{
-				paths.appendUTF16String([NSString stringWithFormat:@"%@/Events/", path_exchange]);
-			}
-			[defaultManager release];
-		}
-		
-	}//@autoreleasepool
-}
-
 void iCal_Set_notification_method(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	C_TEXT methodName;
-	C_LONGINT returnValue;
+	C_TEXT Param1;
 	
-	methodName.fromParamAtIndex(pParams, 1);
-	
-	int success = 0;
-	
-	if(!methodName.getUTF16Length())
-	{
-		CalendarWatch::removeAllFromWatch();
-		iCal::listenerMethodName.setUTF16String(methodName.getUTF16StringPtr(), methodName.getUTF16Length());
-		success = 1;
+	Param1.fromParamAtIndex(pParams, 1);
+    
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex2);
+        
+        if(!Param1.getUTF16Length())
+        {
+            CalendarWatch::WATCH_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
+            
+            listenerLoopFinish();
+        }else{
+            CalendarWatch::WATCH_METHOD.setUTF16String(Param1.getUTF16StringPtr(), Param1.getUTF16Length());
 
-	}else{
-		
-		method_id_t methodId = PA_GetMethodID((PA_Unichar *)methodName.getUTF16StringPtr());
-		if(methodId)
-		{
-			CalendarWatch::removeAllFromWatch();
-			
-			ARRAY_TEXT paths;
-			get_calendar_paths(paths);
-			
-			for(NSUInteger i = 1; i < paths.getSize(); ++i)
-			{
-				CUTF8String path;
-				paths.copyUTF8StringAtIndex(&path, i);
-				CalendarWatch::addToWatch(path, methodId);
-			}
-			
-			iCal::listenerMethodName.setUTF16String(methodName.getUTF16StringPtr(), methodName.getUTF16Length());
-
-			success = 1;
-		}
-	}
-	
-	returnValue.setReturn(pResult);
+            listenerLoopStart();
+        }
+    }
 }
 
 void iCal_Get_notification_method(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	C_LONGINT returnValue;
-	returnValue.setIntValue(1);
-	returnValue.setReturn(pResult);
-	
-	iCal::listenerMethodName.toParamAtIndex(pParams, 1);
+    CalendarWatch::WATCH_METHOD.setReturn(pResult);
 }
 
 #pragma mark Timezone
 
-void iCal_TIMEZONE_LIST(sLONG_PTR *pResult, PackagePtr pParams)
+void iCal_TIMEZONE_LIST(sLONG_PTR *pResult, PackagePtr pParams)/* deprecated */
 {
 	ARRAY_TEXT Param1;
 	
@@ -5308,11 +5517,526 @@ void iCal_Get_timezone_for_offset(sLONG_PTR *pResult, PackagePtr pParams)
 
 void iCal_Get_system_timezone(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	C_TEXT returnValue;
-	
-	returnValue.setUTF16String([[NSTimeZone systemTimeZone]name]);
-	
-	returnValue.setReturn(pResult);
+    C_TEXT returnValue;
+    
+    returnValue.setUTF16String([[NSTimeZone systemTimeZone]name]);
+    
+    returnValue.setReturn(pResult);
 }
 
+#pragma mark v2
 
+// -------------------------------------- v2 --------------------------------------
+
+unsigned int getColorRGB(NSColor *color)
+{
+    unsigned int rgb = 0;
+    
+    if(color)
+    {
+        color = [color colorUsingColorSpace:[NSColorSpace displayP3ColorSpace]];
+        
+        /*
+         color = [color colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]];//NSDeviceRGBColorSpace
+         color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+         color = [color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];//NSCalibratedRGBColorSpace
+         */
+        
+        CGFloat red, green, blue, alpha;
+        [color getRed:&red green:&green blue:&blue alpha:&alpha];
+        
+        rgb +=
+        
+        /*
+         +((unsigned int)(red      * 255.99999f) << 16)
+         +((unsigned int)(green    * 255.99999f) << 8)
+         + (unsigned int)(blue     * 255.99999f);
+         */
+        
+        +((unsigned int)floor((CGFloat)(red      * 0xFF) + 0.5f) << 16)
+        +((unsigned int)floor((CGFloat)(green    * 0xFF) + 0.5f) << 8)
+        + (unsigned int)floor((CGFloat)(blue     * 0xFF) + 0.5f);
+    }
+    
+    return rgb;
+}
+
+void get_object_json(C_TEXT& returnValue, id object)
+{
+    if(object)
+    {
+        if([NSJSONSerialization isValidJSONObject:object])
+        {
+            NSData *jsonData = [NSJSONSerialization
+                                dataWithJSONObject:object
+                                options:0
+                                error:NULL];
+            if(jsonData)
+            {
+                /*
+                 this can fail, NSData may not be null terminated
+                 NSString *json = [NSString stringWithCString:(const char *)[jsonData bytes] encoding:NSUTF8StringEncoding];
+                 */
+                
+                NSString *json = [[NSString alloc]initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+                if(json)
+                {
+                    returnValue.setUTF16String(json);
+                    [json release];
+                }
+            }
+        }
+    }
+}
+
+void iCal_Get_calendars(sLONG_PTR *pResult, PackagePtr pParams)
+{
+    C_TEXT returnValue;
+    
+    C_LONGINT _returnValue;
+    CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(_returnValue);
+    
+    if(defaultCalendarStore)
+    {
+        CalCalendar *calendar = nil;
+        
+        NSMutableArray *array = [[NSMutableArray alloc]init];
+        
+        NSArray *calendars = [defaultCalendarStore calendars];
+        
+        for(unsigned int i = 0; i < [calendars count]; ++i)
+        {
+            if([[calendars objectAtIndex:i]isMemberOfClass:[CalCalendar class]])
+            {
+                calendar = [calendars objectAtIndex:i];
+                
+                NSString *title = calendar.title ? calendar.title : [NSNull null];
+                NSString *uid = calendar.uid ? calendar.uid : [NSNull null];
+                NSString *notes = calendar.notes ? calendar.notes : [NSNull null];
+                NSString *type = calendar.type ? calendar.type : [NSNull null];
+                NSNumber *isEditable = [NSNumber numberWithBool:calendar.isEditable];
+                NSNumber *color = calendar.color ? [NSNumber numberWithInt:getColorRGB(calendar.color)] : [NSNumber numberWithInt:0];
+                
+                NSDictionary *item = [NSDictionary
+                                      dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                             title, uid, notes, type, isEditable, color, nil]
+                                      forKeys:[NSArray arrayWithObjects:
+                                               @"title", @"uid", @"notes", @"type", @"isEditable", @"color", nil]];
+                
+                [array addObject:item];
+            }
+        }
+        
+        get_object_json(returnValue, array);
+        
+        [array release];
+    }
+    
+    returnValue.setReturn(pResult);
+}
+
+void iCal_Get_timezones(sLONG_PTR *pResult, PackagePtr pParams)
+{
+    C_TEXT returnValue;
+    
+    get_object_json(returnValue, [NSTimeZone knownTimeZoneNames]);
+    
+    returnValue.setReturn(pResult);
+}
+
+NSDate *parse_date(NSString *dateString)
+{
+    NSDate *date = nil;
+    NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
+    
+    [GMT setDateFormat:DATE_FORMAT_ISO];
+    [GMT setTimeZone:[NSTimeZone localTimeZone]];
+    
+    date = [GMT dateFromString:dateString];
+
+    if(!date)
+    {
+        [GMT setDateFormat:DATE_FORMAT_ISO_GMT];
+        [GMT setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        
+        date = [GMT dateFromString:dateString];
+    }
+    
+    [GMT release];
+    
+    return date;
+}
+
+void iCal_Add_event(sLONG_PTR *pResult, PackagePtr pParams)
+{
+    C_TEXT Param1;
+    C_TEXT returnValue;
+    
+    Param1.fromParamAtIndex(pParams, 1);
+    
+    NSError *error = nil;
+    NSString *json = Param1.copyUTF16String();
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    if(data)
+    {
+        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        if(obj)
+        {
+            if([obj isKindOfClass:[NSDictionary class]])
+            {
+                C_LONGINT returnValueInternal;
+                CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(returnValueInternal);
+                
+                if(defaultCalendarStore)
+                {
+                    CalCalendar *calendar = iCal::getCalendar(defaultCalendarStore, [obj valueForKey:@"calendar"], returnValueInternal);
+                    if(calendar)
+                    {
+                        CalEvent *event = [CalEvent event];
+                        
+                        event.calendar = calendar;
+                        
+                        NSDate *startDate = parse_date([obj valueForKey:@"startDate"]);
+                        NSDate *endDate = parse_date([obj valueForKey:@"endDate"]);
+                        
+                        if((startDate) && (endDate))
+                        {
+                            event.startDate = startDate;
+                            event.endDate = endDate;
+                           
+                            if([obj valueForKey:@"isAllDay"])
+                            {
+                                event.isAllDay = [[obj valueForKey:@"isAllDay"]boolValue];
+                            }
+                            
+                            NSString *_location = [obj valueForKey:@"location"];
+                            NSString *_notes = [obj valueForKey:@"notes"];
+                            NSString *_title = [obj valueForKey:@"title"];
+                            NSURL *_url = [NSURL URLWithString:[obj valueForKey:@"url"]];;
+                            
+                            if(_location)
+                            {
+                                event.location = _location;
+                            }
+                            
+                            if(_notes)
+                            {
+                                event.notes = _notes;
+                            }
+
+                            if(_title)
+                            {
+                                event.title = _title;
+                            }
+
+                            if(_url)
+                            {
+                                event.url = _url;
+                            }
+
+                            if(![defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error]){
+                                NSLog(@"can't save event: %@", [error localizedDescription]);
+                            }else{
+                                
+                                returnValue.setUTF16String(event.uid);
+                                
+                                /* add attendees */
+                                
+                                id _attendees = [obj valueForKey:@"attendees"];
+                                if(_attendees)
+                                {
+                                    if([_attendees isKindOfClass:[NSArray class]])
+                                    {
+                                        /* it is not allowed to modify attendees */
+                                        NSArray *attendees = (NSArray *)_attendees;
+                                        
+                                        for(NSUInteger a = 0; a < [attendees count];++a)
+                                        {
+                                            id _attendee = [attendees objectAtIndex:a];
+                                            if([_attendee isKindOfClass:[NSDictionary class]])
+                                            {
+                                                NSDictionary *attendee = (NSDictionary *)_attendee;
+                                                NSString *email = [attendee valueForKey:@"email"];
+                                                NSString *displayName = [attendee valueForKey:@"displayName"];
+                                                NSString *participationStatus = [attendee valueForKey:@"participationStatus"];
+                                                
+                                                iCal::add_attendee(calendar.uid, event.uid, displayName, email, participationStatus);
+                                            }
+                                        }
+                                        iCal::reloadCalendars();
+                                    }
+                                }
+                            }
+                        }else{
+                            NSLog(@"invalid start date: %@, end date: %@", [obj valueForKey:@"startDate"], [obj valueForKey:@"endDate"]);
+                        }
+                    }else{
+                        NSLog(@"invalid calendar: %@", [obj valueForKey:@"calendar"]);
+                    }
+                }/* defaultCalendarStore */
+            }/* [obj isKindOfClass:[NSDictionary class]] */
+        }/* obj */
+    }/* data */
+    
+    [json release];
+    
+    returnValue.setReturn(pResult);
+}
+
+void iCal_Modify_event(sLONG_PTR *pResult, PackagePtr pParams)
+{
+    C_TEXT Param1;
+    C_TEXT Param2;
+    C_LONGINT returnValue;
+    
+    Param1.fromParamAtIndex(pParams, 1);
+    Param2.fromParamAtIndex(pParams, 2);
+    
+    int success = 0;
+    
+    NSError *error = nil;
+    NSString *json = Param1.copyUTF16String();
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    if(data)
+    {
+        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        if(obj)
+        {
+            if([obj isKindOfClass:[NSDictionary class]])
+            {
+                CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(returnValue);
+                
+                if(defaultCalendarStore)
+                {
+                    
+                    NSString *uid = [obj valueForKey:@"uid"];
+                    
+                    if(uid)
+                    {
+                        NSString *dateString = Param2.copyUTF16String();
+                        NSDate *date = parse_date(dateString);
+                        [dateString release];
+                        
+                        CalEvent *event = [defaultCalendarStore eventWithUID:uid occurrence:date];
+                        
+                        if(event)
+                        {
+                            BOOL touched = NO;
+                            CalCalendar *calendar = iCal::getCalendar(defaultCalendarStore, [obj valueForKey:@"calendar"], returnValue);
+                            if(calendar)
+                            {
+                                event.calendar = calendar;touched =YES;
+                            }
+                            
+                            NSDate *startDate = parse_date([obj valueForKey:@"startDate"]);
+                            NSDate *endDate = parse_date([obj valueForKey:@"endDate"]);
+                            
+                            if(startDate)
+                            {
+                                event.startDate = startDate;touched =YES;
+                            }
+                            if(endDate)
+                            {
+                                event.endDate = endDate;touched =YES;
+                            }
+                            if([obj valueForKey:@"isAllDay"])
+                            {
+                                event.isAllDay = [[obj valueForKey:@"isAllDay"]boolValue];touched =YES;
+                            }
+                            
+                            NSString *_location = [obj valueForKey:@"location"];
+                            NSString *_notes = [obj valueForKey:@"notes"];
+                            NSString *_title = [obj valueForKey:@"title"];
+                            NSURL *_url = [NSURL URLWithString:[obj valueForKey:@"url"]];;
+                            
+                            if(_location)
+                            {
+                                event.location = _location;touched =YES;
+                            }
+                            
+                            if(_notes)
+                            {
+                                event.notes = _notes;touched =YES;
+                            }
+                            
+                            if(_title)
+                            {
+                                event.title = _title;touched =YES;
+                            }
+                            
+                            if(_url)
+                            {
+                                event.url = _url;touched =YES;
+                            }
+                            
+                            if(touched)
+                            {
+                                if(![defaultCalendarStore saveEvent:event span:CalSpanThisEvent error:&error]){
+                                    success = [error code];
+                                    NSLog(@"can't update event: %@", [error localizedDescription]);
+                                }else{
+                                    
+                                }
+                            }
+                            
+                            if(success == 0)
+                            {
+                                id _attendees = [obj valueForKey:@"attendees"];
+                                if(_attendees)
+                                {
+                                    if([_attendees isKindOfClass:[NSArray class]])
+                                    {
+                                        /* it is not allowed to modify attendees */
+                                        NSArray *attendees = (NSArray *)_attendees;
+                                        
+                                        for(NSUInteger a = 0; a < [attendees count];++a)
+                                        {
+                                            id _attendee = [attendees objectAtIndex:a];
+                                            if([_attendee isKindOfClass:[NSDictionary class]])
+                                            {
+                                                NSDictionary *attendee = (NSDictionary *)_attendee;
+                                                NSString *email = [attendee valueForKey:@"email"];
+                                                NSString *displayName = [attendee valueForKey:@"displayName"];
+                                                NSString *participationStatus = [attendee valueForKey:@"participationStatus"];
+                                                
+                                                iCal::add_attendee(calendar.uid, event.uid, displayName, email, participationStatus);
+                                            }
+                                        }
+                                        iCal::reloadCalendars();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }/* defaultCalendarStore */
+            }/* [obj isKindOfClass:[NSDictionary class]] */
+        }/* obj */
+    }/* data */
+    
+    returnValue.setIntValue(success);
+    returnValue.setReturn(pResult);
+}
+
+void iCal_Find_event(sLONG_PTR *pResult, PackagePtr pParams)
+{
+    C_TEXT Param1;
+    C_TEXT Param2;
+    C_TEXT returnValue;
+    C_LONGINT returnValueInternal;
+    
+    Param1.fromParamAtIndex(pParams, 1);
+    Param2.fromParamAtIndex(pParams, 2);
+    
+    CalCalendarStore *defaultCalendarStore = iCal::getCalendarStore(returnValueInternal);
+    
+    if(defaultCalendarStore)
+    {
+        NSString *uid = Param1.copyUTF16String();
+        
+        NSString *dateString = Param2.copyUTF16String();
+        NSDate *date = parse_date(dateString);
+        [dateString release];
+        
+        CalEvent *event = [defaultCalendarStore eventWithUID:uid occurrence:date];
+        
+        if(event)
+        {
+            CalAlarm *alarm = nil;
+            
+            NSMutableArray *array = [[NSMutableArray alloc]init];
+            
+            NSArray *alarms = [event alarms];
+            
+            for(unsigned int i = 0; i < [alarms count]; ++i)
+            {
+                if([[alarms objectAtIndex:i]isMemberOfClass:[CalAlarm class]])
+                {
+                    alarm = [alarms objectAtIndex:i];
+                    
+                    NSString *action = alarm.action ? alarm.action : [NSNull null];
+                    NSString *absoluteTrigger = alarm.absoluteTrigger ? [alarm.absoluteTrigger description] : [NSNull null];
+                    NSString *emailAddress = alarm.emailAddress ? alarm.emailAddress : [NSNull null];
+                    NSNumber *relativeTrigger = alarm.relativeTrigger ? [NSNumber numberWithDouble:alarm.relativeTrigger] : [NSNull null];
+                    NSString *sound = alarm.sound ? alarm.sound : [NSNull null];
+                    NSString *url = alarm.url ? [alarm.url absoluteString] : [NSNull null];
+                    
+                    NSDictionary *item = [NSDictionary
+                                          dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                                 action, absoluteTrigger, emailAddress, relativeTrigger, sound, url, nil]
+                                          forKeys:[NSArray arrayWithObjects:
+                                                   @"action", @"absoluteTrigger", @"emailAddress", @"relativeTrigger", @"sound", @"url", nil]];
+                    
+                    [array addObject:item];
+                }
+            }
+            
+            CalAttendee *attendee = nil;
+            
+            NSMutableArray *array2 = [[NSMutableArray alloc]init];
+            
+            NSArray *attendees = [event attendees];
+            
+            for(unsigned int i = 0; i < [attendees count]; ++i)
+            {
+                if([[attendees objectAtIndex:i]isMemberOfClass:[CalAttendee class]])
+                {
+                    attendee = [attendees objectAtIndex:i];
+                    
+                    NSString *addressString = attendee.address ? [attendee.address absoluteString] : [NSNull null];
+                    NSString *statusString = @"unknown";
+                    if(attendee.status)
+                    {
+                        if([attendee.status isEqualToString:CalAttendeeStatusNeedsAction]) statusString = @"unknown";
+                        else
+                            if([attendee.status isEqualToString:CalAttendeeStatusAccepted]) statusString = @"accepted";
+                            else
+                                if([attendee.status isEqualToString:CalAttendeeStatusDeclined]) statusString = @"declined";
+                                else
+                                    if([attendee.status isEqualToString:CalAttendeeStatusTentative]) statusString = @"tentative";
+                    }
+
+                    NSString *commonNameString = attendee.commonName ? attendee.commonName : [NSNull null];
+                    
+                    NSDictionary *item = [NSDictionary
+                                          dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                                 statusString, commonNameString, addressString, nil]
+                                          forKeys:[NSArray arrayWithObjects:
+                                                   @"participationStatus", @"displayName", @"email", nil]];
+                    
+                    [array2 addObject:item];
+                }
+            }
+            
+            NSString *calendar = event.calendar ? event.calendar.uid : [NSNull null];
+            NSNumber *isAllDay = [NSNumber numberWithBool:event.isAllDay];
+            NSString *location = event.location ? event.location : [NSNull null];
+            NSString *notes = event.notes ? event.notes : [NSNull null];
+            NSString *title = event.title ? event.title : [NSNull null];
+            NSString *url = event.url ? [event.url absoluteString] : [NSNull null];
+            
+            NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
+            [GMT setDateFormat:DATE_FORMAT_ISO_GMT];
+            [GMT setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+            NSString *startDate = [GMT stringFromDate:event.startDate ? event.startDate : [NSNull null]];
+            NSString *endDate = [GMT stringFromDate:event.endDate ? event.endDate : [NSNull null]];
+            [GMT release];
+            
+            NSDictionary *item = [NSDictionary
+                                  dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                         calendar, isAllDay, location, notes, title, url, startDate, endDate, array, array2, nil]
+                                  forKeys:[NSArray arrayWithObjects:
+                                           @"calendar", @"isAllDay", @"location", @"notes", @"title", @"url", @"startDate",@"endDate", @"alarms", @"attendees", nil]];
+            
+            get_object_json(returnValue, item);
+            
+        }/* event */
+        
+        [uid release];
+        
+    }/* defaultCalendarStore */
+    
+    returnValue.setReturn(pResult);
+}

@@ -100,7 +100,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			TOaBEb9GtZOvWrO9gzdS9cpck8c=
+			dEH2hm4mturT1eJ4N+n6wzlvGdY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -108,6 +108,10 @@
 		<key>Resources/constants.xlf</key>
 		<data>
 		UG6AEYtJK2xfba6NZXvmCJs++Rc=
+		</data>
+		<key>Resources/scpt/add_attendee.scpt</key>
+		<data>
+		940WjoNuYECUpVx3rZAiikDFB1g=
 		</data>
 		<key>Resources/scpt/show_date.scpt</key>
 		<data>
@@ -396,11 +400,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			TOaBEb9GtZOvWrO9gzdS9cpck8c=
+			dEH2hm4mturT1eJ4N+n6wzlvGdY=
 			</data>
 			<key>hash2</key>
 			<data>
-			BjE/qJVfvz4Y5tBiXf7rXJOQRFgfn7dKUiG3GQmL4tQ=
+			TUx0M6RjrhtnXh0nKu9Sj/hTBxufO1qo6OhL35B+u4I=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -414,6 +418,17 @@
 			<key>hash2</key>
 			<data>
 			S24KDh5UGSCVA7N1Nb4rv+68jg0Wno/szWr3CjSngLY=
+			</data>
+		</dict>
+		<key>Resources/scpt/add_attendee.scpt</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			940WjoNuYECUpVx3rZAiikDFB1g=
+			</data>
+			<key>hash2</key>
+			<data>
+			2iZg0CKIYv/R0wiBiEJ7019VK7p+3vTz7ck0usQ2hjk=
 			</data>
 		</dict>
 		<key>Resources/scpt/show_date.scpt</key>
@@ -486,7 +501,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			4aBkFbKimHfeOurHqH4yrA3NYmE=
+			KL8hemkKt2BzerCq/PBg7K5tFhk=
 			</data>
 			<key>requirement</key>
 			<string>identifier manifest and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Y69CWUC25B</string>

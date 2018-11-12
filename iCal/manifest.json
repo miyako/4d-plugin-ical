@@ -10,7 +10,7 @@
                  {
                  "theme": "Event",
                  "syntax": "iCal Set event property(&T;&T;&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Event",
@@ -20,17 +20,17 @@
                  {
                  "theme": "Event",
                  "syntax": "iCal Remove event(&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Task",
                  "syntax": "iCal Create task(&T;&T):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Task",
                  "syntax": "iCal Set task property(&T;&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Task",
@@ -40,17 +40,17 @@
                  {
                  "theme": "Task",
                  "syntax": "iCal Remove task(&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Calendar",
                  "syntax": "iCal Create calendar(&T;&T):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Calendar",
                  "syntax": "iCal Set calendar property(&T;&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Calendar",
@@ -60,7 +60,7 @@
                  {
                  "theme": "Calendar",
                  "syntax": "iCal Remove calendar(&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Calendar Store",
@@ -80,42 +80,42 @@
                  {
                  "theme": "Type Cast",
                  "syntax": "iCal Make date(&D;&H;&T):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Type Cast",
                  "syntax": "iCal GET DATE(&T;&D;&H;&L)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Type Cast",
                  "syntax": "iCal Make color(&8;&8;&8;&8):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Type Cast",
                  "syntax": "iCal GET COLOR(&T;&8;&8;&8;&8)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Type Cast",
                  "syntax": "iCal Make color from index(&L):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Recurrence Rule",
                  "syntax": "iCal Remove event recurrence(&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Recurrence Rule",
                  "syntax": "iCal Set event recurrence(&T;&T;&L;&T;&T;&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm",
                  "syntax": "iCal Make alarm:T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm",
@@ -125,47 +125,47 @@
                  {
                  "theme": "Alarm",
                  "syntax": "iCal Set alarm property(&T;&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm",
                  "syntax": "iCal Add alarm to event(&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm",
                  "syntax": "iCal Add alarm to task(&T;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Application",
                  "syntax": "iCal TERMINATE",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Application",
                  "syntax": "iCal LAUNCH",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "iCal Direct",
                  "syntax": "iCal SHOW EVENT(&T)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "iCal Direct",
                  "syntax": "iCal SHOW TASK(&T)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "iCal Direct",
                  "syntax": "iCal SET VIEW(&L)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "iCal Direct",
                  "syntax": "iCal SHOW DATE(&D)",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "iCal Direct",
@@ -179,13 +179,13 @@
                  },
                  {
                  "theme": "Notification",
-                 "syntax": "iCal Set notification method(&T):L",
-                 "threadSafe": false
+                 "syntax": "iCal SET NOTIFICATION METHOD(&T)",
+                 "threadSafe": true
                  },
                  {
                  "theme": "Notification",
-                 "syntax": "iCal Get notification method(&T):L",
-                 "threadSafe": false
+                 "syntax": "iCal Get notification method:T",
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm II",
@@ -200,12 +200,12 @@
                  {
                  "theme": "Alarm II",
                  "syntax": "iCal Remove event alarm(&T;&L):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm II",
                  "syntax": "iCal Set event alarm(&T;&L;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Alarm II",
@@ -225,7 +225,7 @@
                  {
                  "theme": "Alarm II",
                  "syntax": "iCal Set task alarm(&T;&L;&T):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Timezone",
@@ -235,22 +235,47 @@
                  {
                  "theme": "Timezone",
                  "syntax": "iCal Get timezone info(&D;&H;&T;&L;&L;&D;&H):L",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Timezone",
                  "syntax": "iCal Get timezone for offset(&L):T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Timezone",
                  "syntax": "iCal Get system timezone:T",
-                 "threadSafe": false
+                 "threadSafe": true
                  },
                  {
                  "theme": "Event II",
                  "syntax": "iCal Set event properties(&T;&Y;&Y;&T):L",
                  "threadSafe": false
+                 },
+                 {
+                 "theme": "v2",
+                 "syntax": "iCal Get calendars:T",
+                 "threadSafe": true
+                 },
+                 {
+                 "theme": "v2",
+                 "syntax": "iCal Get timezones:T",
+                 "threadSafe": true
+                 },
+                 {
+                 "theme": "v2",
+                 "syntax": "iCal Add event(&T):T",
+                 "threadSafe": true
+                 },
+                 {
+                 "theme": "v2",
+                 "syntax": "iCal Modify event(&T;&T):L",
+                 "threadSafe": true
+                 },
+                 {
+                 "theme": "v2",
+                 "syntax": "iCal Find event(&T;&T):T",
+                 "threadSafe": true
                  }
                  ]
 }

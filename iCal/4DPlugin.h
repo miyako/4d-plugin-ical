@@ -13,9 +13,14 @@
 #import "iCal.h"
 #include "sqlite3.h"
 
+#include <mutex>
+
 #define ERROR_ACCESS_DENIED 1
 #define ERROR_CALENDAR_NOT_FOUND 2
 #define ERROR_INVALID_DATE 3
+
+#define DATE_FORMAT_ISO_GMT @"yyyy-MM-dd'T'HH:mm:ss'Z'"
+#define DATE_FORMAT_ISO @"yyyy-MM-dd'T'HH:mm:ss"
 
 typedef struct RecordSpecifier
 {
@@ -57,6 +62,18 @@ void listenerLoopFinish(void);
 void listenerLoopExecute(void);
 void listenerLoopExecuteMethod(void);
 
+@interface Listener : NSObject
+{
+    FSEventStreamRef stream;
+}
+
+- (void)setPaths;
+
+@end
+
+void listener_start(void);
+void listener_end(void);
+
 typedef PA_long32 process_number_t;
 typedef PA_long32 process_stack_size_t;
 typedef PA_long32 method_id_t;
@@ -65,6 +82,8 @@ typedef PA_Unichar* process_name_t;
 void onStartup();
 void onCloseProcess();
 bool isProcessOnExit();
+
+void get_calendar_paths(ARRAY_TEXT &paths);
 
 typedef enum
 {
@@ -150,3 +169,10 @@ void iCal_Get_system_timezone(sLONG_PTR *pResult, PackagePtr pParams);
 
 // --- Event II
 void iCal_Set_event_properties(sLONG_PTR *pResult, PackagePtr pParams);
+
+// --- v2
+void iCal_Get_calendars(sLONG_PTR *pResult, PackagePtr pParams);
+void iCal_Get_timezones(sLONG_PTR *pResult, PackagePtr pParams);
+void iCal_Add_event(sLONG_PTR *pResult, PackagePtr pParams);
+void iCal_Modify_event(sLONG_PTR *pResult, PackagePtr pParams);
+void iCal_Find_event(sLONG_PTR *pResult, PackagePtr pParams);
