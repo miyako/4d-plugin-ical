@@ -82,6 +82,8 @@ method|TEXT|
 
 ---
 
+### Deprecated commands
+
 #### Not thread safe => thread safe
 
 * iCal Get event property => iCal Find event
@@ -101,7 +103,8 @@ method|TEXT|
 * iCal Create event => iCal Add event
 * iCal Set event properties => iCal Modify event
 
-commands on the left side are all **deprecated** 
+* iCal app Get task property => **deprecated** 
+* iCal app Get event property => iCal Find event
 
 ---
 
@@ -163,7 +166,9 @@ monthsOfTheYear:[array or numbers]
 }
 ```
  
-### Remarks
+---
+
+### App control (updated)
 
 These commands internally use ~~``NSAppleScript``~~ ``NSTask``
 
@@ -182,21 +187,3 @@ This commands internally use ``NSRunningApplication``
 This commands internally use ``NSWorkspace``
 
 ``iCal LAUNCH``
-
-These commands are __deprecated__; they do nothing
-
-``iCal app Get task property``
-``iCal app Get event property``
-
-These commands internally start a new process; this is because the ``CalendarStore`` framework seems to return old values when a getter is called from the same thread that called its corresponding setter.
-
-``iCal Get task property``
-``iCal Count task alarms``
-``iCal Get task alarm``
-``iCal Get event property``
-``iCal Get event alarm``
-``iCal Count event alarms``
-``iCal Get calendar property``
-``iCal Get alarm property``
-
-**Note**: at least as of v17, it seems no longer necessary to get in a new process.
