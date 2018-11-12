@@ -180,10 +180,10 @@ These commands internally use ~~``NSAppleScript``~~ ``SBApplication``
 ``iCal SET VIEW``
 ``iCal SHOW DATE``
 
-This commands internally use ``NSRunningApplication``
+This command internally uses ``NSRunningApplication``
 
 ``iCal TERMINATE``
 
-This commands internally use ``NSWorkspace``
+This command internally uses ``NSWorkspace``
 
 ``iCal LAUNCH``
