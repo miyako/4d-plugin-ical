@@ -112,7 +112,7 @@ method|TEXT|
 
 support recurrence with 
 
-* iCal Find event
+* ~~iCal Find event~~ done
 * iCal Modify event
 * iCal Add event
 
