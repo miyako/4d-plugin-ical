@@ -5200,7 +5200,7 @@ void iCal_Get_task_alarm(sLONG_PTR *pResult, PackagePtr pParams)
 	returnValue.setReturn(pResult);
 }
 
-#pragma mark Application
+#pragma mark Application v2
 
 void iCal_TERMINATE(sLONG_PTR *pResult, PackagePtr pParams){
 	//requires 10.6 or later
@@ -6010,6 +6010,59 @@ void iCal_Find_event(sLONG_PTR *pResult, PackagePtr pParams)
                 }
             }
             
+            CalRecurrenceRule *recurrenceRule = event.recurrenceRule;
+          
+            NSNumber *recurrenceInterval = [NSNumber numberWithInt:0];
+            NSString *firstDayOfTheWeek = nil;
+            NSString *recurrenceType = nil;
+            NSArray *daysOfTheWeek = @[];
+            NSArray *daysOfTheMonth = @[];
+            NSArray *nthWeekDaysOfTheMonth = @[];
+            NSArray *monthsOfTheYear = @[];
+            NSDictionary *recurrenceEnd = nil;
+            
+            if(recurrenceRule)
+            {
+                recurrenceInterval = [NSNumber numberWithInt:recurrenceRule.recurrenceInterval];
+                firstDayOfTheWeek = [@[[NSNull null],
+                                       @"Sunday",
+                                       @"Monday",
+                                       @"Tuesday",
+                                       @"Wednesday",
+                                       @"Thursday",
+                                       @"Friday",
+                                       @"Saturday"] objectAtIndex:recurrenceRule.firstDayOfTheWeek];
+                recurrenceType = [@[@"Daily",
+                                    @"Weekly",
+                                    @"Monthly",
+                                    @"Yearly"] objectAtIndex:recurrenceRule.recurrenceType];
+                daysOfTheWeek = recurrenceRule.daysOfTheWeek ? recurrenceRule.daysOfTheWeek : @[];
+                daysOfTheMonth = recurrenceRule.daysOfTheMonth ? recurrenceRule.daysOfTheMonth : @[];
+                nthWeekDaysOfTheMonth = recurrenceRule.nthWeekDaysOfTheMonth ? recurrenceRule.nthWeekDaysOfTheMonth : @[];
+                monthsOfTheYear = recurrenceRule.monthsOfTheYear ? recurrenceRule.monthsOfTheYear : @[];
+                
+                NSDateFormatter *GMT = [[NSDateFormatter alloc]init];
+                [GMT setDateFormat:DATE_FORMAT_ISO_GMT];
+                [GMT setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+                
+                recurrenceEnd = recurrenceRule.recurrenceEnd ? @{
+                                                                 @"occurrenceCount":[NSNumber numberWithInt:recurrenceRule.recurrenceEnd.occurrenceCount],
+                                                                 @"endDate":recurrenceRule.recurrenceEnd.endDate ? [GMT stringFromDate:recurrenceRule.recurrenceEnd.endDate] : [NSNull null]
+                                                                 } : [NSNull null];
+                [GMT release];
+            }
+            
+            NSDictionary *recurrence = @{
+                                         @"recurrenceInterval":recurrenceInterval,
+                                         @"firstDayOfTheWeek":firstDayOfTheWeek ? firstDayOfTheWeek : [NSNull null],
+                                         @"recurrenceType":recurrenceType ? recurrenceType : [NSNull null],
+                                         @"recurrenceEnd":recurrenceEnd ? recurrenceEnd : [NSNull null],
+                                         @"daysOfTheWeek":daysOfTheWeek,
+                                         @"daysOfTheMonth":daysOfTheMonth,
+                                         @"nthWeekDaysOfTheMonth":nthWeekDaysOfTheMonth,
+                                         @"monthsOfTheYear":monthsOfTheYear
+                                         };
+            
             NSString *calendar = event.calendar ? event.calendar.uid : [NSNull null];
             NSNumber *isAllDay = [NSNumber numberWithBool:event.isAllDay];
             NSString *location = event.location ? event.location : [NSNull null];
@@ -6026,11 +6079,34 @@ void iCal_Find_event(sLONG_PTR *pResult, PackagePtr pParams)
             
             NSDictionary *item = [NSDictionary
                                   dictionaryWithObjects:[NSArray arrayWithObjects:
-                                                         calendar, isAllDay, location, notes, title, url, startDate, endDate, array, array2, nil]
+                                                         calendar,
+                                                         isAllDay,
+                                                         location,
+                                                         notes,
+                                                         title,
+                                                         url,
+                                                         startDate,
+                                                         endDate,
+                                                         array,
+                                                         array2,
+                                                         recurrence, nil]
                                   forKeys:[NSArray arrayWithObjects:
-                                           @"calendar", @"isAllDay", @"location", @"notes", @"title", @"url", @"startDate",@"endDate", @"alarms", @"attendees", nil]];
+                                           @"calendar",
+                                           @"isAllDay",
+                                           @"location",
+                                           @"notes",
+                                           @"title",
+                                           @"url",
+                                           @"startDate",
+                                           @"endDate",
+                                           @"alarms",
+                                           @"attendees",
+                                           @"recurrence", nil]];
             
             get_object_json(returnValue, item);
+            
+            [array release];
+            [array2 release];
             
         }/* event */
         

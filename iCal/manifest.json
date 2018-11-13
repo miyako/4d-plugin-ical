@@ -180,7 +180,7 @@
                  {
                  "theme": "Notification",
                  "syntax": "iCal SET NOTIFICATION METHOD(&T)",
-                 "threadSafe": true
+                 "threadSafe": false
                  },
                  {
                  "theme": "Notification",
