@@ -11,6 +11,60 @@
 #include "4DPluginAPI.h"
 #include "4DPlugin.h"
 
+#ifndef errAEEventWouldRequireUserConsent
+enum {
+    errAEEventWouldRequireUserConsent     =     -1744
+};
+#endif
+
+void requestPermission(){
+    
+    if (@available(macOS 10.14, *)) {
+        OSStatus status;
+        
+        /*
+         alternatively
+         NSAppleEventDescriptor *targetAppEventDescriptor;
+         targetAppEventDescriptor = [NSAppleEventDescriptor descriptorWithBundleIdentifier:@"com.apple.Notes"];
+         and pass targetAppEventDescriptor.aeDesc to AEDeterminePermissionToAutomateTarget()
+         */
+        
+        /*
+        AEAddressDesc addressDesc;
+        NSString *bundleIdentifier = @"com.apple.iCal";
+        const char *bundleIdentifierCString = [bundleIdentifier cStringUsingEncoding:NSUTF8StringEncoding];
+        if(AECreateDesc(typeApplicationBundleID, bundleIdentifierCString, strlen(bundleIdentifierCString), &addressDesc) == noErr)
+        {
+            status = AEDeterminePermissionToAutomateTarget(&addressDesc, typeWildCard, typeWildCard, true);
+            AEDisposeDesc(&addressDesc);
+            
+            switch (status) {
+                case errAEEventWouldRequireUserConsent:
+                    NSLog(@"Automation permission pending for %@", bundleIdentifier);
+                    break;
+                case noErr:
+                    NSLog(@"Automation permission granted for %@", bundleIdentifier);
+                    break;
+                case errAEEventNotPermitted:
+                    NSLog(@"Automation permission denied for %@", bundleIdentifier);
+                    break;
+                case procNotFound:
+                    NSLog(@"Automation permission unknown for %@", bundleIdentifier);
+                    break;
+                default:
+                    break;
+            }
+        }
+         */
+    }
+    
+//    EKEventStore *store = [EKEventStore new];
+//    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+//
+//    }];
+
+}
+
 #define CALLBACK_IN_NEW_PROCESS 1
 #define CALLBACK_SLEEP_TIME 59
 
@@ -375,7 +429,7 @@ void onCloseProcess()
 
 void onStartup()
 {
-
+    requestPermission();
 }
 
 #pragma mark -

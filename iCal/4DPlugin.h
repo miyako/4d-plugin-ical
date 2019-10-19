@@ -10,6 +10,7 @@
 
 #import <CalendarStore/CalendarStore.h>
 #import <ScriptingBridge/ScriptingBridge.h>
+#import <EventKit/EventKit.h>
 #import "iCal.h"
 #include "sqlite3.h"
 
