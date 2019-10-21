@@ -21,6 +21,10 @@ The app must also have the following property list keys:
 * ``NSCalendarsUsageDescription``
 * ``NSAppleEventsUsageDescription``
 
+See [build-application](https://github.com/miyako/4d-utility-build-application)
+
+---
+
 ```
 calendars:=iCal Get calendars
 ```
