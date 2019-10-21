@@ -7,17 +7,19 @@
 
 | carbon | cocoa | win32 | win64 |
 |:------:|:-----:|:---------:|:---------:|
-|<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
+||<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
 
-### Version
+A new command ``iCal Request permisson`` has been added. You must call this once before you use other commands.
 
-<img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" /> <img src="https://user-images.githubusercontent.com/1725068/41266195-ddf767b2-6e30-11e8-9d6b-2adf6a9f57a5.png" width="32" height="32" />
+You must codesign your app with the following entitlements:
 
-**Important**
+* ``com.apple.security.automation.apple-events`` 
+* ``com.apple.security.personal-information.calendars``
 
-Does not work since macOS Mojave!
+The app must also have the following property list keys:
 
-### New syntax
+* ``NSCalendarsUsageDescription``
+* ``NSAppleEventsUsageDescription``
 
 ```
 calendars:=iCal Get calendars
